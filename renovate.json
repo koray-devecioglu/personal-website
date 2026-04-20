@@ -1,0 +1,47 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":semanticCommitsDisabled",
+    ":automergeDigest",
+    ":enableVulnerabilityAlertsWithLabel(security)",
+    "schedule:weekends"
+  ],
+  "timezone": "Europe/Amsterdam",
+  "labels": ["dependencies"],
+  "rangeStrategy": "bump",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 5am on Monday"]
+  },
+  "packageRules": [
+    {
+      "description": "Group all non-major dependency updates into a single PR.",
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "minor + patch",
+      "automerge": true,
+      "automergeType": "branch",
+      "schedule": ["before 5am on Monday"]
+    },
+    {
+      "description": "Pin Astro and Tailwind major bumps for human review.",
+      "matchPackageNames": [
+        "astro",
+        "@astrojs/mdx",
+        "@astrojs/sitemap",
+        "tailwindcss",
+        "@tailwindcss/vite"
+      ],
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "labels": ["dependencies", "major"]
+    },
+    {
+      "description": "Node engine and Playwright stay manual.",
+      "matchPackageNames": ["node", "@playwright/test"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "labels": ["dependencies", "manual-review"]
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+/*
+ * Global styles.
+ *
+ * Order matters:
+ *   1. Tailwind v4 import (brings in preflight + utilities).
+ *   2. Tokens (loads CSS custom properties we map into @theme).
+ *   3. @theme block to expose tokens to Tailwind.
+ *   4. Base element styles (using the tokens).
+ *
+ * Keep this file small. Long-form typography lives in prose.css
+ * (added in M4 when the blog surface lands).
+ */
+
+@import "tailwindcss";
+@import "./tokens.css";
+
+@theme {
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-subtle: var(--accent-subtle);
+  --color-focus-ring: var(--focus-ring);
+}
+
+/* ── Base element styles ───────────────────────────────────────────────── */
+
+html {
+  /* Smooth scroll for in-page anchors, disabled under reduced-motion. */
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Avoid horizontal jitter when the scrollbar toggles. */
+  scrollbar-gutter: stable;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--fg);
+  background: var(--bg);
+}
+
+::selection {
+  background: var(--selection-bg);
+  color: var(--selection-fg);
+}
+
+/* Default focus ring — never removed, only restyled. */
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Clickable things that are not <a>/<button> get the visible focus too. */
+[tabindex]:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Headings use the same serif; we adjust weight/leading per element. */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+}
+
+/* Monospace for code, kbd, samp — uniform. */
+code, kbd, samp, pre {
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+}
+
+/* Links inherit color by default; components opt in to accent. */
+a {
+  color: inherit;
+}

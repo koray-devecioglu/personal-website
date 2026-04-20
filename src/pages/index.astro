@@ -1,0 +1,67 @@
+---
+/**
+ * Home — M1 placeholder.
+ *
+ * This page exists to confirm the toolchain works: Astro renders,
+ * Tailwind v4 compiles, tokens apply, theme switching is wired.
+ *
+ * M4 replaces this with the real home — a hand-set index of recent
+ * writing across essays, tutorials, notes, TILs, and project write-ups.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE } from "../data/links";
+---
+
+<BaseLayout title="Home" description={SITE.description}>
+  <section class="wrap">
+    <p class="eyebrow">M1 · scaffold</p>
+    <h1 class="display">Under construction, on purpose.</h1>
+    <p class="lede">
+      This is {SITE.name}'s corner of the internet. It doesn't have
+      anything to show yet — we're building it in the open, one milestone
+      at a time. Essays, field notes, and the rest will land here soon.
+    </p>
+    <p class="meta">
+      <code>pnpm dev</code> is running. Fraunces is loading from fallbacks
+      until webfonts land in M2. The ochre is already in the tokens.
+    </p>
+  </section>
+
+  <style>
+    .wrap {
+      max-width: 68ch;
+      margin: 0 auto;
+      padding: var(--space-24) var(--space-6) var(--space-16);
+    }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wider);
+      color: var(--fg-subtle);
+      margin: 0 0 var(--space-4);
+    }
+    .display {
+      font-size: var(--text-display);
+      line-height: var(--leading-tight);
+      letter-spacing: var(--tracking-tight);
+      margin: 0 0 var(--space-8);
+      color: var(--fg);
+    }
+    .lede {
+      font-size: var(--text-lg);
+      line-height: var(--leading-relaxed);
+      color: var(--fg);
+      margin: 0 0 var(--space-6);
+    }
+    .meta {
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+      color: var(--fg-muted);
+      margin: 0;
+    }
+    .meta code {
+      color: var(--accent-strong);
+    }
+  </style>
+</BaseLayout>
