@@ -9,11 +9,16 @@
  * The print variant lives at /cv/print. The JSON endpoint lives at
  * /cv.json. Links to both are surfaced in the toolbar at the top of
  * this page.
+ *
+ * Route location rationale: this lives at src/pages/cv/index.astro
+ * (not src/pages/cv.astro) so that it coexists cleanly with
+ * src/pages/cv/print.astro. Having both `cv.astro` and a `cv/`
+ * directory confuses Astro's dev router on trailing-slash requests.
  */
-import BaseLayout from "../layouts/BaseLayout.astro";
-import CVContent from "../components/cv/CVContent.astro";
-import { loadResume } from "../lib/resume";
-import "../styles/cv.css";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CVContent from "../../components/cv/CVContent.astro";
+import { loadResume } from "../../lib/resume";
+import "../../styles/cv.css";
 
 const resume = loadResume();
 ---

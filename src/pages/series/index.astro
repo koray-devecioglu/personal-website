@@ -30,7 +30,7 @@ const seo = pageSeo({
       {
         bundles.map(({ entry, posts }) => (
           <li class="series-index__item">
-            <a class="series-index__link" href={`/series/${entry.id}/`}>
+            <a class="series-index__link" href={`/series/${entry.id}`}>
               <h2 class="series-index__entry-title">{entry.data.title}</h2>
               <p class="series-index__entry-summary">{entry.data.summary}</p>
               <p class="series-index__entry-meta">

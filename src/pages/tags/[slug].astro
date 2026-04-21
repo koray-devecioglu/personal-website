@@ -38,7 +38,7 @@ const readingMinutes = posts.map((post) => readingTime(post.body ?? "").minutes)
 const seo = pageSeo({
   title: t("tags.page.title", { tag }),
   description: `Posts tagged #${tag} across essays, tutorials, TILs, notes, and projects.`,
-  path: `/tags/${tag}/`,
+  path: `/tags/${tag}`,
 });
 
 const countLabel =
@@ -51,7 +51,7 @@ const countLabel =
   <section class="tag-page">
     <header class="tag-page__header">
       <p class="tag-page__eyebrow">
-        <a href="/tags/">{t("tags.title")}</a>
+        <a href="/tags">{t("tags.title")}</a>
         <span aria-hidden="true">/</span>
         <span>{countLabel}</span>
       </p>

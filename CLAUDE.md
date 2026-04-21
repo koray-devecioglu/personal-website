@@ -236,7 +236,7 @@ pnpm build:cv         # regenerate public/cv.pdf after CV changes
 │   │   ├── rss.xml.ts            # RSS 2.0 feed
 │   │   ├── feed.json.ts          # JSON Feed 1.1
 │   │   ├── og/[slug].png.ts      # per-post OG card (build-time)
-│   │   ├── cv.astro              # CV screen layout
+│   │   ├── cv/index.astro        # CV screen layout
 │   │   ├── cv/print.astro        # print shell (noindex, minimal chrome)
 │   │   └── cv.json.ts            # JSON Resume endpoint
 │   └── styles/

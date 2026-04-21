@@ -15,16 +15,18 @@ import { SITE } from "../../data/links";
 import ThemeToggle from "../islands/ThemeToggle.astro";
 import { t } from "../../lib/i18n";
 
-// Normalise both sides to strip trailing slashes so "/posts" and
-// "/posts/" compare equal regardless of server-side trailingSlash config.
+// Nav hrefs match the site's `trailingSlash: "never"` config — this
+// avoids dev-mode 404s on `/posts/` style links (the dev server only
+// redirects in prod builds). `isActive` still normalises defensively
+// in case some other caller hands us a path with a slash.
 const trimSlash = (p: string): string => p.replace(/\/$/, "") || "/";
 const pathname = trimSlash(Astro.url.pathname);
 
 const NAV = [
-  { href: "/posts/", label: t("nav.posts") },
-  { href: "/tags/", label: t("nav.tags") },
-  { href: "/series/", label: t("nav.series") },
-  { href: "/cv/", label: t("nav.cv") },
+  { href: "/posts", label: t("nav.posts") },
+  { href: "/tags", label: t("nav.tags") },
+  { href: "/series", label: t("nav.series") },
+  { href: "/cv", label: t("nav.cv") },
 ];
 
 function isActive(href: string): boolean {

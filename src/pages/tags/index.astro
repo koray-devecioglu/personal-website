@@ -33,7 +33,7 @@ const seo = pageSeo({
       {
         tags.map(({ tag, count }) => (
           <li class="tags-index__item">
-            <Tag variant="outline" href={`/tags/${tag}/`}>
+            <Tag variant="outline" href={`/tags/${tag}`}>
               {tag}
             </Tag>
             <span class="tags-index__count">{count}</span>
