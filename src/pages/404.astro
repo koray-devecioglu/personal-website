@@ -1,0 +1,123 @@
+---
+/**
+ * 404 — page-not-found.
+ *
+ * Cloudflare Pages serves the built `/404.html` for any unmatched
+ * path automatically (no config required). In dev, Astro serves it
+ * at `/404`. Keep this screen quiet: an apology, a few sign-posts
+ * back to real content, and a nudge toward the command palette.
+ *
+ * Noindex intentionally, so search engines don't surface the error
+ * itself.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  seoInput={{
+    title: "404 — Page not found",
+    description: "That page doesn't exist. A few links that do below.",
+    path: "/404",
+    noindex: true,
+  }}
+>
+  <section class="notfound">
+    <p class="notfound__eyebrow">404</p>
+    <h1 class="notfound__title">Lost a page somewhere.</h1>
+    <p class="notfound__lead">
+      The URL you followed doesn't match anything the site currently publishes. It may
+      have moved, or it may never have existed. Either way, sorry about that.
+    </p>
+
+    <nav class="notfound__nav" aria-label="Site navigation">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/posts">Posts</a></li>
+        <li><a href="/tags">Tags</a></li>
+        <li><a href="/series">Series</a></li>
+        <li><a href="/cv">CV</a></li>
+        <li><a href="/now">Now</a></li>
+        <li><a href="/uses">Uses</a></li>
+        <li><a href="/colophon">Colophon</a></li>
+      </ul>
+    </nav>
+
+    <p class="notfound__hint">
+      Or press <kbd>⌘</kbd>&nbsp;<kbd>K</kbd> (<kbd>Ctrl</kbd>&nbsp;<kbd>K</kbd> on Windows
+      and Linux) to search everything.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    max-width: var(--content-narrow);
+    margin-inline: auto;
+    padding-block: var(--space-16) var(--space-20);
+    padding-inline: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+  .notfound__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--accent-strong);
+    margin: 0;
+  }
+  .notfound__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-4xl);
+    font-weight: 500;
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    margin: 0;
+  }
+  .notfound__lead {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--fg-muted);
+    margin: 0;
+    max-width: 56ch;
+  }
+  .notfound__nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+  }
+  .notfound__nav a {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-wide);
+    color: var(--fg);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--rule-strong);
+  }
+  .notfound__nav a:hover,
+  .notfound__nav a:focus-visible {
+    color: var(--accent-strong);
+    text-decoration-color: var(--accent);
+  }
+  .notfound__hint {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    margin: 0;
+  }
+  .notfound__hint kbd {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    padding: 2px 6px;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius-sm);
+    background: var(--bg-elevated);
+    color: var(--fg);
+  }
+</style>

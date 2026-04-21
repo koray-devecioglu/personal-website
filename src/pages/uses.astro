@@ -1,0 +1,20 @@
+---
+/**
+ * `/uses` — the gear, software, and small obsessions that make up
+ * the day-to-day setup. Sourced from `src/content/pages/uses.md`.
+ */
+import { getEntry, render } from "astro:content";
+
+import PageLayout from "../layouts/PageLayout.astro";
+
+const page = await getEntry("pages", "uses");
+if (!page) {
+  throw new Error("Content missing: src/content/pages/uses.md");
+}
+
+const { Content } = await render(page);
+---
+
+<PageLayout page={page}>
+  <Content />
+</PageLayout>

@@ -18,6 +18,7 @@ import {
   bookmarkSchema,
   essaySchema,
   noteSchema,
+  pageSchema,
   projectSchema,
   seriesSchema,
   tilSchema,
@@ -68,6 +69,14 @@ const series = defineCollection({
   schema: seriesSchema,
 });
 
+const pages = defineCollection({
+  loader: glob({
+    pattern: "**/*.{md,mdx}",
+    base: "./src/content/pages",
+  }),
+  schema: pageSchema,
+});
+
 export const collections = {
   essays,
   tutorials,
@@ -76,4 +85,5 @@ export const collections = {
   projects,
   bookmarks,
   series,
+  pages,
 };

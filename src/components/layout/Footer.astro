@@ -108,12 +108,19 @@ import { SITE, SOCIAL } from "../../data/links";
       </nav>
     </div>
 
+    <nav class="site-footer__indie" aria-label="Indie-web pages">
+      <ul>
+        <li><a href="/now">Now</a></li>
+        <li><a href="/uses">Uses</a></li>
+        <li><a href="/reading">Reading</a></li>
+        <li><a href="/colophon">Colophon</a></li>
+      </ul>
+    </nav>
+
     <p class="colophon">
       Built with <a href="https://astro.build" rel="noopener noreferrer" target="_blank"
         >Astro</a
-      > · hand-set typography · <span class="colophon__stub"
-        >/colophon coming in M6</span
-      >
+      > · hand-set typography · <a href="/colophon">the full stack</a>
     </p>
   </div>
 </footer>
@@ -226,7 +233,26 @@ import { SITE, SOCIAL } from "../../data/links";
   .colophon a:hover {
     color: var(--accent-strong);
   }
-  .colophon__stub {
-    opacity: 0.7;
+  .site-footer__indie ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+  }
+  .site-footer__indie a {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--fg-muted);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--rule-strong);
+  }
+  .site-footer__indie a:hover,
+  .site-footer__indie a:focus-visible {
+    color: var(--accent-strong);
+    text-decoration-color: var(--accent);
   }
 </style>
