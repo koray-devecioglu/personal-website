@@ -10,6 +10,7 @@ import {
   bookmarkSchema,
   essaySchema,
   noteSchema,
+  pageSchema,
   projectSchema,
   seriesSchema,
   tilSchema,
@@ -229,6 +230,31 @@ describe("cover/coverAlt contract", () => {
         hasAlt,
         `${file} has a cover image but no coverAlt — accessibility regression`,
       ).toBe(true);
+    }
+  });
+});
+
+// ── Standalone pages (/now, /uses, /colophon, /reading) ──────────────
+
+describe("pages collection", () => {
+  const pagesDir = join(CONTENT_ROOT, "pages");
+  const files = readdirSync(pagesDir, { withFileTypes: true })
+    .filter((e) => e.isFile() && /\.(md|mdx)$/.test(e.name))
+    .map((e) => e.name);
+
+  const REQUIRED = ["now.md", "uses.md", "colophon.md", "reading.md"];
+
+  it.each(REQUIRED)("ships the required indie-web page: %s", (name) => {
+    expect(files, `missing ${name} under src/content/pages/`).toContain(name);
+  });
+
+  it.each(files)("%s validates against pageSchema", (name) => {
+    const parsed = matter(readFileSync(join(pagesDir, name), "utf8"));
+    const result = pageSchema.safeParse(parsed.data);
+    if (!result.success) {
+      throw new Error(
+        `Schema validation failed for pages/${name}:\n${result.error.toString()}`,
+      );
     }
   });
 });

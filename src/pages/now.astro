@@ -1,0 +1,20 @@
+---
+/**
+ * `/now` — what has my attention right now. Renders the markdown
+ * body of `src/content/pages/now.md` inside the standalone PageLayout.
+ */
+import { getEntry, render } from "astro:content";
+
+import PageLayout from "../layouts/PageLayout.astro";
+
+const page = await getEntry("pages", "now");
+if (!page) {
+  throw new Error("Content missing: src/content/pages/now.md");
+}
+
+const { Content } = await render(page);
+---
+
+<PageLayout page={page}>
+  <Content />
+</PageLayout>

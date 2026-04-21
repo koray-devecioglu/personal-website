@@ -149,6 +149,28 @@ export function bookmarkSchema(image: ImageFactory) {
   );
 }
 
+// ── Indie-web standalone pages ────────────────────────────────────────
+
+/**
+ * The small set of evergreen standalone pages (`/now`, `/uses`,
+ * `/colophon`, `/reading`) share a minimal shape: a title, a one-line
+ * description for SEO + social, and an `updated` date that surfaces on
+ * the page itself. Markdown bodies render through the same prose
+ * pipeline as posts, so authors get the same typography for free.
+ */
+export const pageSchema = z.object({
+  title: z.string().min(1).max(120),
+  description: z.string().min(1).max(300),
+  updated: z.coerce.date(),
+  lang: z.enum(["en", "tr"]).default("en"),
+
+  /** Whether to hide from feeds and sitemap-level surfacing. Always true
+   * for these pages — they are navigational, not time-ordered content. */
+  noindex: z.boolean().default(false),
+});
+
+export type PageFrontmatter = z.infer<typeof pageSchema>;
+
 // ── Series ─────────────────────────────────────────────────────────────
 
 /**

@@ -44,9 +44,9 @@ author — you handle everything else.
 | M2        | Design tokens polish, self-hosted webfonts, primitives (Button, Kbd, Tag, ThemeToggle), Header, Footer  | ✅                 |
 | M3        | Content collections + Zod schemas, `scripts/new-post.ts`, sample posts of each type                     | ✅                 |
 | M4        | Blog surface — home, /posts, /tags, /series, post layout, RSS/JSON feeds, per-post OG, view transitions | ✅                 |
-| **M5**    | CV surface — `/cv`, `/cv/print`, `/cv.json`, Playwright PDF pipeline, Zod-validated JSON Resume         | ✅ **just landed** |
-| M6        | Indie-web polish (`/now`, `/uses`, `/colophon`, `/reading`, 404, command palette, Pagefind search)      | ← **next**         |
-| M7        | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                        | —                  |
+| M5        | CV surface — `/cv`, `/cv/print`, `/cv.json`, Playwright PDF pipeline, Zod-validated JSON Resume         | ✅                 |
+| **M6**    | Indie-web polish — `/now`, `/uses`, `/colophon`, `/reading`, custom 404, ⌘K palette, Pagefind           | ✅ **just landed** |
+| **M7**    | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                        | ← **next**         |
 | M8        | Launch (DNS, SSL, email routing, analytics, Search Console, Bing Webmaster)                             | —                  |
 | M9        | Post-launch (comments, webmentions, uptime, error monitoring, newsletter decision)                      | —                  |
 
@@ -57,7 +57,7 @@ author — you handle everything else.
 - **Styling:** Tailwind v4 via `@tailwindcss/vite`, CSS-first config, tokens in `src/styles/tokens.css`, bridged to Tailwind via `@theme` in `src/styles/global.css`
 - **Content:** Astro Content Collections + Zod — schemas in `src/content/_schemas.ts`, collections wired in `src/content/config.ts`. CV data rides the same Zod-first approach via `src/lib/resume.ts` and `src/data/resume.json` (JSON Resume 1.0.0).
 - **Markdown:** MDX for interactive posts, plain MD for most; Shiki for code highlighting
-- **Search:** Pagefind (static, client-side, landing in M6)
+- **Search:** Pagefind (static, client-side) — wired into the ⌘K command palette, indexed at build time in `dist/pagefind/`
 - **Icons:** Lucide
 - **Tests:** Vitest (unit + content schema) + Playwright (e2e smoke on Chromium)
 - **Linting:** ESLint 9 flat config, Prettier with `prettier-plugin-astro` and `prettier-plugin-tailwindcss`
@@ -155,19 +155,21 @@ Koray reviews and edits → flip `draft: false` → merge to `main` → ships.
 ## Commands
 
 ```sh
-pnpm dev              # Astro dev server, http://localhost:4321
-pnpm build            # Production build to dist/
-pnpm preview          # Serve the production build
-pnpm typecheck        # astro check (TypeScript + Astro diagnostics)
-pnpm lint             # ESLint
-pnpm lint:fix         # ESLint --fix
-pnpm format           # Prettier write
-pnpm format:check     # Prettier check (what CI runs)
-pnpm test             # Vitest
-pnpm test:e2e         # Playwright (chromium smoke)
-pnpm test:e2e:install # one-time Playwright browser install
-pnpm new-post         # scaffold a new post (flag-driven)
-pnpm build:cv         # regenerate public/cv.pdf after CV changes
+pnpm dev               # Astro dev server, http://localhost:4321
+pnpm build             # astro build && pagefind --site dist
+pnpm build:astro       # astro build only (skips search index)
+pnpm build:search-index # run pagefind against dist/
+pnpm preview           # Serve the production build
+pnpm typecheck         # astro check (TypeScript + Astro diagnostics)
+pnpm lint              # ESLint
+pnpm lint:fix          # ESLint --fix
+pnpm format            # Prettier write
+pnpm format:check      # Prettier check (what CI runs)
+pnpm test              # Vitest
+pnpm test:e2e          # Playwright (chromium smoke)
+pnpm test:e2e:install  # one-time Playwright browser install
+pnpm new-post          # scaffold a new post (flag-driven)
+pnpm build:cv          # regenerate public/cv.pdf after CV changes
 ```
 
 **Before every commit:** `pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm build`.
@@ -180,7 +182,7 @@ pnpm build:cv         # regenerate public/cv.pdf after CV changes
 - One concern per PR. Small, reviewable diffs.
 - Keep `docs/phase-1-architecture.md` in sync when a decision moves.
 
-## Layout (as of M5)
+## Layout (as of M6)
 
 ```
 .
@@ -189,7 +191,8 @@ pnpm build:cv         # regenerate public/cv.pdf after CV changes
 │   ├── phase-1-architecture.md  # THE bible for architecture decisions
 │   ├── DESIGN-SYSTEM.md         # Tokens, primitives, layout catalog
 │   ├── CONTENT-GUIDE.md         # Post types, frontmatter, new-post CLI
-│   └── CV-GUIDE.md              # Editing the CV, rebuilding the PDF
+│   ├── CV-GUIDE.md              # Editing the CV, rebuilding the PDF
+│   └── INDIE-WEB-GUIDE.md       # /now, /uses, /colophon, /reading + palette
 ├── public/
 │   ├── fonts/            # Self-hosted Fraunces / Inter / JetBrains Mono woff2
 │   └── cv.pdf            # Committed artifact; regenerate via pnpm build:cv
@@ -199,8 +202,8 @@ pnpm build:cv         # regenerate public/cv.pdf after CV changes
 ├── src/
 │   ├── components/
 │   │   ├── ui/           # Button, Kbd, Tag, Callout
-│   │   ├── islands/      # ThemeToggle (hydrates client-side)
-│   │   ├── layout/       # Header (with primary nav), Footer
+│   │   ├── islands/      # ThemeToggle, CommandPalette (vanilla TS)
+│   │   ├── layout/       # Header (with primary nav + ⌘K), Footer
 │   │   ├── post/         # PostCard, PostHeader, PostMeta, PostFooter,
 │   │   │                 #   SeriesBanner, TableOfContents
 │   │   └── cv/           # CVContent (shared between /cv and /cv/print)
@@ -209,13 +212,15 @@ pnpm build:cv         # regenerate public/cv.pdf after CV changes
 │   │   ├── _tags.ts      # Controlled tag vocabulary
 │   │   ├── config.ts     # Astro Content Collections wiring
 │   │   ├── essays/ tutorials/ tils/ notes/ projects/ bookmarks/ series/
+│   │   └── pages/        # /now, /uses, /colophon, /reading markdown
 │   ├── data/
 │   │   ├── links.ts      # site + social registry (real URLs)
 │   │   └── resume.json   # JSON Resume 1.0.0 — CV source of truth
 │   ├── env.d.ts
 │   ├── layouts/
 │   │   ├── BaseLayout.astro  # head / SEO / theme / ClientRouter / chrome
-│   │   └── PostLayout.astro  # wraps prose with header, banner, TOC, footer
+│   │   ├── PostLayout.astro  # wraps prose with header, banner, TOC, footer
+│   │   └── PageLayout.astro  # standalone indie-web pages (now/uses/…)
 │   ├── lib/
 │   │   ├── posts.ts          # publishable stream, tags, series, neighbors
 │   │   ├── reading-time.ts   # 240 wpm estimator
@@ -223,7 +228,8 @@ pnpm build:cv         # regenerate public/cv.pdf after CV changes
 │   │   ├── feed.ts           # feedItemsFor + buildJsonFeed
 │   │   ├── og.ts             # satori + resvg OG card renderer
 │   │   ├── i18n.ts           # UI dictionary (en-only for now)
-│   │   └── resume.ts         # Zod schema + loader + date helpers
+│   │   ├── resume.ts         # Zod schema + loader + date helpers
+│   │   └── palette-index.ts  # command-palette data + match/search helpers
 │   ├── pages/
 │   │   ├── index.astro           # hero + latest posts
 │   │   ├── sandbox.astro         # design-system showcase, noindex
@@ -238,7 +244,9 @@ pnpm build:cv         # regenerate public/cv.pdf after CV changes
 │   │   ├── og/[slug].png.ts      # per-post OG card (build-time)
 │   │   ├── cv/index.astro        # CV screen layout
 │   │   ├── cv/print.astro        # print shell (noindex, minimal chrome)
-│   │   └── cv.json.ts            # JSON Resume endpoint
+│   │   ├── cv.json.ts            # JSON Resume endpoint
+│   │   ├── now.astro / uses.astro / colophon.astro / reading.astro
+│   │   └── 404.astro             # custom noindex not-found page
 │   └── styles/
 │       ├── fonts.css     # @font-face declarations
 │       ├── tokens.css    # design tokens — single source of truth
@@ -247,15 +255,18 @@ pnpm build:cv         # regenerate public/cv.pdf after CV changes
 │       ├── cv-print.css  # CV print / PDF layout (A4, ink-friendly)
 │       └── global.css    # base styles + @theme bridge + imports
 ├── tests/
-│   ├── content.test.ts   # schema + FK + tag + reading-time harness
+│   ├── content.test.ts   # schema + FK + tag + reading-time + pages
 │   ├── lib.test.ts       # seo / feed / posts helper coverage
 │   ├── resume.test.ts    # CV schema + date helpers
+│   ├── palette.test.ts   # palette match / search helper coverage
 │   ├── stubs/
 │   │   └── astro-content.ts   # virtual-module stub for vitest
 │   └── e2e/
 │       ├── home.spec.ts
 │       ├── blog.spec.ts  # posts, tags, series, feeds, OG, active nav
 │       ├── cv.spec.ts    # /cv, /cv/print (noindex), /cv.json, active nav
+│       ├── indie-web.spec.ts  # /now, /uses, /colophon, /reading, 404
+│       ├── palette.spec.ts    # ⌘K, focus, navigation, data blob
 │       └── sandbox.spec.ts
 ├── astro.config.mjs
 ├── eslint.config.mjs
@@ -275,6 +286,10 @@ pnpm build:cv         # regenerate public/cv.pdf after CV changes
   arrays. See `docs/CV-GUIDE.md` for the workflow.
 - A résumé photo (optional) for `basics.image` — served from
   `/public/` or an external URL.
+- **Real indie-web copy.** `/now`, `/uses`, and `/reading` ship with
+  placeholder markdown. `/colophon` is accurate — it describes the
+  site itself. Edit the four files under `src/content/pages/`. See
+  `docs/INDIE-WEB-GUIDE.md`.
 
 Confirmed handles: GitHub `koray-devecioglu`, LinkedIn `koraydevecioglu`,
 Instagram `koraydevecioglu`. All three live in `src/data/links.ts`.
@@ -304,7 +319,6 @@ Instagram `koraydevecioglu`. All three live in `src/data/links.ts`.
   doesn't ship with Chromium. `pnpm build:cv` runs locally and commits
   `public/cv.pdf`. If this becomes annoying later, we can move it to a
   scheduled GitHub Action.
-- Command palette, search: land in M6.
 - Lighthouse CI, axe, lychee: stubbed in `ci.yml`. Land in M7.
 - `docs/ARCHITECTURE.md`, `docs/RUNBOOK.md`, `docs/CONTRIBUTING.md`:
   write as each relevant milestone closes. `docs/DESIGN-SYSTEM.md`

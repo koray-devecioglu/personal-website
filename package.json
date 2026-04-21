@@ -13,7 +13,9 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "astro build && pnpm build:search-index",
+    "build:astro": "astro build",
+    "build:search-index": "pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro",
     "typecheck": "astro check",
@@ -50,6 +52,7 @@
     "eslint-plugin-astro": "^1.3.1",
     "globals": "^17.5.0",
     "gray-matter": "^4.0.3",
+    "pagefind": "^1.5.2",
     "prettier": "^3.4.2",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.6.9",

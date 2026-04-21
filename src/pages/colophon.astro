@@ -1,0 +1,20 @@
+---
+/**
+ * `/colophon` — what this site is built with and the decisions
+ * behind the stack. Sourced from `src/content/pages/colophon.md`.
+ */
+import { getEntry, render } from "astro:content";
+
+import PageLayout from "../layouts/PageLayout.astro";
+
+const page = await getEntry("pages", "colophon");
+if (!page) {
+  throw new Error("Content missing: src/content/pages/colophon.md");
+}
+
+const { Content } = await render(page);
+---
+
+<PageLayout page={page}>
+  <Content />
+</PageLayout>
