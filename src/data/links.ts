@@ -2,12 +2,9 @@
  * Central registry for site-wide links and identifiers.
  *
  * Anything that gets surfaced in the footer, About page, JSON-LD, or
- * `rel="me"` lives here. The placeholders below are intentional — Koray
- * will hand over the real LinkedIn and Instagram URLs and we replace
- * them with the real values in a one-line PR.
- *
- * TODO(koray): replace LINKEDIN_URL and INSTAGRAM_URL with real profile
- * URLs. GitHub handle is confirmed as `koray-devecioglu`.
+ * `rel="me"` lives here. GitHub lives under a hyphenated handle;
+ * LinkedIn and Instagram use the unhyphenated form. Keep both — the
+ * footer / CV / JSON-LD all read from here, so one fix propagates.
  */
 
 export const SITE = {
@@ -27,18 +24,14 @@ export const SOCIAL = {
     label: "GitHub",
   },
   linkedin: {
-    // TODO(koray): replace with real LinkedIn URL
-    handle: "koray-devecioglu",
-    url: "https://www.linkedin.com/in/koray-devecioglu/",
+    handle: "koraydevecioglu",
+    url: "https://www.linkedin.com/in/koraydevecioglu/",
     label: "LinkedIn",
-    placeholder: true,
   },
   instagram: {
-    // TODO(koray): replace with real Instagram URL
     handle: "koraydevecioglu",
     url: "https://www.instagram.com/koraydevecioglu/",
     label: "Instagram",
-    placeholder: true,
   },
 } as const;
 

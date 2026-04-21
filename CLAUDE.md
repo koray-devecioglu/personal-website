@@ -236,13 +236,11 @@ pnpm test:e2e:install # one-time Playwright browser install
 
 ## Residual info Koray still owes
 
-- **LinkedIn URL** — replaces placeholder in `src/data/links.ts`; also
-  feeds M5 (CV page).
-- **Instagram URL** — replaces placeholder in `src/data/links.ts`.
 - (M5) Anything LinkedIn wouldn't show but should be on the CV page —
   side projects, open source, talks, writing elsewhere.
 
-GitHub handle is confirmed: `koray-devecioglu`.
+Confirmed handles: GitHub `koray-devecioglu`, LinkedIn `koraydevecioglu`,
+Instagram `koraydevecioglu`. All three live in `src/data/links.ts`.
 
 ## First thing to do in each new Claude Code session
 
