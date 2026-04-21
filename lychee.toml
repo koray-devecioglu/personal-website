@@ -1,0 +1,54 @@
+# Lychee link checker — runs over the built site in CI.
+#
+# Scope: every anchor, image, and script src under ./dist. Fails the
+# job on any 4xx/5xx, timeout, or unknown host. Internal links are
+# resolved relative to the dist root so a broken /posts/foo link fails
+# exactly like a broken external one.
+
+# Root-relative links (`/posts`, `/fonts/foo.woff2`) are resolved to
+# files under `dist/` via `--root-dir` on the command line (must be
+# an absolute path, so it can't live in this config file).
+#
+# Cache results for a week so Renovate bumps don't re-walk the whole
+# public web on every PR.
+cache = true
+max_cache_age = "7d"
+
+# Reasonable defaults for a personal site. GitHub and LinkedIn are
+# both occasionally chatty on rate limits; three tries smooths that.
+max_retries = 3
+retry_wait_time = 2
+timeout = 20
+max_concurrency = 8
+
+# Always treat 2xx + 3xx as healthy. 429 means "we retried and got
+# rate-limited" — let that pass so a popular domain can't turn a green
+# PR red.
+accept = ["200..=299", "429"]
+
+# Skip obvious noise: `mailto:`, `tel:`, data URIs, localhost. The
+# lychee defaults cover most of this; listed here for documentation.
+include_mail = false
+exclude_loopback = true
+
+# Domains known to return 403 to headless bots even when the link is
+# live (LinkedIn public profiles, some CDN redirectors). Document any
+# addition here so the allow-list doesn't quietly grow over time.
+exclude = [
+  # LinkedIn rejects non-browser user agents on public profiles.
+  "^https?://([a-z0-9-]+\\.)?linkedin\\.com/",
+  # Instagram often returns 500 for unauthenticated profile HEAD checks.
+  "^https?://(www\\.)?instagram\\.com/",
+  # Pre-launch: the canonical hostname isn't pointed at Cloudflare yet,
+  # so every `<link rel="canonical">` and absolute OG URL returns a
+  # connection error. Remove this rule at M8 once DNS is live.
+  "^https?://(www\\.)?koraydevecioglu\\.com/",
+  # Pre-launch: the GitHub repo is still private, so unauthenticated
+  # HEAD requests 404. Referenced from colophon.md, palette-index.ts,
+  # and resume.json. Flip to public at M8 and remove this line.
+  "^https?://github\\.com/koray-devecioglu/personal-website",
+]
+
+# Follow redirects; some CDN-backed hosts redirect `http` to `https`
+# or strip trailing slashes.
+include_fragments = false

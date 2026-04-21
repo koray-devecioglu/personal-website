@@ -16,23 +16,26 @@ pnpm dev            # Astro dev server at http://localhost:4321
 
 ## Scripts
 
-| Command                   | Purpose                                          |
-| ------------------------- | ------------------------------------------------ |
-| `pnpm dev`                | Astro dev server with HMR                        |
-| `pnpm build`              | Production build into `dist/` (+ Pagefind index) |
-| `pnpm build:astro`        | Astro build only (skips the search index step)   |
-| `pnpm build:search-index` | Run `pagefind --site dist`                       |
-| `pnpm preview`            | Serve the production build locally               |
-| `pnpm typecheck`          | `astro check` (TypeScript + Astro diagnostics)   |
-| `pnpm lint`               | ESLint 9 flat config                             |
-| `pnpm lint:fix`           | ESLint with `--fix`                              |
-| `pnpm format`             | Prettier write                                   |
-| `pnpm format:check`       | Prettier check (used in CI)                      |
-| `pnpm test`               | Vitest unit + content-schema tests               |
-| `pnpm test:e2e`           | Playwright e2e smoke                             |
-| `pnpm test:e2e:install`   | One-time Playwright browser install              |
-| `pnpm new-post`           | Scaffold a new content file (see CONTENT-GUIDE)  |
-| `pnpm build:cv`           | Re-render `public/cv.pdf` from `/cv/print`       |
+| Command                   | Purpose                                                   |
+| ------------------------- | --------------------------------------------------------- |
+| `pnpm dev`                | Astro dev server with HMR                                 |
+| `pnpm build`              | Production build into `dist/` (+ Pagefind index)          |
+| `pnpm build:astro`        | Astro build only (skips the search index step)            |
+| `pnpm build:search-index` | Run `pagefind --site dist`                                |
+| `pnpm preview`            | Serve the production build locally                        |
+| `pnpm typecheck`          | `astro check` (TypeScript + Astro diagnostics)            |
+| `pnpm lint`               | ESLint 9 flat config                                      |
+| `pnpm lint:fix`           | ESLint with `--fix`                                       |
+| `pnpm format`             | Prettier write                                            |
+| `pnpm format:check`       | Prettier check (used in CI)                               |
+| `pnpm test`               | Vitest unit + content-schema tests                        |
+| `pnpm test:e2e`           | Playwright e2e smoke + axe-core a11y gate                 |
+| `pnpm test:a11y`          | Playwright a11y spec only (serious/critical)              |
+| `pnpm test:e2e:install`   | One-time Playwright browser install                       |
+| `pnpm lhci`               | Lighthouse CI against the preview build                   |
+| `pnpm lint:links`         | Lychee link check over `dist/` (needs `pnpm build` first) |
+| `pnpm new-post`           | Scaffold a new content file (see CONTENT-GUIDE)           |
+| `pnpm build:cv`           | Re-render `public/cv.pdf` from `/cv/print`                |
 
 ## Layout
 
@@ -61,7 +64,7 @@ docs/           — architecture, design system, content guide,
                   cv guide, indie-web guide
 tests/          — Vitest units + content + resume + palette
                   + Playwright e2e (home, blog, cv, indie-web,
-                  palette, sandbox)
+                  palette, a11y, sandbox)
 .github/        — CI workflows, issue / PR templates
 public/         — fonts, favicon, cv.pdf (regenerated via pnpm build:cv)
 ```
@@ -79,6 +82,9 @@ public/         — fonts, favicon, cv.pdf (regenerated via pnpm build:cv)
 - [`docs/INDIE-WEB-GUIDE.md`](docs/INDIE-WEB-GUIDE.md) — the `/now`, `/uses`,
   `/colophon`, `/reading` pages, the custom 404, and the ⌘K command palette
   (M6).
+- [`docs/QUALITY-GATES.md`](docs/QUALITY-GATES.md) — the CI quality gates,
+  their budgets, how to run them locally, and what to do when one turns red
+  (M7).
 
 ## Status
 
@@ -91,8 +97,8 @@ public/         — fonts, favicon, cv.pdf (regenerated via pnpm build:cv)
 | **M4** Blog surface               | ✅      |
 | **M5** CV surface                 | ✅      |
 | **M6** Indie-web polish           | ✅      |
-| **M7** Quality gates              | 🚧 next |
-| **M8** Launch                     | —       |
+| **M7** Quality gates              | ✅      |
+| **M8** Launch                     | 🚧 next |
 
 ## License
 

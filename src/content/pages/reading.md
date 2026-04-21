@@ -4,11 +4,10 @@ description: "A short, honest log of what I'm reading — books, essays, and the
 updated: 2026-04-21
 ---
 
-A public reading log, in the loose spirit of [Tom MacWright](https://macwright.com/books/)
-and [Alex Chan](https://alexwlchan.net/books/). I don't keep a
-star rating — whether I finished a book and what stuck with me is
-enough signal for most people. Links point to publishers or author
-pages; nothing here is an affiliate link.
+A public reading log, in the loose spirit of [Tom MacWright's Books page](https://macwright.com/books/).
+I don't keep a star rating — whether I finished a book and what
+stuck with me is enough signal for most people. Links point to
+publishers or author pages; nothing here is an affiliate link.
 
 ## Currently reading
 

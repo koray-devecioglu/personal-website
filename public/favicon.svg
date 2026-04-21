@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Favicon  a stroked "k" on the warm-ochre accent tile. Colours match
+  `src/styles/tokens.css` (approximated as hex because several browser
+  favicon pipelines don't parse oklch yet):
+
+    background   oklch(52% 0.15 65)  H #a77537  (--accent-strong, light)
+    stroke       oklch(98.2% 0.008 85) H #f7f2e8 (--bg, warm paper)
+
+  Scalable down to 16×16 because the "k" is a stroked path, not text,
+  so no webfont dependency.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" rx="6" fill="#a77537" />
+  <path
+    d="M11 8 V24 M11 17 L20 8 M13.5 17 L21 24"
+    stroke="#f7f2e8"
+    stroke-width="2.75"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+  />
+</svg>

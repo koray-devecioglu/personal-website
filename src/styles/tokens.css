@@ -103,12 +103,16 @@
 
   /* ── Color: light theme ──────────────────────────────────────────────── */
 
-  /* Neutrals — warm paper and near-black ink. */
+  /* Neutrals — warm paper and near-black ink. `--fg-subtle` sits at
+     L≈45 so it clears WCAG AA (4.5:1) against the paper at the
+     `--text-xs` sizes it actually ships on (CV metadata, footer
+     meta, indie-web timestamps). The dark-theme mirror keeps the
+     original L≈58 because that's already AA against L≈18 ink. */
   --bg: oklch(98.2% 0.008 85);
   --bg-elevated: oklch(99.5% 0.004 85);
   --fg: oklch(18% 0.015 55);
-  --fg-muted: oklch(42% 0.01 55);
-  --fg-subtle: oklch(58% 0.01 55);
+  --fg-muted: oklch(38% 0.01 55);
+  --fg-subtle: oklch(45% 0.01 55);
   --rule: oklch(88% 0.008 75);
   --rule-strong: oklch(78% 0.01 75);
 
@@ -116,9 +120,12 @@
   --accent: oklch(64% 0.15 70);
   --accent-strong: oklch(52% 0.15 65);
   --accent-subtle: oklch(92% 0.05 80);
-  /* Text drawn on top of --accent / --accent-strong fills — chosen for
-     WCAG AA contrast without shifting the accent hue. */
-  --accent-on: oklch(18% 0.015 55);
+  /* Text drawn on top of --accent / --accent-strong fills. Light-mode
+     accent fills sit at L≈52 with amber chroma, which is too close to
+     the L≈18 warm ink to clear WCAG AA for normal text — so
+     `--accent-on` here uses the warm paper tone, giving roughly 6:1.
+     Dark mode inverts the problem and keeps the dark ink. */
+  --accent-on: oklch(98.2% 0.008 85);
 
   /* Scrim for modal / command-palette backdrops. Landed now so the M6
      island has something already-themed to reach for. */
@@ -142,7 +149,10 @@
     --bg-elevated: oklch(22% 0.012 60);
     --fg: oklch(94% 0.008 85);
     --fg-muted: oklch(72% 0.01 75);
-    --fg-subtle: oklch(58% 0.01 70);
+    /* Dark-mode subtle at L≈58 measured 4.37:1 in Lighthouse — below
+       AA. Bump to L≈64 for ~4.9:1 without collapsing the muted/subtle
+       perceptual gap. */
+    --fg-subtle: oklch(64% 0.01 70);
     --rule: oklch(30% 0.012 60);
     --rule-strong: oklch(40% 0.012 60);
 
@@ -173,7 +183,7 @@
   --bg-elevated: oklch(22% 0.012 60);
   --fg: oklch(94% 0.008 85);
   --fg-muted: oklch(72% 0.01 75);
-  --fg-subtle: oklch(58% 0.01 70);
+  --fg-subtle: oklch(64% 0.01 70);
   --rule: oklch(30% 0.012 60);
   --rule-strong: oklch(40% 0.012 60);
 
