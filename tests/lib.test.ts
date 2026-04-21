@@ -199,10 +199,10 @@ describe("neighborsFor()", () => {
 });
 
 describe("postPath()", () => {
-  it("always uses /posts/<id>/", () => {
+  it("always uses /posts/<id>", () => {
     const essay = makePost({ id: "welcome", collection: "essays" });
     const note = makePost({ id: "site-notes", collection: "notes" });
-    expect(postPath(essay)).toBe("/posts/welcome/");
-    expect(postPath(note)).toBe("/posts/site-notes/");
+    expect(postPath(essay)).toBe("/posts/welcome");
+    expect(postPath(note)).toBe("/posts/site-notes");
   });
 });

@@ -37,15 +37,15 @@ const seo = pageSeo({
     <h1 class="hero__title">{t("home.hero.title")}</h1>
     <p class="hero__subtitle">{t("home.hero.subtitle")}</p>
     <div class="hero__actions">
-      <Button href="/posts/" variant="primary">Read the posts →</Button>
-      <Button href="/series/" variant="ghost">Browse series</Button>
+      <Button href="/posts" variant="primary">Read the posts →</Button>
+      <Button href="/series" variant="ghost">Browse series</Button>
     </div>
   </section>
 
   <section class="latest">
     <header class="latest__header">
       <h2 class="latest__title">{t("home.latest.title")}</h2>
-      <a class="latest__link" href="/posts/">{t("home.latest.viewAll")}</a>
+      <a class="latest__link" href="/posts">{t("home.latest.viewAll")}</a>
     </header>
     {
       latest.length === 0 ? (

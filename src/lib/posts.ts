@@ -60,7 +60,7 @@ export async function getPublishable<C extends ReadablePostCollection>(
 
 /** Canonical URL path for a readable post. */
 export function postPath(entry: ReadablePost): string {
-  return `/posts/${entry.id}/`;
+  return `/posts/${entry.id}`;
 }
 
 /** Human-readable singular for a collection. Used as the post eyebrow. */

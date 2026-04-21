@@ -32,7 +32,7 @@ const readingMinutes = posts.map((post) => readingTime(post.body ?? "").minutes)
 const seo = pageSeo({
   title: entry.data.title,
   description: entry.data.summary,
-  path: `/series/${entry.id}/`,
+  path: `/series/${entry.id}`,
 });
 ---
 
@@ -40,7 +40,7 @@ const seo = pageSeo({
   <section class="series-page">
     <header class="series-page__header">
       <p class="series-page__eyebrow">
-        <a href="/series/">{t("series.title")}</a>
+        <a href="/series">{t("series.title")}</a>
         <span aria-hidden="true">/</span>
         <span>{t("series.page.subtitle", { count: posts.length })}</span>
       </p>
