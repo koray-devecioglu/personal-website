@@ -1,0 +1,166 @@
+---
+/**
+ * PostFooter — appears after the prose.
+ *
+ * Renders up to three things:
+ *   1. Series prev/next (when the post is in a series).
+ *   2. Global prev/next across the publishable stream.
+ *   3. A "back to posts" link for easy escape.
+ *
+ * Series nav takes visual priority — when a reader is in the middle of
+ * a sequenced narrative, honouring that sequence is the useful default.
+ */
+import type { ReadablePost, SeriesPosition } from "../../lib/posts";
+import { postPath } from "../../lib/posts";
+import { t } from "../../lib/i18n";
+
+interface Props {
+  seriesPosition?: SeriesPosition | null;
+  prev?: ReadablePost;
+  next?: ReadablePost;
+}
+
+const { seriesPosition, prev, next } = Astro.props;
+
+const seriesPrev = seriesPosition?.prev;
+const seriesNext = seriesPosition?.next;
+---
+
+<footer class="post-footer">
+  {
+    (seriesPrev || seriesNext) && (
+      <section class="post-footer__section">
+        <h2 class="post-footer__heading">{seriesPosition?.title}</h2>
+        <div class="post-footer__pair">
+          {seriesPrev ? (
+            <a
+              class="post-footer__link post-footer__link--prev"
+              href={postPath(seriesPrev)}
+            >
+              <span class="post-footer__direction">← {t("post.prev")}</span>
+              <span class="post-footer__title">{seriesPrev.data.title}</span>
+            </a>
+          ) : (
+            <span />
+          )}
+          {seriesNext && (
+            <a
+              class="post-footer__link post-footer__link--next"
+              href={postPath(seriesNext)}
+            >
+              <span class="post-footer__direction">{t("post.next")} →</span>
+              <span class="post-footer__title">{seriesNext.data.title}</span>
+            </a>
+          )}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    (prev || next) && (
+      <section class="post-footer__section">
+        <h2 class="post-footer__heading">{t("nav.posts")}</h2>
+        <div class="post-footer__pair">
+          {prev ? (
+            <a class="post-footer__link post-footer__link--prev" href={postPath(prev)}>
+              <span class="post-footer__direction">← {t("post.prev")}</span>
+              <span class="post-footer__title">{prev.data.title}</span>
+            </a>
+          ) : (
+            <span />
+          )}
+          {next && (
+            <a class="post-footer__link post-footer__link--next" href={postPath(next)}>
+              <span class="post-footer__direction">{t("post.next")} →</span>
+              <span class="post-footer__title">{next.data.title}</span>
+            </a>
+          )}
+        </div>
+      </section>
+    )
+  }
+
+  <a class="post-footer__back" href="/posts/">← {t("post.back")}</a>
+</footer>
+
+<style>
+  .post-footer {
+    margin-block-start: var(--space-16);
+    padding-block-start: var(--space-8);
+    border-block-start: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+  .post-footer__section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .post-footer__heading {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    font-weight: 500;
+    margin: 0;
+  }
+  .post-footer__pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+  @media (max-width: 600px) {
+    .post-footer__pair {
+      grid-template-columns: 1fr;
+    }
+  }
+  .post-footer__link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition:
+      border-color var(--motion-micro) var(--ease-out),
+      background var(--motion-micro) var(--ease-out);
+  }
+  .post-footer__link:hover,
+  .post-footer__link:focus-visible {
+    border-color: var(--accent);
+    background: var(--bg-elevated);
+  }
+  .post-footer__link--next {
+    text-align: end;
+  }
+  .post-footer__direction {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--fg-muted);
+  }
+  .post-footer__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-base);
+    line-height: var(--leading-snug);
+    color: var(--fg);
+    text-wrap: balance;
+  }
+  .post-footer__back {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    text-decoration: none;
+    letter-spacing: var(--tracking-wide);
+    align-self: flex-start;
+  }
+  .post-footer__back:hover,
+  .post-footer__back:focus-visible {
+    color: var(--accent-strong);
+  }
+</style>

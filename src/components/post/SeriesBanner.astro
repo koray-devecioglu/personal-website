@@ -1,0 +1,60 @@
+---
+/**
+ * SeriesBanner — small band that places a post inside its series.
+ *
+ * Sits between the header and the prose. Shows:
+ *   Part {n} of {total} in <series title>
+ *
+ * Links to the series page so readers can jump to the full ordered list.
+ */
+import type { SeriesPosition } from "../../lib/posts";
+import { t } from "../../lib/i18n";
+
+interface Props {
+  position: SeriesPosition;
+}
+
+const { position } = Astro.props;
+const href = `/series/${position.seriesId}/`;
+---
+
+<aside class="series-banner" aria-label={`In series ${position.title}`}>
+  <span class="series-banner__pip" aria-hidden="true">¶</span>
+  <span class="series-banner__label">
+    {t("post.series.banner", { index: position.index, total: position.total })}
+  </span>
+  <a class="series-banner__title" href={href}>{position.title}</a>
+</aside>
+
+<style>
+  .series-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-6);
+    margin-block-end: var(--space-8);
+    background: var(--accent-subtle);
+    border-inline-start: 3px solid var(--accent);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+  }
+  .series-banner__pip {
+    color: var(--accent-strong);
+  }
+  .series-banner__label {
+    letter-spacing: var(--tracking-wide);
+  }
+  .series-banner__title {
+    color: var(--fg);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.2em;
+  }
+  .series-banner__title:hover,
+  .series-banner__title:focus-visible {
+    text-decoration-color: var(--accent-strong);
+  }
+</style>

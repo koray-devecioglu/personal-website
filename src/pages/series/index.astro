@@ -1,0 +1,122 @@
+---
+/**
+ * `/series` — series index.
+ *
+ * Lists every series with its summary and part count. Skips series
+ * whose posts are all drafts (they'd link to nothing).
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getSeriesBundles } from "../../lib/posts";
+import { pageSeo } from "../../lib/seo";
+import { t } from "../../lib/i18n";
+
+const bundles = await getSeriesBundles();
+
+const seo = pageSeo({
+  title: t("series.title"),
+  description: t("series.subtitle"),
+  path: "/series/",
+});
+---
+
+<BaseLayout seo={seo}>
+  <section class="series-index">
+    <header class="series-index__header">
+      <p class="series-index__eyebrow">{bundles.length} series</p>
+      <h1 class="series-index__title">{t("series.title")}</h1>
+      <p class="series-index__subtitle">{t("series.subtitle")}</p>
+    </header>
+    <ol class="series-index__list">
+      {
+        bundles.map(({ entry, posts }) => (
+          <li class="series-index__item">
+            <a class="series-index__link" href={`/series/${entry.id}/`}>
+              <h2 class="series-index__entry-title">{entry.data.title}</h2>
+              <p class="series-index__entry-summary">{entry.data.summary}</p>
+              <p class="series-index__entry-meta">
+                {t("series.page.subtitle", { count: posts.length })}
+              </p>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+</BaseLayout>
+
+<style>
+  .series-index {
+    max-width: var(--content-narrow);
+    margin-inline: auto;
+    padding-block: var(--space-12) var(--space-16);
+    padding-inline: var(--space-6);
+  }
+  .series-index__header {
+    margin-block-end: var(--space-12);
+  }
+  .series-index__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin: 0 0 var(--space-2);
+  }
+  .series-index__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-4xl);
+    font-variation-settings: "opsz" 48;
+    letter-spacing: var(--tracking-tight);
+    margin: 0 0 var(--space-4);
+  }
+  .series-index__subtitle {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    color: var(--fg-muted);
+    line-height: var(--leading-snug);
+    max-width: 62ch;
+    margin: 0;
+  }
+  .series-index__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .series-index__item + .series-index__item {
+    margin-block-start: var(--space-8);
+  }
+  .series-index__link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--rule);
+  }
+  .series-index__entry-title {
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    font-variation-settings: "opsz" 24;
+    font-weight: 650;
+    margin: 0 0 var(--space-2);
+    letter-spacing: var(--tracking-tight);
+    transition: color var(--motion-micro) var(--ease-out);
+  }
+  .series-index__link:hover .series-index__entry-title,
+  .series-index__link:focus-visible .series-index__entry-title {
+    color: var(--accent-strong);
+  }
+  .series-index__entry-summary {
+    font-family: var(--font-serif);
+    font-size: var(--text-base);
+    color: var(--fg-muted);
+    margin: 0 0 var(--space-3);
+    max-width: 62ch;
+  }
+  .series-index__entry-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--fg-muted);
+    margin: 0;
+  }
+</style>

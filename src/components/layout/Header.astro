@@ -2,16 +2,35 @@
 /**
  * Header — site chrome, top of every page.
  *
- * Intentionally light at M2:
+ * Layout:
  *   - Wordmark on the left (links home).
+ *   - Primary nav: Posts, Tags, Series. CV lands in M5, About/Uses in M6.
  *   - Theme toggle on the right.
  *
- * Nav (Writing, CV, About, …) lands milestone-by-milestone in M4/M5/M6
- * when those surfaces exist. Shipping empty chrome now is cleaner than
- * shipping broken links.
+ * Nav items carry `aria-current="page"` when the current URL matches,
+ * so the active item reads as such for screen readers and can be
+ * styled without JS.
  */
 import { SITE } from "../../data/links";
 import ThemeToggle from "../islands/ThemeToggle.astro";
+import { t } from "../../lib/i18n";
+
+// Normalise both sides to strip trailing slashes so "/posts" and
+// "/posts/" compare equal regardless of server-side trailingSlash config.
+const trimSlash = (p: string): string => p.replace(/\/$/, "") || "/";
+const pathname = trimSlash(Astro.url.pathname);
+
+const NAV = [
+  { href: "/posts/", label: t("nav.posts") },
+  { href: "/tags/", label: t("nav.tags") },
+  { href: "/series/", label: t("nav.series") },
+];
+
+function isActive(href: string): boolean {
+  const target = trimSlash(href);
+  if (target === "/") return pathname === "/";
+  return pathname === target || pathname.startsWith(`${target}/`);
+}
 ---
 
 <header class="site-header">
@@ -19,6 +38,23 @@ import ThemeToggle from "../islands/ThemeToggle.astro";
     <a href="/" class="wordmark" aria-label={`${SITE.name} — home`}>
       <span class="wordmark__name">{SITE.name}</span>
     </a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul class="site-nav__list">
+        {
+          NAV.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class:list={["site-nav__link", { "is-active": isActive(item.href) }]}
+                aria-current={isActive(item.href) ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
     <div class="site-header__actions">
       <ThemeToggle />
     </div>
@@ -58,5 +94,54 @@ import ThemeToggle from "../islands/ThemeToggle.astro";
     display: flex;
     align-items: center;
     gap: var(--space-2);
+  }
+  .site-nav {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+  .site-nav__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: var(--space-6);
+  }
+  .site-nav__link {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    text-decoration: none;
+    padding-block: var(--space-1);
+    border-bottom: 1px solid transparent;
+    transition:
+      color var(--motion-micro) var(--ease-out),
+      border-color var(--motion-micro) var(--ease-out);
+  }
+  .site-nav__link:hover,
+  .site-nav__link:focus-visible {
+    color: var(--fg);
+  }
+  .site-nav__link.is-active {
+    color: var(--fg);
+    border-bottom-color: var(--accent);
+  }
+
+  /* Narrow: collapse nav to wrap under wordmark. No hamburger in M4 — the
+     list is short enough that wrapping reads cleanly. */
+  @media (max-width: 640px) {
+    .site-header__inner {
+      flex-wrap: wrap;
+    }
+    .site-nav {
+      order: 3;
+      width: 100%;
+      justify-content: flex-start;
+    }
+    .site-nav__list {
+      gap: var(--space-4);
+    }
   }
 </style>

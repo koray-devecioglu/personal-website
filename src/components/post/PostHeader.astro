@@ -1,0 +1,93 @@
+---
+/**
+ * PostHeader — title block above the prose.
+ *
+ * Renders the eyebrow (post type), title, dek, and meta. Draft badge
+ * shows up here too when `draft: true`; production builds never
+ * include drafts, so seeing the badge in dev is the expected signal.
+ */
+import PostMeta from "./PostMeta.astro";
+import type { ReadablePost } from "../../lib/posts";
+import { t } from "../../lib/i18n";
+
+interface Props {
+  post: ReadablePost;
+  readingMinutes: number;
+  /** Type label shown as eyebrow (e.g. "essay", "tutorial"). */
+  typeLabel: string;
+}
+
+const { post, readingMinutes, typeLabel } = Astro.props;
+const { title, description, date, tags, draft } = post.data;
+---
+
+<header class="post-header">
+  <p class="post-header__eyebrow">
+    <span>{typeLabel}</span>
+    {
+      draft && (
+        <span class="post-header__draft" aria-label={t("draft.badge")}>
+          {t("draft.badge")}
+        </span>
+      )
+    }
+  </p>
+  <h1 class="post-header__title">{title}</h1>
+  <p class="post-header__dek">{description}</p>
+  <PostMeta
+    date={date}
+    readingMinutes={readingMinutes}
+    tags={tags}
+    linkTags={true}
+    class="post-header__meta"
+  />
+</header>
+
+<style>
+  .post-header {
+    margin-block-end: var(--space-12);
+  }
+  .post-header__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin: 0 0 var(--space-4);
+  }
+  .post-header__draft {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    background: var(--accent-subtle);
+    color: var(--accent-strong);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    letter-spacing: var(--tracking-wide);
+  }
+  .post-header__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-display);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    font-variation-settings: "opsz" 48;
+    font-weight: 700;
+    margin: 0 0 var(--space-6);
+    text-wrap: balance;
+    max-width: 22ch;
+  }
+  .post-header__dek {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    color: var(--fg-muted);
+    line-height: var(--leading-snug);
+    max-width: 58ch;
+    margin: 0 0 var(--space-8);
+  }
+  .post-header__meta {
+    border-block-start: 1px solid var(--rule);
+    padding-block-start: var(--space-4);
+  }
+</style>

@@ -8,13 +8,13 @@
  *   4. @theme block to expose tokens to Tailwind.
  *   5. Base element styles (using the tokens).
  *
- * Keep this file small. Long-form typography lives in prose.css
- * (added in M4 when the blog surface lands).
+ * Keep this file small. Long-form typography lives in prose.css.
  */
 
 @import "tailwindcss";
 @import "./fonts.css";
 @import "./tokens.css";
+@import "./prose.css";
 
 @theme {
   --font-sans: var(--font-sans);

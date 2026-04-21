@@ -75,6 +75,13 @@
   --content-narrow: 68ch;
   --content-wide: 78rem;
 
+  /* Prose — tuned once here, consumed by src/styles/prose.css. The body
+     leading is tighter than --leading-relaxed so long essays don't
+     drift visually; headings get their own leading below. */
+  --prose-measure: var(--content-narrow);
+  --prose-leading: 1.65;
+  --prose-heading-leading: 1.2;
+
   /* ── Radii ───────────────────────────────────────────────────────────── */
 
   --radius-sm: 3px;

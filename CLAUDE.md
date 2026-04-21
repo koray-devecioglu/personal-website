@@ -37,18 +37,18 @@ author — you handle everything else.
 
 ## Current state
 
-| Milestone | Scope                                                                                                  | Status             |
-| --------- | ------------------------------------------------------------------------------------------------------ | ------------------ |
-| M0        | Proposal approved                                                                                      | ✅                 |
-| M1        | Repo scaffold — Astro 5, TS strict, Tailwind v4, CI skeleton                                           | ✅                 |
-| M2        | Design tokens polish, self-hosted webfonts, primitives (Button, Kbd, Tag, ThemeToggle), Header, Footer | ✅                 |
-| **M3**    | Content collections + Zod schemas, `scripts/new-post.ts`, sample posts of each type                    | ✅ **just landed** |
-| M4        | Blog surface (home, /posts, /tags, /series, post layout, feeds, sitemap, per-post OG)                  | ← **next**         |
-| M5        | CV surface (`/cv`, `/cv/print`, `/cv.pdf`, JSON Resume export) — needs Koray's LinkedIn URL            | —                  |
-| M6        | Indie-web polish (`/now`, `/uses`, `/colophon`, `/reading`, 404, command palette, Pagefind search)     | —                  |
-| M7        | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                       | —                  |
-| M8        | Launch (DNS, SSL, email routing, analytics, Search Console, Bing Webmaster)                            | —                  |
-| M9        | Post-launch (comments, webmentions, uptime, error monitoring, newsletter decision)                     | —                  |
+| Milestone | Scope                                                                                                   | Status             |
+| --------- | ------------------------------------------------------------------------------------------------------- | ------------------ |
+| M0        | Proposal approved                                                                                       | ✅                 |
+| M1        | Repo scaffold — Astro 5, TS strict, Tailwind v4, CI skeleton                                            | ✅                 |
+| M2        | Design tokens polish, self-hosted webfonts, primitives (Button, Kbd, Tag, ThemeToggle), Header, Footer  | ✅                 |
+| M3        | Content collections + Zod schemas, `scripts/new-post.ts`, sample posts of each type                     | ✅                 |
+| **M4**    | Blog surface — home, /posts, /tags, /series, post layout, RSS/JSON feeds, per-post OG, view transitions | ✅ **just landed** |
+| M5        | CV surface (`/cv`, `/cv/print`, `/cv.pdf`, JSON Resume export) — needs Koray's LinkedIn URL             | ← **next**         |
+| M6        | Indie-web polish (`/now`, `/uses`, `/colophon`, `/reading`, 404, command palette, Pagefind search)      | —                  |
+| M7        | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                        | —                  |
+| M8        | Launch (DNS, SSL, email routing, analytics, Search Console, Bing Webmaster)                             | —                  |
+| M9        | Post-launch (comments, webmentions, uptime, error monitoring, newsletter decision)                      | —                  |
 
 ## Stack (locked in Phase 1)
 
@@ -134,7 +134,8 @@ for case studies. Flat tag taxonomy (controlled vocabulary enforced at
 build). Series for ordered narratives. No categories.
 
 TR-ready seams: `lang` frontmatter field, centralized UI dictionary in
-`src/lib/i18n.ts` (landing M4), no TR content shipped at launch.
+`src/lib/i18n.ts` (shipped in M4, English-only for now), no TR content
+shipped at launch.
 
 ## AI authoring workflow (your responsibility)
 
@@ -177,7 +178,7 @@ pnpm test:e2e:install # one-time Playwright browser install
 - One concern per PR. Small, reviewable diffs.
 - Keep `docs/phase-1-architecture.md` in sync when a decision moves.
 
-## Layout (as of M3)
+## Layout (as of M4)
 
 ```
 .
@@ -194,35 +195,51 @@ pnpm test:e2e:install # one-time Playwright browser install
 │   ├── components/
 │   │   ├── ui/           # Button, Kbd, Tag, Callout
 │   │   ├── islands/      # ThemeToggle (hydrates client-side)
-│   │   └── layout/       # Header, Footer
+│   │   ├── layout/       # Header (with primary nav), Footer
+│   │   └── post/         # PostCard, PostHeader, PostMeta, PostFooter,
+│   │                     #   SeriesBanner, TableOfContents
 │   ├── content/
 │   │   ├── _schemas.ts   # Pure Zod schemas (testable, no Astro runtime)
 │   │   ├── _tags.ts      # Controlled tag vocabulary
 │   │   ├── config.ts     # Astro Content Collections wiring
-│   │   ├── essays/       # Sample + real posts
-│   │   ├── tutorials/
-│   │   ├── tils/
-│   │   ├── notes/
-│   │   ├── projects/
-│   │   ├── bookmarks/
-│   │   └── series/
-│   ├── data/links.ts     # site + social registry (placeholder URLs)
+│   │   ├── essays/ tutorials/ tils/ notes/ projects/ bookmarks/ series/
+│   ├── data/links.ts     # site + social registry (real URLs)
 │   ├── env.d.ts
-│   ├── layouts/BaseLayout.astro
+│   ├── layouts/
+│   │   ├── BaseLayout.astro  # head / SEO / theme / ClientRouter / chrome
+│   │   └── PostLayout.astro  # wraps prose with header, banner, TOC, footer
 │   ├── lib/
-│   │   ├── posts.ts      # getPublishablePosts, draft/scheduled filter
-│   │   └── reading-time.ts  # 240 wpm estimator
+│   │   ├── posts.ts          # publishable stream, tags, series, neighbors
+│   │   ├── reading-time.ts   # 240 wpm estimator
+│   │   ├── seo.ts            # pageSeo + absoluteUrl
+│   │   ├── feed.ts           # feedItemsFor + buildJsonFeed
+│   │   ├── og.ts             # satori + resvg OG card renderer
+│   │   └── i18n.ts           # UI dictionary (en-only for now)
 │   ├── pages/
-│   │   ├── index.astro   # M1 placeholder, replaced in M4
-│   │   └── sandbox.astro # design-system showcase, noindex
+│   │   ├── index.astro           # hero + latest posts
+│   │   ├── sandbox.astro         # design-system showcase, noindex
+│   │   ├── posts/index.astro     # unified stream
+│   │   ├── posts/[slug].astro    # dynamic post route
+│   │   ├── tags/index.astro      # tag index
+│   │   ├── tags/[slug].astro     # per-tag stream
+│   │   ├── series/index.astro    # series index
+│   │   ├── series/[slug].astro   # ordered series posts
+│   │   ├── rss.xml.ts            # RSS 2.0 feed
+│   │   ├── feed.json.ts          # JSON Feed 1.1
+│   │   └── og/[slug].png.ts      # per-post OG card (build-time)
 │   └── styles/
 │       ├── fonts.css     # @font-face declarations
 │       ├── tokens.css    # design tokens — single source of truth
-│       └── global.css    # base styles + @theme bridge
+│       ├── prose.css     # post-body typography
+│       └── global.css    # base styles + @theme bridge + imports
 ├── tests/
 │   ├── content.test.ts   # schema + FK + tag + reading-time harness
+│   ├── lib.test.ts       # seo / feed / posts helper coverage
+│   ├── stubs/
+│   │   └── astro-content.ts   # virtual-module stub for vitest
 │   └── e2e/
 │       ├── home.spec.ts
+│       ├── blog.spec.ts  # posts, tags, series, feeds, OG, active nav
 │       └── sandbox.spec.ts
 ├── astro.config.mjs
 ├── eslint.config.mjs
@@ -254,11 +271,17 @@ Instagram `koraydevecioglu`. All three live in `src/data/links.ts`.
 
 ## What's deliberately deferred
 
-- Blog surface (home feed, `/posts`, `/tags`, `/series`, post layout,
-  RSS, per-post OG images): lands in M4. Schemas and sample content
-  exist now; routes do not.
+- Pagination on `/posts` and `/tags/[slug]`: single-page list reads fine
+  under ~30 entries. Pagination lands the first milestone the list
+  outgrows that threshold — or M6, whichever comes first.
 - Cover images on real posts: schema accepts `cover` + `coverAlt`, but
-  M3's sample posts don't ship any. First real covers land with M4.
+  nothing ships with a cover yet. First real covers land when the first
+  real post needs one.
+- Autolinked heading anchors (rehype-autolink-headings): prose supports
+  the styling hook, but the plugin isn't wired yet. Lands alongside the
+  first long post that actually benefits from deep links.
+- CV surface (`/cv`, `/cv/print`, `/cv.pdf`): lands in M5. Needs the
+  JSON Resume file from Koray.
 - Command palette, search: land in M6.
 - Lighthouse CI, axe, lychee: stubbed in `ci.yml`. Land in M7.
 - `docs/ARCHITECTURE.md`, `docs/RUNBOOK.md`, `docs/CONTRIBUTING.md`:

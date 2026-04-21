@@ -1,0 +1,104 @@
+---
+/**
+ * TableOfContents — side-rail TOC populated from Astro's collected
+ * markdown headings.
+ *
+ * Only h2 and h3 participate; deeper nesting tends to turn a TOC into
+ * an outline that competes with the prose. On narrow viewports this
+ * falls back to a `<details>` disclosure so it stays out of the way.
+ */
+import type { MarkdownHeading } from "astro";
+import { t } from "../../lib/i18n";
+
+interface Props {
+  headings: readonly MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{
+  items.length > 0 && (
+    <nav class="toc" aria-label={t("post.tableOfContents")}>
+      <details class="toc__disclosure">
+        <summary class="toc__summary">{t("post.tableOfContents")}</summary>
+        <ol class="toc__list">
+          {items.map((h) => (
+            <li class:list={["toc__item", `toc__item--depth-${h.depth}`]}>
+              <a href={`#${h.slug}`}>{h.text}</a>
+            </li>
+          ))}
+        </ol>
+      </details>
+    </nav>
+  )
+}
+
+<style>
+  .toc {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--fg-muted);
+  }
+  .toc__summary {
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--fg);
+    padding-block: var(--space-2);
+    list-style: none;
+  }
+  .toc__summary::-webkit-details-marker {
+    display: none;
+  }
+  .toc__summary::before {
+    content: "›";
+    display: inline-block;
+    margin-inline-end: var(--space-2);
+    transition: transform var(--motion-micro) var(--ease-out);
+  }
+  .toc__disclosure[open] .toc__summary::before {
+    transform: rotate(90deg);
+  }
+  .toc__list {
+    list-style: none;
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    border-inline-start: 1px solid var(--rule);
+  }
+  .toc__item {
+    padding-inline-start: var(--space-4);
+    padding-block: var(--space-1);
+  }
+  .toc__item--depth-3 {
+    padding-inline-start: var(--space-8);
+  }
+  .toc__item a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .toc__item a:hover,
+  .toc__item a:focus-visible {
+    color: var(--accent-strong);
+  }
+
+  /* Wide viewports: unwrap the disclosure into an always-open rail. */
+  @media (min-width: 1200px) {
+    .toc__disclosure {
+      /* Disable disclosure behavior without DOM gymnastics. */
+      pointer-events: auto;
+    }
+    .toc__disclosure[open] .toc__summary::before,
+    .toc__summary::before {
+      transform: none;
+      content: "";
+      margin: 0;
+    }
+    .toc__summary {
+      cursor: default;
+      letter-spacing: var(--tracking-wider);
+    }
+  }
+</style>

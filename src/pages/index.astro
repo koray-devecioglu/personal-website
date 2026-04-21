@@ -1,67 +1,150 @@
 ---
 /**
- * Home — M1 placeholder.
+ * Home.
  *
- * This page exists to confirm the toolchain works: Astro renders,
- * Tailwind v4 compiles, tokens apply, theme switching is wired.
- *
- * M4 replaces this with the real home — a hand-set index of recent
- * writing across essays, tutorials, notes, TILs, and project write-ups.
+ * Editorial hero + latest readable posts. Deliberately spare — the
+ * home page exists to point at writing, not to explain the site at
+ * length. The /colophon and /about routes in M6 carry the longer
+ * answers.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { SITE } from "../data/links";
+import PostCard from "../components/post/PostCard.astro";
+import Button from "../components/ui/Button.astro";
+
+import { getPublishablePosts } from "../lib/posts";
+import { readingTime } from "../lib/reading-time";
+import { pageSeo } from "../lib/seo";
+import { t } from "../lib/i18n";
+
+const LATEST_COUNT = 6;
+
+const all = await getPublishablePosts();
+const latest = all.slice(0, LATEST_COUNT);
+const readingMinutes = latest.map((post) => readingTime(post.body ?? "").minutes);
+
+const seo = pageSeo({
+  title: "Koray Devecioglu",
+  titleTemplate: "bare",
+  description:
+    "Personal site of Koray Devecioglu — essays on code and craft, notes from the kitchen and the trail, projects I've shipped.",
+  path: "/",
+});
 ---
 
-<BaseLayout title="Home" description={SITE.description}>
-  <section class="wrap">
-    <p class="eyebrow">M2 · design system</p>
-    <h1 class="display">Under construction, on purpose.</h1>
-    <p class="lede">
-      This is {SITE.name}'s corner of the internet. It doesn't have anything to show yet
-      — we're building it in the open, one milestone at a time. Essays, field notes, and
-      the rest will land here soon.
-    </p>
-    <p class="meta">
-      Typography, color, and the rest of the design system are wired up. The content
-      engine lands in M3; the real home replaces this page in M4.
-    </p>
+<BaseLayout seo={seo}>
+  <section class="hero">
+    <p class="hero__eyebrow">{t("home.hero.eyebrow")}</p>
+    <h1 class="hero__title">{t("home.hero.title")}</h1>
+    <p class="hero__subtitle">{t("home.hero.subtitle")}</p>
+    <div class="hero__actions">
+      <Button href="/posts/" variant="primary">Read the posts →</Button>
+      <Button href="/series/" variant="ghost">Browse series</Button>
+    </div>
   </section>
 
-  <style>
-    .wrap {
-      max-width: 68ch;
-      margin: 0 auto;
-      padding: var(--space-24) var(--space-6) var(--space-16);
+  <section class="latest">
+    <header class="latest__header">
+      <h2 class="latest__title">{t("home.latest.title")}</h2>
+      <a class="latest__link" href="/posts/">{t("home.latest.viewAll")}</a>
+    </header>
+    {
+      latest.length === 0 ? (
+        <p class="latest__empty">{t("posts.empty")}</p>
+      ) : (
+        <ol class="latest__list">
+          {latest.map((post, i) => (
+            <li>
+              <PostCard post={post} readingMinutes={readingMinutes[i]} />
+            </li>
+          ))}
+        </ol>
+      )
     }
-    .eyebrow {
-      font-family: var(--font-mono);
-      font-size: var(--text-xs);
-      text-transform: uppercase;
-      letter-spacing: var(--tracking-wider);
-      color: var(--fg-subtle);
-      margin: 0 0 var(--space-4);
-    }
-    .display {
-      font-size: var(--text-display);
-      line-height: var(--leading-tight);
-      letter-spacing: var(--tracking-tight);
-      margin: 0 0 var(--space-8);
-      color: var(--fg);
-    }
-    .lede {
-      font-size: var(--text-lg);
-      line-height: var(--leading-relaxed);
-      color: var(--fg);
-      margin: 0 0 var(--space-6);
-    }
-    .meta {
-      font-family: var(--font-sans);
-      font-size: var(--text-sm);
-      color: var(--fg-muted);
-      margin: 0;
-    }
-    .meta code {
-      color: var(--accent-strong);
-    }
-  </style>
+  </section>
 </BaseLayout>
+
+<style>
+  .hero,
+  .latest {
+    max-width: var(--content-narrow);
+    margin-inline: auto;
+    padding-inline: var(--space-6);
+  }
+  .hero {
+    padding-block: var(--space-16) var(--space-12);
+  }
+  .hero__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--accent-strong);
+    margin: 0 0 var(--space-4);
+  }
+  .hero__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-display);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    font-variation-settings: "opsz" 48;
+    font-weight: 700;
+    margin: 0 0 var(--space-6);
+    text-wrap: balance;
+    max-width: 18ch;
+  }
+  .hero__subtitle {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    color: var(--fg-muted);
+    line-height: var(--leading-snug);
+    max-width: 54ch;
+    margin: 0 0 var(--space-8);
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .latest {
+    padding-block: var(--space-8) var(--space-16);
+  }
+  .latest__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+    border-bottom: 1px solid var(--rule);
+    padding-block-end: var(--space-3);
+    margin-block-end: var(--space-2);
+  }
+  .latest__title {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    color: var(--fg-muted);
+    font-weight: 500;
+    margin: 0;
+  }
+  .latest__link {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--fg-muted);
+    text-decoration: none;
+  }
+  .latest__link:hover,
+  .latest__link:focus-visible {
+    color: var(--accent-strong);
+  }
+  .latest__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .latest__empty {
+    font-family: var(--font-serif);
+    color: var(--fg-muted);
+  }
+</style>
