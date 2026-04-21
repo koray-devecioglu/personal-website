@@ -50,6 +50,22 @@ const seo: SeoOutput =
     ...props.seoInput,
     path: props.seoInput?.path ?? defaultPath,
   });
+
+// Cloudflare Web Analytics — cookieless, aggregate, no consent banner.
+// Token lives in PUBLIC_CF_ANALYTICS_TOKEN so Vite exposes it to the
+// client bundle at build time. Absent in dev + preview by design: we
+// only ship the beacon when the canonical deploy sets the var, so
+// branch previews and local runs stay out of the stats.
+//
+// Rendered via set:html on a Fragment so Astro's script hoister leaves
+// the external beacon alone (it would otherwise try to bundle the
+// Cloudflare CDN URL into our own JS pipeline). `defer` means it never
+// blocks first paint. Token is a 32-char hex string — safe to
+// interpolate into a JSON data attribute without escaping.
+const cfAnalyticsToken = import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN;
+const cfAnalyticsSnippet = cfAnalyticsToken
+  ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${cfAnalyticsToken}"}'></script>`
+  : "";
 ---
 
 <!doctype html>
@@ -157,6 +173,8 @@ const seo: SeoOutput =
       <slot />
     </main>
     <Footer />
+
+    {cfAnalyticsSnippet && <Fragment set:html={cfAnalyticsSnippet} />}
 
     <style>
       body {
