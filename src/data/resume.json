@@ -1,0 +1,125 @@
+{
+  "_placeholder": true,
+  "_note": "PLACEHOLDER résumé — realistic structure, fictional employers / schools. Replace the `work`, `education`, `skills`, `languages`, `publications`, and `projects` arrays with real content before launch. `basics.name`, `basics.email`, and profile URLs already reflect Koray's real identity.",
+
+  "basics": {
+    "name": "Koray Devecioglu",
+    "label": "Senior software engineer",
+    "email": "hi@koraydevecioglu.com",
+    "url": "https://koraydevecioglu.com",
+    "summary": "Placeholder summary — replace. Two or three sentences that explain what Koray builds, what he's good at, and what kind of problems he's looking for next. Voice stays the same as the blog: concrete, direct, no corporate fluff.",
+    "location": {
+      "city": "—",
+      "countryCode": "TR"
+    },
+    "profiles": [
+      {
+        "network": "GitHub",
+        "username": "koray-devecioglu",
+        "url": "https://github.com/koray-devecioglu"
+      },
+      {
+        "network": "LinkedIn",
+        "username": "koraydevecioglu",
+        "url": "https://www.linkedin.com/in/koraydevecioglu/"
+      }
+    ]
+  },
+
+  "work": [
+    {
+      "name": "Northwind Systems",
+      "position": "Senior software engineer",
+      "url": "https://example.com/northwind",
+      "location": "Remote",
+      "startDate": "2023-06",
+      "summary": "Placeholder role. Platform team for a multi-tenant B2B SaaS, focused on reliability and developer experience.",
+      "highlights": [
+        "Designed and shipped a typed event bus that replaced three ad-hoc pub/sub mechanisms, cutting onboarding time for new services from days to hours.",
+        "Led the migration from a monolithic Postgres to per-tenant schema isolation — zero downtime, 40% reduction in noisy-neighbour latency.",
+        "Mentored two engineers through promotion; authored the team's incident-writeup template now used org-wide."
+      ]
+    },
+    {
+      "name": "Contoso Logistics",
+      "position": "Software engineer",
+      "url": "https://example.com/contoso",
+      "location": "Istanbul, Turkey",
+      "startDate": "2020-09",
+      "endDate": "2023-05",
+      "summary": "Placeholder role. Owned the routing engine for a same-day delivery platform across three countries.",
+      "highlights": [
+        "Rebuilt the ETA estimator around a streaming model; reduced MAPE from 18% to 7% on the top three metros.",
+        "Introduced property-based testing into the routing codebase; regressions-found-before-prod went from 40% to 85%.",
+        "Shipped the driver-facing iOS app's offline-first queue — held up through a regional ISP outage that used to take ops offline."
+      ]
+    },
+    {
+      "name": "Fabrikam",
+      "position": "Junior software engineer",
+      "url": "https://example.com/fabrikam",
+      "location": "Istanbul, Turkey",
+      "startDate": "2018-08",
+      "endDate": "2020-08",
+      "summary": "Placeholder first role. Backend squad for a consumer-facing e-commerce site.",
+      "highlights": [
+        "Cut the checkout API's p95 latency from 1.1s to 280ms by precomputing cart totals and reworking the tax pipeline.",
+        "Wrote the team's first load-test harness; findings drove a rewrite of the inventory reservation path."
+      ]
+    }
+  ],
+
+  "education": [
+    {
+      "institution": "Placeholder Technical University",
+      "area": "Computer engineering",
+      "studyType": "B.Sc.",
+      "startDate": "2014",
+      "endDate": "2018"
+    }
+  ],
+
+  "skills": [
+    {
+      "name": "Languages",
+      "keywords": ["TypeScript", "Go", "Python", "SQL", "Shell"]
+    },
+    {
+      "name": "Systems",
+      "keywords": ["Postgres", "Redis", "Kafka", "Docker", "Kubernetes", "AWS"]
+    },
+    {
+      "name": "Practice",
+      "keywords": [
+        "Distributed systems",
+        "API design",
+        "Performance engineering",
+        "Mentoring",
+        "Incident response"
+      ]
+    }
+  ],
+
+  "languages": [
+    { "language": "Turkish", "fluency": "Native" },
+    { "language": "English", "fluency": "Fluent" }
+  ],
+
+  "projects": [
+    {
+      "name": "koraydevecioglu.com",
+      "description": "This site. Astro 5, TypeScript strict, Tailwind v4, MDX, built content-first with a Zod-validated collection layer and a typed résumé pipeline.",
+      "url": "https://github.com/koray-devecioglu/personal-website",
+      "startDate": "2026-03",
+      "highlights": [
+        "Milestone-driven build with per-phase PRs and a reproducible local gate.",
+        "Zero-cookie analytics, self-hosted variable fonts, dynamic OG images at build time."
+      ],
+      "keywords": ["Astro", "TypeScript", "Zod", "Tailwind v4"]
+    }
+  ],
+
+  "publications": [],
+
+  "awards": []
+}

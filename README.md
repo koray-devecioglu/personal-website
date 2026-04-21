@@ -30,27 +30,31 @@ pnpm dev            # Astro dev server at http://localhost:4321
 | `pnpm test:e2e`         | Playwright e2e smoke                            |
 | `pnpm test:e2e:install` | One-time Playwright browser install             |
 | `pnpm new-post`         | Scaffold a new content file (see CONTENT-GUIDE) |
+| `pnpm build:cv`         | Re-render `public/cv.pdf` from `/cv/print`      |
 
 ## Layout
 
 ```
 src/
-  components/   — ui / layout / post / islands
+  components/   — ui / layout / post / cv / islands
                   (post: PostCard, PostHeader, PostMeta, PostFooter,
-                   SeriesBanner, TableOfContents)
+                   SeriesBanner, TableOfContents
+                   cv:   CVContent — shared across /cv and /cv/print)
   content/      — Markdown + MDX content collections
-  data/         — static data modules (links, site metadata)
+  data/         — links.ts, resume.json (JSON Resume 1.0.0)
   layouts/      — BaseLayout (head/SEO/theme/router) + PostLayout
-  lib/          — pure utilities (posts, seo, feed, og, i18n, reading-time)
+  lib/          — pure utilities
+                  (posts, seo, feed, og, i18n, reading-time, resume)
   pages/        — file-system routing
                   (/, /posts, /posts/[slug], /tags, /tags/[slug],
                    /series, /series/[slug], /rss.xml, /feed.json,
-                   /og/[slug].png, /sandbox)
-  styles/       — tokens.css, prose.css, fonts.css, global.css
-scripts/        — new-post.ts scaffolder
-docs/           — architecture, design system, content guide, runbook
-tests/          — Vitest units + content schema + Playwright e2e
+                   /og/[slug].png, /cv, /cv/print, /cv.json, /sandbox)
+  styles/       — tokens, prose, cv, cv-print, fonts, global
+scripts/        — new-post.ts + build-cv-pdf.ts
+docs/           — architecture, design system, content guide, cv guide
+tests/          — Vitest units + content + resume schema + Playwright e2e
 .github/        — CI workflows, issue / PR templates
+public/         — fonts, favicon, cv.pdf (regenerated via pnpm build:cv)
 ```
 
 ## Docs
@@ -61,6 +65,8 @@ tests/          — Vitest units + content schema + Playwright e2e
   layout shell landed in M2.
 - [`docs/CONTENT-GUIDE.md`](docs/CONTENT-GUIDE.md) — post types, frontmatter
   reference, tags, and the `pnpm new-post` scaffolder (M3).
+- [`docs/CV-GUIDE.md`](docs/CV-GUIDE.md) — how to edit `resume.json`, the
+  JSON Resume schema we ship, and how to regenerate `public/cv.pdf` (M5).
 
 ## Status
 
@@ -71,8 +77,8 @@ tests/          — Vitest units + content schema + Playwright e2e
 | **M2** Design tokens + primitives | ✅      |
 | **M3** Content engine             | ✅      |
 | **M4** Blog surface               | ✅      |
-| **M5** CV surface                 | 🚧 next |
-| **M6** Indie-web polish           | —       |
+| **M5** CV surface                 | ✅      |
+| **M6** Indie-web polish           | 🚧 next |
 | **M7** Quality gates              | —       |
 | **M8** Launch                     | —       |
 

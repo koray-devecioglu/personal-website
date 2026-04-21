@@ -43,9 +43,9 @@ author — you handle everything else.
 | M1        | Repo scaffold — Astro 5, TS strict, Tailwind v4, CI skeleton                                            | ✅                 |
 | M2        | Design tokens polish, self-hosted webfonts, primitives (Button, Kbd, Tag, ThemeToggle), Header, Footer  | ✅                 |
 | M3        | Content collections + Zod schemas, `scripts/new-post.ts`, sample posts of each type                     | ✅                 |
-| **M4**    | Blog surface — home, /posts, /tags, /series, post layout, RSS/JSON feeds, per-post OG, view transitions | ✅ **just landed** |
-| M5        | CV surface (`/cv`, `/cv/print`, `/cv.pdf`, JSON Resume export) — needs Koray's LinkedIn URL             | ← **next**         |
-| M6        | Indie-web polish (`/now`, `/uses`, `/colophon`, `/reading`, 404, command palette, Pagefind search)      | —                  |
+| M4        | Blog surface — home, /posts, /tags, /series, post layout, RSS/JSON feeds, per-post OG, view transitions | ✅                 |
+| **M5**    | CV surface — `/cv`, `/cv/print`, `/cv.json`, Playwright PDF pipeline, Zod-validated JSON Resume         | ✅ **just landed** |
+| M6        | Indie-web polish (`/now`, `/uses`, `/colophon`, `/reading`, 404, command palette, Pagefind search)      | ← **next**         |
 | M7        | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                        | —                  |
 | M8        | Launch (DNS, SSL, email routing, analytics, Search Console, Bing Webmaster)                             | —                  |
 | M9        | Post-launch (comments, webmentions, uptime, error monitoring, newsletter decision)                      | —                  |
@@ -55,7 +55,7 @@ author — you handle everything else.
 - **Framework:** Astro 5 (static, islands-ready)
 - **Language:** TypeScript strict (`astro/tsconfigs/strict` + `noUncheckedIndexedAccess`)
 - **Styling:** Tailwind v4 via `@tailwindcss/vite`, CSS-first config, tokens in `src/styles/tokens.css`, bridged to Tailwind via `@theme` in `src/styles/global.css`
-- **Content:** Astro Content Collections + Zod — schemas in `src/content/_schemas.ts`, collections wired in `src/content/config.ts`
+- **Content:** Astro Content Collections + Zod — schemas in `src/content/_schemas.ts`, collections wired in `src/content/config.ts`. CV data rides the same Zod-first approach via `src/lib/resume.ts` and `src/data/resume.json` (JSON Resume 1.0.0).
 - **Markdown:** MDX for interactive posts, plain MD for most; Shiki for code highlighting
 - **Search:** Pagefind (static, client-side, landing in M6)
 - **Icons:** Lucide
@@ -166,6 +166,8 @@ pnpm format:check     # Prettier check (what CI runs)
 pnpm test             # Vitest
 pnpm test:e2e         # Playwright (chromium smoke)
 pnpm test:e2e:install # one-time Playwright browser install
+pnpm new-post         # scaffold a new post (flag-driven)
+pnpm build:cv         # regenerate public/cv.pdf after CV changes
 ```
 
 **Before every commit:** `pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm build`.
@@ -178,7 +180,7 @@ pnpm test:e2e:install # one-time Playwright browser install
 - One concern per PR. Small, reviewable diffs.
 - Keep `docs/phase-1-architecture.md` in sync when a decision moves.
 
-## Layout (as of M4)
+## Layout (as of M5)
 
 ```
 .
@@ -186,24 +188,30 @@ pnpm test:e2e:install # one-time Playwright browser install
 ├── docs/
 │   ├── phase-1-architecture.md  # THE bible for architecture decisions
 │   ├── DESIGN-SYSTEM.md         # Tokens, primitives, layout catalog
-│   └── CONTENT-GUIDE.md         # Post types, frontmatter, new-post CLI
+│   ├── CONTENT-GUIDE.md         # Post types, frontmatter, new-post CLI
+│   └── CV-GUIDE.md              # Editing the CV, rebuilding the PDF
 ├── public/
-│   └── fonts/            # Self-hosted Fraunces / Inter / JetBrains Mono woff2
+│   ├── fonts/            # Self-hosted Fraunces / Inter / JetBrains Mono woff2
+│   └── cv.pdf            # Committed artifact; regenerate via pnpm build:cv
 ├── scripts/
-│   └── new-post.ts       # `pnpm new-post` scaffolder
+│   ├── new-post.ts       # `pnpm new-post` scaffolder
+│   └── build-cv-pdf.ts   # `pnpm build:cv` — renders /cv/print to public/cv.pdf
 ├── src/
 │   ├── components/
 │   │   ├── ui/           # Button, Kbd, Tag, Callout
 │   │   ├── islands/      # ThemeToggle (hydrates client-side)
 │   │   ├── layout/       # Header (with primary nav), Footer
-│   │   └── post/         # PostCard, PostHeader, PostMeta, PostFooter,
-│   │                     #   SeriesBanner, TableOfContents
+│   │   ├── post/         # PostCard, PostHeader, PostMeta, PostFooter,
+│   │   │                 #   SeriesBanner, TableOfContents
+│   │   └── cv/           # CVContent (shared between /cv and /cv/print)
 │   ├── content/
 │   │   ├── _schemas.ts   # Pure Zod schemas (testable, no Astro runtime)
 │   │   ├── _tags.ts      # Controlled tag vocabulary
 │   │   ├── config.ts     # Astro Content Collections wiring
 │   │   ├── essays/ tutorials/ tils/ notes/ projects/ bookmarks/ series/
-│   ├── data/links.ts     # site + social registry (real URLs)
+│   ├── data/
+│   │   ├── links.ts      # site + social registry (real URLs)
+│   │   └── resume.json   # JSON Resume 1.0.0 — CV source of truth
 │   ├── env.d.ts
 │   ├── layouts/
 │   │   ├── BaseLayout.astro  # head / SEO / theme / ClientRouter / chrome
@@ -214,7 +222,8 @@ pnpm test:e2e:install # one-time Playwright browser install
 │   │   ├── seo.ts            # pageSeo + absoluteUrl
 │   │   ├── feed.ts           # feedItemsFor + buildJsonFeed
 │   │   ├── og.ts             # satori + resvg OG card renderer
-│   │   └── i18n.ts           # UI dictionary (en-only for now)
+│   │   ├── i18n.ts           # UI dictionary (en-only for now)
+│   │   └── resume.ts         # Zod schema + loader + date helpers
 │   ├── pages/
 │   │   ├── index.astro           # hero + latest posts
 │   │   ├── sandbox.astro         # design-system showcase, noindex
@@ -226,20 +235,27 @@ pnpm test:e2e:install # one-time Playwright browser install
 │   │   ├── series/[slug].astro   # ordered series posts
 │   │   ├── rss.xml.ts            # RSS 2.0 feed
 │   │   ├── feed.json.ts          # JSON Feed 1.1
-│   │   └── og/[slug].png.ts      # per-post OG card (build-time)
+│   │   ├── og/[slug].png.ts      # per-post OG card (build-time)
+│   │   ├── cv.astro              # CV screen layout
+│   │   ├── cv/print.astro        # print shell (noindex, minimal chrome)
+│   │   └── cv.json.ts            # JSON Resume endpoint
 │   └── styles/
 │       ├── fonts.css     # @font-face declarations
 │       ├── tokens.css    # design tokens — single source of truth
 │       ├── prose.css     # post-body typography
+│       ├── cv.css        # CV screen layout
+│       ├── cv-print.css  # CV print / PDF layout (A4, ink-friendly)
 │       └── global.css    # base styles + @theme bridge + imports
 ├── tests/
 │   ├── content.test.ts   # schema + FK + tag + reading-time harness
 │   ├── lib.test.ts       # seo / feed / posts helper coverage
+│   ├── resume.test.ts    # CV schema + date helpers
 │   ├── stubs/
 │   │   └── astro-content.ts   # virtual-module stub for vitest
 │   └── e2e/
 │       ├── home.spec.ts
 │       ├── blog.spec.ts  # posts, tags, series, feeds, OG, active nav
+│       ├── cv.spec.ts    # /cv, /cv/print (noindex), /cv.json, active nav
 │       └── sandbox.spec.ts
 ├── astro.config.mjs
 ├── eslint.config.mjs
@@ -253,8 +269,12 @@ pnpm test:e2e:install # one-time Playwright browser install
 
 ## Residual info Koray still owes
 
-- (M5) Anything LinkedIn wouldn't show but should be on the CV page —
-  side projects, open source, talks, writing elsewhere.
+- **Real CV content.** `src/data/resume.json` ships as placeholder
+  (fictional employers / schools, real basics). Replace the `work`,
+  `education`, `skills`, `languages`, `publications`, and `projects`
+  arrays. See `docs/CV-GUIDE.md` for the workflow.
+- A résumé photo (optional) for `basics.image` — served from
+  `/public/` or an external URL.
 
 Confirmed handles: GitHub `koray-devecioglu`, LinkedIn `koraydevecioglu`,
 Instagram `koraydevecioglu`. All three live in `src/data/links.ts`.
@@ -280,8 +300,10 @@ Instagram `koraydevecioglu`. All three live in `src/data/links.ts`.
 - Autolinked heading anchors (rehype-autolink-headings): prose supports
   the styling hook, but the plugin isn't wired yet. Lands alongside the
   first long post that actually benefits from deep links.
-- CV surface (`/cv`, `/cv/print`, `/cv.pdf`): lands in M5. Needs the
-  JSON Resume file from Koray.
+- PDF generation in CI: the build is static and Cloudflare Pages
+  doesn't ship with Chromium. `pnpm build:cv` runs locally and commits
+  `public/cv.pdf`. If this becomes annoying later, we can move it to a
+  scheduled GitHub Action.
 - Command palette, search: land in M6.
 - Lighthouse CI, axe, lychee: stubbed in `ci.yml`. Land in M7.
 - `docs/ARCHITECTURE.md`, `docs/RUNBOOK.md`, `docs/CONTRIBUTING.md`:

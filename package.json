@@ -25,7 +25,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:install": "playwright install --with-deps chromium",
-    "new-post": "tsx scripts/new-post.ts"
+    "new-post": "tsx scripts/new-post.ts",
+    "build:cv": "tsx scripts/build-cv-pdf.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",

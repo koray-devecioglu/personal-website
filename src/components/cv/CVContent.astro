@@ -1,0 +1,318 @@
+---
+/**
+ * Body of the CV — shared between /cv (screen) and /cv/print.
+ *
+ * The two routes wrap this in different layouts (BaseLayout vs a
+ * minimal print shell) and apply different stylesheets (cv.css vs
+ * cv-print.css). The markup itself is identical, which keeps the two
+ * outputs honest: they can never drift apart content-wise, only
+ * visually.
+ *
+ * Everything here is dumb — content-out, no computation beyond date
+ * formatting via the loader's helpers. The caller passes the already-
+ * validated Resume object.
+ */
+import type { Resume } from "../../lib/resume";
+import { formatDateRange, formatResumeDate } from "../../lib/resume";
+
+interface Props {
+  resume: Resume;
+}
+
+const { resume } = Astro.props;
+const { basics, work, education, skills, languages, publications, projects, awards } =
+  resume;
+
+const countryName = basics.location?.countryCode
+  ? new Intl.DisplayNames(["en"], { type: "region" }).of(basics.location.countryCode)
+  : undefined;
+---
+
+<article class="cv">
+  {/* ── Header ───────────────────────────────────────────────────── */}
+  <header class="cv__header">
+    <div class="cv__name-block">
+      <h1 class="cv__name">{basics.name}</h1>
+      <p class="cv__label">{basics.label}</p>
+    </div>
+    <ul class="cv__contact">
+      {
+        basics.location && (basics.location.city || countryName) && (
+          <li class="cv__contact-item" aria-label="Location">
+            <span class="cv__contact-label">Based</span>
+            <span>
+              {[basics.location.city, countryName].filter(Boolean).join(", ")}
+            </span>
+          </li>
+        )
+      }
+      <li class="cv__contact-item">
+        <span class="cv__contact-label">Email</span>
+        <a href={`mailto:${basics.email}`}>{basics.email}</a>
+      </li>
+      {
+        basics.url && (
+          <li class="cv__contact-item">
+            <span class="cv__contact-label">Web</span>
+            <a href={basics.url}>{basics.url.replace(/^https?:\/\//, "")}</a>
+          </li>
+        )
+      }
+      {
+        basics.profiles.map((p) => (
+          <li class="cv__contact-item">
+            <span class="cv__contact-label">{p.network}</span>
+            <a href={p.url}>{p.username}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </header>
+
+  {/* ── Summary ──────────────────────────────────────────────────── */}
+  <section class="cv__section cv__summary-section" aria-label="Summary">
+    <p class="cv__summary">{basics.summary}</p>
+  </section>
+
+  {/* ── Experience ───────────────────────────────────────────────── */}
+  {
+    work.length > 0 && (
+      <section class="cv__section" aria-labelledby="cv-experience">
+        <h2 class="cv__section-heading" id="cv-experience">
+          Experience
+        </h2>
+        <ol class="cv__list">
+          {work.map((role) => (
+            <li class="cv__entry">
+              <header class="cv__entry-header">
+                <div class="cv__entry-title-row">
+                  <p class="cv__entry-title">
+                    <span class="cv__entry-position">{role.position}</span>
+                    <span class="cv__entry-at" aria-hidden="true">
+                      ·
+                    </span>
+                    {role.url ? (
+                      <a class="cv__entry-company" href={role.url}>
+                        {role.name}
+                      </a>
+                    ) : (
+                      <span class="cv__entry-company">{role.name}</span>
+                    )}
+                  </p>
+                  <p class="cv__entry-date">
+                    <time datetime={role.startDate}>
+                      {formatResumeDate(role.startDate)}
+                    </time>
+                    <span class="cv__entry-date-sep" aria-hidden="true">
+                      –
+                    </span>
+                    {role.endDate ? (
+                      <time datetime={role.endDate}>
+                        {formatResumeDate(role.endDate)}
+                      </time>
+                    ) : (
+                      <span>Present</span>
+                    )}
+                  </p>
+                </div>
+                {role.location && <p class="cv__entry-location">{role.location}</p>}
+              </header>
+              {role.summary && <p class="cv__entry-summary">{role.summary}</p>}
+              {role.highlights.length > 0 && (
+                <ul class="cv__entry-highlights">
+                  {role.highlights.map((h) => (
+                    <li>{h}</li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
+        </ol>
+      </section>
+    )
+  }
+
+  {/* ── Education ────────────────────────────────────────────────── */}
+  {
+    education.length > 0 && (
+      <section class="cv__section" aria-labelledby="cv-education">
+        <h2 class="cv__section-heading" id="cv-education">
+          Education
+        </h2>
+        <ol class="cv__list">
+          {education.map((e) => (
+            <li class="cv__entry">
+              <div class="cv__entry-title-row">
+                <p class="cv__entry-title">
+                  <span class="cv__entry-position">
+                    {e.studyType} · {e.area}
+                  </span>
+                  <span class="cv__entry-at" aria-hidden="true">
+                    ·
+                  </span>
+                  {e.url ? (
+                    <a class="cv__entry-company" href={e.url}>
+                      {e.institution}
+                    </a>
+                  ) : (
+                    <span class="cv__entry-company">{e.institution}</span>
+                  )}
+                </p>
+                <p class="cv__entry-date">{formatDateRange(e.startDate, e.endDate)}</p>
+              </div>
+              {e.score && <p class="cv__entry-summary">GPA: {e.score}</p>}
+            </li>
+          ))}
+        </ol>
+      </section>
+    )
+  }
+
+  {/* ── Skills ───────────────────────────────────────────────────── */}
+  {
+    skills.length > 0 && (
+      <section class="cv__section" aria-labelledby="cv-skills">
+        <h2 class="cv__section-heading" id="cv-skills">
+          Skills
+        </h2>
+        <dl class="cv__skills">
+          {skills.map((group) => (
+            <>
+              <dt class="cv__skill-group">{group.name}</dt>
+              <dd class="cv__skill-keywords">{group.keywords.join(" · ")}</dd>
+            </>
+          ))}
+        </dl>
+      </section>
+    )
+  }
+
+  {/* ── Projects ─────────────────────────────────────────────────── */}
+  {
+    projects.length > 0 && (
+      <section class="cv__section" aria-labelledby="cv-projects">
+        <h2 class="cv__section-heading" id="cv-projects">
+          Selected projects
+        </h2>
+        <ol class="cv__list">
+          {projects.map((p) => (
+            <li class="cv__entry">
+              <div class="cv__entry-title-row">
+                <p class="cv__entry-title">
+                  {p.url ? (
+                    <a class="cv__entry-company" href={p.url}>
+                      {p.name}
+                    </a>
+                  ) : (
+                    <span class="cv__entry-company">{p.name}</span>
+                  )}
+                </p>
+                {(p.startDate || p.endDate) && (
+                  <p class="cv__entry-date">
+                    {formatDateRange(p.startDate ?? "", p.endDate)}
+                  </p>
+                )}
+              </div>
+              {p.description && <p class="cv__entry-summary">{p.description}</p>}
+              {p.highlights.length > 0 && (
+                <ul class="cv__entry-highlights">
+                  {p.highlights.map((h) => (
+                    <li>{h}</li>
+                  ))}
+                </ul>
+              )}
+              {p.keywords.length > 0 && (
+                <p class="cv__entry-keywords">{p.keywords.join(" · ")}</p>
+              )}
+            </li>
+          ))}
+        </ol>
+      </section>
+    )
+  }
+
+  {/* ── Publications ─────────────────────────────────────────────── */}
+  {
+    publications.length > 0 && (
+      <section class="cv__section" aria-labelledby="cv-publications">
+        <h2 class="cv__section-heading" id="cv-publications">
+          Writing &amp; talks
+        </h2>
+        <ol class="cv__list">
+          {publications.map((pub) => (
+            <li class="cv__entry">
+              <div class="cv__entry-title-row">
+                <p class="cv__entry-title">
+                  {pub.url ? (
+                    <a class="cv__entry-company" href={pub.url}>
+                      {pub.name}
+                    </a>
+                  ) : (
+                    <span class="cv__entry-company">{pub.name}</span>
+                  )}
+                  <span class="cv__entry-at" aria-hidden="true">
+                    ·
+                  </span>
+                  <span class="cv__entry-position">{pub.publisher}</span>
+                </p>
+                <p class="cv__entry-date">{formatResumeDate(pub.releaseDate)}</p>
+              </div>
+              {pub.summary && <p class="cv__entry-summary">{pub.summary}</p>}
+            </li>
+          ))}
+        </ol>
+      </section>
+    )
+  }
+
+  {/* ── Awards ───────────────────────────────────────────────────── */}
+  {
+    awards.length > 0 && (
+      <section class="cv__section" aria-labelledby="cv-awards">
+        <h2 class="cv__section-heading" id="cv-awards">
+          Awards
+        </h2>
+        <ol class="cv__list">
+          {awards.map((a) => (
+            <li class="cv__entry">
+              <div class="cv__entry-title-row">
+                <p class="cv__entry-title">
+                  <span class="cv__entry-position">{a.title}</span>
+                  {a.awarder && (
+                    <>
+                      <span class="cv__entry-at" aria-hidden="true">
+                        ·
+                      </span>
+                      <span class="cv__entry-company">{a.awarder}</span>
+                    </>
+                  )}
+                </p>
+                <p class="cv__entry-date">{formatResumeDate(a.date)}</p>
+              </div>
+              {a.summary && <p class="cv__entry-summary">{a.summary}</p>}
+            </li>
+          ))}
+        </ol>
+      </section>
+    )
+  }
+
+  {/* ── Languages ────────────────────────────────────────────────── */}
+  {
+    languages.length > 0 && (
+      <section class="cv__section" aria-labelledby="cv-languages">
+        <h2 class="cv__section-heading" id="cv-languages">
+          Languages
+        </h2>
+        <ul class="cv__languages">
+          {languages.map((l) => (
+            <li>
+              <span class="cv__language">{l.language}</span>
+              <span class="cv__language-fluency">{l.fluency}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</article>

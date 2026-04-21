@@ -1,0 +1,347 @@
+/*
+ * CV — print / PDF mode.
+ *
+ * Scope: loaded *only* by the /cv/print route. Rebuilds the layout on
+ * top of the same .cv__* class grammar used on screen, so the markup
+ * stays identical between the two outputs.
+ *
+ * Design targets:
+ *   - Fits on two letter/A4 pages for a mid-career CV; one page at
+ *     the extreme.
+ *   - Ink-friendly: dark grays, not pure #000; no accent color fills;
+ *     links are underlined but stay charcoal.
+ *   - Tabular-safe dates (don't rewrap) and widow-orphan control on
+ *     every entry — nothing should split a role across pages.
+ *
+ * The print route uses a minimal HTML shell (no nav, no footer, no
+ * theme toggle, no client hydration) so this stylesheet doesn't have
+ * to fight chrome.
+ */
+
+@page {
+  size: A4;
+  margin: 18mm 16mm 16mm;
+}
+
+:root[data-cv-print] {
+  /* Force light-mode paper colors even if the OS prefers dark.
+     Browsers respect color-scheme here. */
+  color-scheme: light;
+  --fg: #15161a;
+  --fg-muted: #41444c;
+  --fg-subtle: #6b6f78;
+  --bg: #ffffff;
+  --bg-elevated: #ffffff;
+  --rule: #cfcec9;
+  --rule-strong: #9f9e99;
+  --accent: #15161a;
+  --accent-strong: #15161a;
+}
+
+:root[data-cv-print] body {
+  background: #ffffff;
+  color: var(--fg);
+  font-family: var(--font-serif);
+  font-size: 10.25pt;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.cv {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14pt;
+  color: var(--fg);
+}
+
+/* ── Header ──────────────────────────────────────────────────────── */
+
+.cv__header {
+  display: grid;
+  gap: 8pt;
+  padding-bottom: 8pt;
+  margin-bottom: 2pt;
+  border-bottom: 0.75pt solid var(--rule);
+}
+
+.cv__name-block {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10pt;
+}
+
+.cv__name {
+  font-family: var(--font-serif);
+  font-size: 22pt;
+  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--fg);
+}
+
+.cv__label {
+  font-family: var(--font-sans);
+  font-size: 10pt;
+  color: var(--fg-muted);
+  margin: 0;
+}
+
+.cv__contact {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3pt 14pt;
+  font-family: var(--font-sans);
+  font-size: 8.75pt;
+  color: var(--fg);
+}
+
+.cv__contact-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4pt;
+}
+
+.cv__contact-label {
+  color: var(--fg-muted);
+  text-transform: uppercase;
+  font-size: 7pt;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.cv__contact a {
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 1.5pt;
+  text-decoration-thickness: 0.5pt;
+}
+
+/* ── Sections ────────────────────────────────────────────────────── */
+
+.cv__section {
+  display: grid;
+  gap: 6pt;
+  break-inside: avoid;
+}
+
+.cv__summary-section {
+  gap: 0;
+}
+
+.cv__summary {
+  font-family: var(--font-serif);
+  font-size: 10.25pt;
+  line-height: 1.45;
+  color: var(--fg);
+  margin: 0;
+  max-width: none;
+}
+
+.cv__section-heading {
+  font-family: var(--font-sans);
+  font-size: 7.5pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--fg-muted);
+  margin: 0 0 3pt;
+  padding-bottom: 2pt;
+  border-bottom: 0.5pt solid var(--rule);
+}
+
+/* ── Entries ─────────────────────────────────────────────────────── */
+
+.cv__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10pt;
+}
+
+.cv__entry {
+  display: grid;
+  gap: 3pt;
+  break-inside: avoid;
+}
+
+.cv__entry-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2pt 10pt;
+}
+
+.cv__entry-title {
+  font-family: var(--font-serif);
+  font-size: 10.75pt;
+  line-height: 1.3;
+  margin: 0;
+  color: var(--fg);
+}
+
+.cv__entry-position {
+  font-weight: 600;
+}
+
+.cv__entry-at {
+  margin: 0 2pt;
+  color: var(--fg-muted);
+}
+
+.cv__entry-company {
+  color: var(--fg);
+}
+
+a.cv__entry-company {
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 1.5pt;
+  text-decoration-thickness: 0.5pt;
+}
+
+.cv__entry-date {
+  font-family: var(--font-mono);
+  font-size: 8.25pt;
+  color: var(--fg-muted);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.cv__entry-date-sep {
+  margin: 0 1pt;
+}
+
+.cv__entry-location {
+  font-family: var(--font-sans);
+  font-size: 8.25pt;
+  color: var(--fg-subtle);
+  margin: 0;
+}
+
+.cv__entry-summary {
+  font-family: var(--font-serif);
+  font-size: 10pt;
+  line-height: 1.45;
+  color: var(--fg);
+  margin: 1pt 0 0;
+  max-width: none;
+}
+
+.cv__entry-highlights {
+  list-style: none;
+  padding: 0;
+  margin: 3pt 0 0;
+  display: grid;
+  gap: 2pt;
+}
+
+.cv__entry-highlights li {
+  font-family: var(--font-serif);
+  font-size: 10pt;
+  line-height: 1.45;
+  padding-inline-start: 10pt;
+  position: relative;
+  color: var(--fg);
+  max-width: none;
+  break-inside: avoid;
+}
+
+.cv__entry-highlights li::before {
+  content: "—";
+  position: absolute;
+  inset-inline-start: 0;
+  color: var(--fg-subtle);
+}
+
+.cv__entry-keywords {
+  font-family: var(--font-mono);
+  font-size: 8pt;
+  color: var(--fg-muted);
+  margin: 2pt 0 0;
+  letter-spacing: 0.02em;
+}
+
+/* ── Skills, languages ───────────────────────────────────────────── */
+
+.cv__skills {
+  display: grid;
+  grid-template-columns: 60pt 1fr;
+  gap: 3pt 10pt;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 9pt;
+}
+
+.cv__skill-group {
+  color: var(--fg-muted);
+  text-transform: uppercase;
+  font-size: 7.5pt;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  align-self: baseline;
+}
+
+.cv__skill-keywords {
+  margin: 0;
+  color: var(--fg);
+}
+
+.cv__languages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3pt 14pt;
+  font-family: var(--font-sans);
+  font-size: 9pt;
+}
+
+.cv__languages li {
+  display: inline-flex;
+  gap: 3pt;
+  align-items: baseline;
+}
+
+.cv__language {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.cv__language-fluency {
+  color: var(--fg-muted);
+}
+
+/* ── Hide screen-only chrome (toolbar, notices) ──────────────────── */
+
+.cv-toolbar,
+.cv-placeholder-notice {
+  display: none !important;
+}
+
+/* ── Defensive print-media overrides ─────────────────────────────── */
+
+@media print {
+  .cv__section,
+  .cv__entry {
+    break-inside: avoid;
+  }
+  a {
+    color: inherit;
+  }
+}

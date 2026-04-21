@@ -25,7 +25,7 @@ export default defineConfig({
       // Dev-only surfaces that happen to be built in prod are still
       // excluded from the sitemap. `noindex` metadata handles crawlers
       // that reach them anyway.
-      filter: (page) => !page.includes("/sandbox"),
+      filter: (page) => !page.includes("/sandbox") && !page.includes("/cv/print"),
     }),
   ],
   vite: {

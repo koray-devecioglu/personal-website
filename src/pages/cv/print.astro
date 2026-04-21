@@ -1,0 +1,46 @@
+---
+/**
+ * /cv/print — print-optimised CV.
+ *
+ * Intentionally bare: no BaseLayout, no Header, no Footer, no theme
+ * toggle, no View Transitions router. Every byte here is there to
+ * serve the PDF pipeline.
+ *
+ * The PDF build script (scripts/build-cv-pdf.ts) loads this route
+ * in headless Chromium and calls page.pdf() against it. If you open
+ * it in a browser, it also prints correctly via Ctrl/Cmd+P.
+ *
+ * `noindex` is set because this is not the canonical CV surface —
+ * /cv is. Robots shouldn't surface two URLs for the same content.
+ */
+import "../../styles/global.css";
+import "../../styles/cv-print.css";
+import CVContent from "../../components/cv/CVContent.astro";
+import { loadResume } from "../../lib/resume";
+import { SITE } from "../../data/links";
+
+const resume = loadResume();
+const title = `${resume.basics.name} — CV`;
+---
+
+<!doctype html>
+<html lang={SITE.locale} data-cv-print data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={resume.basics.summary} />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href={`${SITE.url.replace(/\/$/, "")}/cv`} />
+    <link
+      rel="preload"
+      href="/fonts/fraunces-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <CVContent resume={resume} />
+  </body>
+</html>
