@@ -1,0 +1,89 @@
+---
+/**
+ * `/posts` — the unified readable stream.
+ *
+ * Every non-draft, non-future post from every readable collection,
+ * newest-first. No pagination in M4 — single-page feed reads better at
+ * < 30 posts and costs nothing. Pagination lands when the list outgrows.
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/post/PostCard.astro";
+import { getPublishablePosts } from "../../lib/posts";
+import { readingTime } from "../../lib/reading-time";
+import { pageSeo } from "../../lib/seo";
+import { t } from "../../lib/i18n";
+
+const posts = await getPublishablePosts();
+const readingMinutes = posts.map((post) => readingTime(post.body ?? "").minutes);
+
+const seo = pageSeo({
+  title: t("posts.title"),
+  description:
+    "Essays, tutorials, TILs, notes, and projects — a single reverse-chronological stream across everything worth reading.",
+  path: "/posts/",
+});
+
+const countLabel =
+  posts.length === 1
+    ? t("posts.count.one")
+    : t("posts.count.many", { count: posts.length });
+---
+
+<BaseLayout seo={seo}>
+  <section class="posts-index">
+    <header class="posts-index__header">
+      <p class="posts-index__eyebrow">{countLabel}</p>
+      <h1 class="posts-index__title">{t("posts.title")}</h1>
+    </header>
+    {
+      posts.length === 0 ? (
+        <p class="posts-index__empty">{t("posts.empty")}</p>
+      ) : (
+        <ol class="posts-index__list">
+          {posts.map((post, i) => (
+            <li>
+              <PostCard post={post} readingMinutes={readingMinutes[i]} />
+            </li>
+          ))}
+        </ol>
+      )
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .posts-index {
+    max-width: var(--content-narrow);
+    margin-inline: auto;
+    padding-block: var(--space-12) var(--space-16);
+    padding-inline: var(--space-6);
+  }
+  .posts-index__header {
+    margin-block-end: var(--space-8);
+  }
+  .posts-index__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin: 0 0 var(--space-2);
+  }
+  .posts-index__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-4xl);
+    font-variation-settings: "opsz" 48;
+    letter-spacing: var(--tracking-tight);
+    margin: 0;
+  }
+  .posts-index__empty {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    color: var(--fg-muted);
+  }
+  .posts-index__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+</style>

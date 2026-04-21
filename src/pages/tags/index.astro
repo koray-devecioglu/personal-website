@@ -1,0 +1,99 @@
+---
+/**
+ * `/tags` — the tag index.
+ *
+ * Every used tag, with post count, sorted by frequency. Tags in the
+ * allow-list but never used on any post are quietly omitted; when they
+ * first get used, they appear automatically.
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Tag from "../../components/ui/Tag.astro";
+import { collectTags, getPublishablePosts } from "../../lib/posts";
+import { pageSeo } from "../../lib/seo";
+import { t } from "../../lib/i18n";
+
+const posts = await getPublishablePosts();
+const tags = collectTags(posts);
+
+const seo = pageSeo({
+  title: t("tags.title"),
+  description: t("tags.subtitle"),
+  path: "/tags/",
+});
+---
+
+<BaseLayout seo={seo}>
+  <section class="tags-index">
+    <header class="tags-index__header">
+      <p class="tags-index__eyebrow">{tags.length} tags</p>
+      <h1 class="tags-index__title">{t("tags.title")}</h1>
+      <p class="tags-index__subtitle">{t("tags.subtitle")}</p>
+    </header>
+    <ul class="tags-index__list">
+      {
+        tags.map(({ tag, count }) => (
+          <li class="tags-index__item">
+            <Tag variant="outline" href={`/tags/${tag}/`}>
+              {tag}
+            </Tag>
+            <span class="tags-index__count">{count}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .tags-index {
+    max-width: var(--content-narrow);
+    margin-inline: auto;
+    padding-block: var(--space-12) var(--space-16);
+    padding-inline: var(--space-6);
+  }
+  .tags-index__header {
+    margin-block-end: var(--space-12);
+  }
+  .tags-index__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin: 0 0 var(--space-2);
+  }
+  .tags-index__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-4xl);
+    font-variation-settings: "opsz" 48;
+    letter-spacing: var(--tracking-tight);
+    margin: 0 0 var(--space-4);
+  }
+  .tags-index__subtitle {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    color: var(--fg-muted);
+    line-height: var(--leading-snug);
+    max-width: 62ch;
+    margin: 0;
+  }
+  .tags-index__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .tags-index__item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .tags-index__count {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+    letter-spacing: var(--tracking-wide);
+  }
+</style>

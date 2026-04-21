@@ -1,0 +1,53 @@
+---
+/**
+ * Dynamic post route.
+ *
+ * Every readable post lives at `/posts/<slug>/` regardless of its
+ * collection. `getStaticPaths` flattens all five readable collections
+ * and hands the renderer the entry; the layout + helpers do the rest.
+ */
+import { render } from "astro:content";
+
+import PostLayout from "../../layouts/PostLayout.astro";
+import {
+  getPublishablePosts,
+  neighborsFor,
+  seriesPositionFor,
+  typeLabelFor,
+  type ReadablePost,
+} from "../../lib/posts";
+import { readingTime } from "../../lib/reading-time";
+
+export async function getStaticPaths() {
+  const posts = await getPublishablePosts();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post, stream: posts },
+  }));
+}
+
+interface Props {
+  post: ReadablePost;
+  stream: readonly ReadablePost[];
+}
+
+const { post, stream } = Astro.props;
+const { Content, headings } = await render(post);
+
+const { minutes: readingMinutes } = readingTime(post.body ?? "");
+const typeLabel = typeLabelFor(post);
+const seriesPosition = await seriesPositionFor(post);
+const { prev, next } = neighborsFor(stream, post);
+---
+
+<PostLayout
+  post={post}
+  headings={headings}
+  readingMinutes={readingMinutes}
+  typeLabel={typeLabel}
+  seriesPosition={seriesPosition}
+  prev={prev}
+  next={next}
+>
+  <Content />
+</PostLayout>

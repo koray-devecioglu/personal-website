@@ -35,16 +35,21 @@ pnpm dev            # Astro dev server at http://localhost:4321
 
 ```
 src/
-  assets/       — site-wide imagery (logo, default OG)
-  components/   — ui / layout / post / cv / islands
-  content/      — Markdown + MDX content collections (added in M3)
+  components/   — ui / layout / post / islands
+                  (post: PostCard, PostHeader, PostMeta, PostFooter,
+                   SeriesBanner, TableOfContents)
+  content/      — Markdown + MDX content collections
   data/         — static data modules (links, site metadata)
-  layouts/      — top-level page skeletons
-  lib/          — pure utilities (seo, feed, reading-time, og-image)
-  pages/        — Astro file-system routing
-  styles/       — tokens.css, global.css, prose.css
-docs/           — architecture, content guide, runbook, contributing
-tests/          — Vitest units + Playwright e2e
+  layouts/      — BaseLayout (head/SEO/theme/router) + PostLayout
+  lib/          — pure utilities (posts, seo, feed, og, i18n, reading-time)
+  pages/        — file-system routing
+                  (/, /posts, /posts/[slug], /tags, /tags/[slug],
+                   /series, /series/[slug], /rss.xml, /feed.json,
+                   /og/[slug].png, /sandbox)
+  styles/       — tokens.css, prose.css, fonts.css, global.css
+scripts/        — new-post.ts scaffolder
+docs/           — architecture, design system, content guide, runbook
+tests/          — Vitest units + content schema + Playwright e2e
 .github/        — CI workflows, issue / PR templates
 ```
 
@@ -65,8 +70,8 @@ tests/          — Vitest units + Playwright e2e
 | **M1** Repo scaffold              | ✅      |
 | **M2** Design tokens + primitives | ✅      |
 | **M3** Content engine             | ✅      |
-| **M4** Blog surface               | 🚧 next |
-| **M5** CV surface                 | —       |
+| **M4** Blog surface               | ✅      |
+| **M5** CV surface                 | 🚧 next |
 | **M6** Indie-web polish           | —       |
 | **M7** Quality gates              | —       |
 | **M8** Launch                     | —       |

@@ -1,0 +1,90 @@
+---
+/**
+ * PostMeta — the mono-flavoured metadata row: date + reading time + tags.
+ *
+ * Dumb component: takes already-computed values so callers can reuse the
+ * same layout on post headers, post cards, and tag pages without each
+ * one recomputing dates.
+ */
+import Tag from "../ui/Tag.astro";
+import { t } from "../../lib/i18n";
+import { formatPostDate, isoDate } from "../../lib/posts";
+
+interface Props {
+  date: Date;
+  readingMinutes?: number;
+  tags?: readonly string[];
+  /** Render tags as links (true for headers) vs static chips (false for cards). */
+  linkTags?: boolean;
+  /** Hide the tag line entirely — useful in tight spaces. */
+  showTags?: boolean;
+  class?: string;
+}
+
+const {
+  date,
+  readingMinutes,
+  tags = [],
+  linkTags = true,
+  showTags = true,
+  class: klass,
+} = Astro.props;
+---
+
+<div class:list={["post-meta", klass]}>
+  <div class="post-meta__row">
+    <time datetime={isoDate(date)}>{formatPostDate(date)}</time>
+    {
+      readingMinutes && (
+        <>
+          <span class="post-meta__sep" aria-hidden="true">
+            ·
+          </span>
+          <span>{t("post.readingTime", { minutes: readingMinutes })}</span>
+        </>
+      )
+    }
+  </div>
+  {
+    showTags && tags.length > 0 && (
+      <ul class="post-meta__tags">
+        {tags.map((tag) => (
+          <li>
+            <Tag variant="outline" href={linkTags ? `/tags/${tag}/` : undefined}>
+              {tag}
+            </Tag>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</div>
+
+<style>
+  .post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-6);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+    letter-spacing: var(--tracking-wide);
+  }
+  .post-meta__row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .post-meta__sep {
+    color: var(--fg-subtle);
+  }
+  .post-meta__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+</style>

@@ -1,0 +1,144 @@
+---
+/**
+ * PostLayout — wraps the rendered MDX/MD body with header, series
+ * banner, TOC, and footer chrome.
+ *
+ * The post route is responsible for:
+ *   - Fetching the entry + calling `render()` for `<Content />` and
+ *     `headings[]`.
+ *   - Computing reading time from the raw body.
+ *   - Resolving prev/next and series position via `lib/posts.ts`.
+ *
+ * This component is the one place those inputs come together. It owns
+ * the reading column (68ch) and the optional TOC rail on wide viewports.
+ */
+import type { MarkdownHeading } from "astro";
+
+import BaseLayout from "./BaseLayout.astro";
+import PostHeader from "../components/post/PostHeader.astro";
+import PostFooter from "../components/post/PostFooter.astro";
+import SeriesBanner from "../components/post/SeriesBanner.astro";
+import TableOfContents from "../components/post/TableOfContents.astro";
+
+import type { ReadablePost, SeriesPosition } from "../lib/posts";
+import { postPath, formatPostDate } from "../lib/posts";
+import { pageSeo } from "../lib/seo";
+
+interface Props {
+  post: ReadablePost;
+  headings: readonly MarkdownHeading[];
+  readingMinutes: number;
+  typeLabel: string;
+  seriesPosition: SeriesPosition | null;
+  prev?: ReadablePost;
+  next?: ReadablePost;
+}
+
+const { post, headings, readingMinutes, typeLabel, seriesPosition, prev, next } =
+  Astro.props;
+
+const { title, description, date, updated, tags, draft, canonical } = post.data;
+
+const seo = pageSeo({
+  title,
+  description,
+  path: postPath(post),
+  canonical,
+  type: "article",
+  published: date,
+  updated,
+  tags,
+  ogImage: `/og/${post.id}.png`,
+  noindex: draft === true,
+});
+
+const showToc = post.data.toc !== false && headings.some((h) => h.depth <= 3);
+---
+
+<BaseLayout seo={seo}>
+  <article class="post">
+    <div class="post__header-col">
+      <PostHeader post={post} readingMinutes={readingMinutes} typeLabel={typeLabel} />
+      {seriesPosition && <SeriesBanner position={seriesPosition} />}
+    </div>
+
+    <div class="post__body-col">
+      {
+        showToc && (
+          <aside class="post__toc">
+            <TableOfContents headings={headings} />
+          </aside>
+        )
+      }
+
+      <div class="prose post__prose">
+        <slot />
+      </div>
+    </div>
+
+    <div class="post__footer-col">
+      {updated && <p class="post__updated">Updated {formatPostDate(updated)}</p>}
+      <PostFooter seriesPosition={seriesPosition} prev={prev} next={next} />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .post {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding-block: var(--space-12) var(--space-16);
+    padding-inline: var(--space-6);
+    max-width: var(--content-wide);
+    margin-inline: auto;
+  }
+  .post__header-col,
+  .post__footer-col {
+    max-width: var(--content-narrow);
+    width: 100%;
+    margin-inline: auto;
+  }
+  .post__body-col {
+    width: 100%;
+    max-width: var(--content-narrow);
+    margin-inline: auto;
+  }
+  .post__prose {
+    /* Inherits base prose sizing; the outer column already constrains
+       width so we don't double-limit. */
+    max-width: none;
+  }
+  .post__updated {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+    letter-spacing: var(--tracking-wide);
+    margin: 0 0 var(--space-4);
+  }
+  .post__toc {
+    margin-block-end: var(--space-6);
+  }
+
+  /* Wide viewports: float the TOC into the margin. */
+  @media (min-width: 1200px) {
+    .post__body-col {
+      max-width: var(--content-wide);
+      display: grid;
+      grid-template-columns: 1fr var(--content-narrow) 1fr;
+      gap: var(--space-8);
+      align-items: start;
+    }
+    .post__toc {
+      grid-column: 1;
+      position: sticky;
+      top: var(--space-12);
+      justify-self: end;
+      max-width: 220px;
+      margin-block-end: 0;
+    }
+    .post__prose {
+      grid-column: 2;
+    }
+  }
+</style>

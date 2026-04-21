@@ -1,0 +1,115 @@
+---
+/**
+ * `/tags/[slug]` — per-tag stream.
+ *
+ * Filters the publishable stream by the given tag and reuses the
+ * `/posts` list layout. Static paths are derived from tags actually in
+ * use — unused tags in the allow-list don't create dead routes.
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/post/PostCard.astro";
+import {
+  collectTags,
+  getPublishablePosts,
+  postsWithTag,
+  type ReadablePost,
+} from "../../lib/posts";
+import { readingTime } from "../../lib/reading-time";
+import { pageSeo } from "../../lib/seo";
+import { t } from "../../lib/i18n";
+
+export async function getStaticPaths() {
+  const posts = await getPublishablePosts();
+  const tags = collectTags(posts);
+  return tags.map(({ tag }) => ({
+    params: { slug: tag },
+    props: { tag, posts: postsWithTag(posts, tag) },
+  }));
+}
+
+interface Props {
+  tag: string;
+  posts: readonly ReadablePost[];
+}
+
+const { tag, posts } = Astro.props;
+const readingMinutes = posts.map((post) => readingTime(post.body ?? "").minutes);
+
+const seo = pageSeo({
+  title: t("tags.page.title", { tag }),
+  description: `Posts tagged #${tag} across essays, tutorials, TILs, notes, and projects.`,
+  path: `/tags/${tag}/`,
+});
+
+const countLabel =
+  posts.length === 1
+    ? t("posts.count.one")
+    : t("posts.count.many", { count: posts.length });
+---
+
+<BaseLayout seo={seo}>
+  <section class="tag-page">
+    <header class="tag-page__header">
+      <p class="tag-page__eyebrow">
+        <a href="/tags/">{t("tags.title")}</a>
+        <span aria-hidden="true">/</span>
+        <span>{countLabel}</span>
+      </p>
+      <h1 class="tag-page__title">
+        <span class="tag-page__sigil" aria-hidden="true">#</span>{tag}
+      </h1>
+    </header>
+    <ol class="tag-page__list">
+      {
+        posts.map((post, i) => (
+          <li>
+            <PostCard post={post} readingMinutes={readingMinutes[i]} />
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+</BaseLayout>
+
+<style>
+  .tag-page {
+    max-width: var(--content-narrow);
+    margin-inline: auto;
+    padding-block: var(--space-12) var(--space-16);
+    padding-inline: var(--space-6);
+  }
+  .tag-page__header {
+    margin-block-end: var(--space-8);
+  }
+  .tag-page__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin: 0 0 var(--space-2);
+    display: flex;
+    gap: var(--space-2);
+  }
+  .tag-page__eyebrow a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.2em;
+  }
+  .tag-page__title {
+    font-family: var(--font-mono);
+    font-size: var(--text-4xl);
+    letter-spacing: var(--tracking-tight);
+    color: var(--fg);
+    margin: 0;
+  }
+  .tag-page__sigil {
+    color: var(--accent-strong);
+  }
+  .tag-page__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+</style>
