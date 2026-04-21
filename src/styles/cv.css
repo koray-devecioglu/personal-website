@@ -1,0 +1,363 @@
+/*
+ * CV — screen-mode styles.
+ *
+ * The CV shares typography with the blog (Fraunces / Inter) but
+ * trades long-form leading for tight, scannable density. A hiring
+ * manager spends ~20s on a first pass — every design decision here
+ * earns its keep against that budget.
+ *
+ * This file is loaded only by /cv. The print route pulls in
+ * cv-print.css instead, which rebuilds the layout on top of the same
+ * class names. Keeping the class grammar shared lets us swap layouts
+ * without touching the markup.
+ */
+
+.cv {
+  max-width: var(--content-narrow);
+  margin-inline: auto;
+  padding-block: var(--space-16) var(--space-24);
+  display: grid;
+  gap: var(--space-12);
+  color: var(--fg);
+}
+
+/* ── Header ──────────────────────────────────────────────────────── */
+
+.cv__header {
+  display: grid;
+  gap: var(--space-6);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--rule);
+}
+
+.cv__name {
+  font-family: var(--font-serif);
+  font-size: var(--text-4xl);
+  line-height: 1.05;
+  font-weight: 500;
+  letter-spacing: var(--tracking-tight);
+  font-variation-settings: "opsz" 40;
+  margin: 0;
+  color: var(--fg);
+  text-wrap: balance;
+}
+
+.cv__label {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  color: var(--fg-muted);
+  margin: var(--space-2) 0 0;
+}
+
+.cv__contact {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--space-2) var(--space-6);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+}
+
+.cv__contact-item {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  align-items: baseline;
+  gap: var(--space-3);
+  color: var(--fg);
+}
+
+.cv__contact-label {
+  color: var(--fg-muted);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: var(--tracking-wider);
+}
+
+.cv__contact a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-color: var(--rule-strong);
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color var(--motion-micro) var(--ease-out);
+}
+
+.cv__contact a:hover {
+  text-decoration-color: var(--accent);
+}
+
+/* ── Sections ────────────────────────────────────────────────────── */
+
+.cv__section {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.cv__summary-section {
+  gap: 0;
+}
+
+.cv__summary {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  line-height: 1.55;
+  color: var(--fg);
+  margin: 0;
+  max-width: 60ch;
+  font-variation-settings: "opsz" 16;
+  text-wrap: pretty;
+}
+
+.cv__section-heading {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--fg-muted);
+  margin: 0;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* ── Entries (shared across experience / edu / projects) ─────────── */
+
+.cv__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-8);
+}
+
+.cv__entry {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.cv__entry-header {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.cv__entry-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+}
+
+.cv__entry-title {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  line-height: 1.35;
+  margin: 0;
+  color: var(--fg);
+  font-variation-settings: "opsz" 14;
+}
+
+.cv__entry-position {
+  font-weight: 600;
+}
+
+.cv__entry-at {
+  margin: 0 var(--space-1);
+  color: var(--fg-muted);
+}
+
+.cv__entry-company {
+  color: var(--fg);
+}
+
+a.cv__entry-company {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-color: var(--rule-strong);
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color var(--motion-micro) var(--ease-out);
+}
+
+a.cv__entry-company:hover {
+  text-decoration-color: var(--accent);
+}
+
+.cv__entry-date {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  letter-spacing: var(--tracking-wide);
+}
+
+.cv__entry-date-sep {
+  margin: 0 var(--space-1);
+}
+
+.cv__entry-location {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--fg-subtle);
+  margin: 0;
+}
+
+.cv__entry-summary {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  line-height: 1.55;
+  color: var(--fg);
+  margin: var(--space-1) 0 0;
+  max-width: 72ch;
+  text-wrap: pretty;
+  font-variation-settings: "opsz" 14;
+}
+
+.cv__entry-highlights {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-2) 0 0;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.cv__entry-highlights li {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  line-height: 1.55;
+  max-width: 72ch;
+  padding-inline-start: 1.25em;
+  position: relative;
+  color: var(--fg);
+  text-wrap: pretty;
+  font-variation-settings: "opsz" 14;
+}
+
+.cv__entry-highlights li::before {
+  content: "—";
+  position: absolute;
+  inset-inline-start: 0;
+  color: var(--fg-subtle);
+}
+
+.cv__entry-keywords {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  margin: var(--space-2) 0 0;
+  letter-spacing: var(--tracking-wide);
+}
+
+/* ── Skills, languages ───────────────────────────────────────────── */
+
+.cv__skills {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: var(--space-2) var(--space-4);
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+}
+
+.cv__skill-group {
+  color: var(--fg-muted);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: var(--tracking-wider);
+  align-self: baseline;
+}
+
+.cv__skill-keywords {
+  margin: 0;
+  color: var(--fg);
+}
+
+.cv__languages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-6);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+}
+
+.cv__languages li {
+  display: flex;
+  gap: var(--space-2);
+  align-items: baseline;
+}
+
+.cv__language {
+  color: var(--fg);
+  font-weight: 500;
+}
+
+.cv__language-fluency {
+  color: var(--fg-muted);
+}
+
+/* ── CV download / print callout ─────────────────────────────────── */
+
+.cv-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+}
+
+.cv-toolbar a {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-color: var(--rule-strong);
+  transition: text-decoration-color var(--motion-micro) var(--ease-out);
+}
+
+.cv-toolbar a:hover {
+  text-decoration-color: var(--accent);
+}
+
+.cv-toolbar__sep {
+  color: var(--fg-subtle);
+  user-select: none;
+}
+
+.cv-placeholder-notice {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  padding: var(--space-4) var(--space-6);
+  border: 1px dashed var(--rule-strong);
+  border-radius: var(--radius-md);
+  color: var(--fg-muted);
+  background: var(--bg-elevated);
+}
+
+.cv-placeholder-notice strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+/* ── Responsive tuning ───────────────────────────────────────────── */
+
+@media (max-width: 40rem) {
+  .cv__entry-title-row {
+    gap: var(--space-1);
+  }
+  .cv__entry-date {
+    white-space: normal;
+  }
+  .cv__skills {
+    grid-template-columns: 1fr;
+  }
+  .cv__contact-item {
+    grid-template-columns: 3.5rem 1fr;
+  }
+}
