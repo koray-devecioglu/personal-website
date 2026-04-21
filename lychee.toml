@@ -34,19 +34,19 @@ exclude_loopback = true
 # Domains known to return 403 to headless bots even when the link is
 # live (LinkedIn public profiles, some CDN redirectors). Document any
 # addition here so the allow-list doesn't quietly grow over time.
+#
+# `koraydevecioglu\.com` stays excluded until the nameserver swap at
+# Squarespace propagates and Cloudflare Pages serves the canonical
+# hostname — see `docs/LAUNCH-RUNBOOK.md` step 6. A follow-up PR after
+# launch removes this line so the canonical link on every page gets
+# a real 200-check.
 exclude = [
   # LinkedIn rejects non-browser user agents on public profiles.
   "^https?://([a-z0-9-]+\\.)?linkedin\\.com/",
   # Instagram often returns 500 for unauthenticated profile HEAD checks.
   "^https?://(www\\.)?instagram\\.com/",
-  # Pre-launch: the canonical hostname isn't pointed at Cloudflare yet,
-  # so every `<link rel="canonical">` and absolute OG URL returns a
-  # connection error. Remove this rule at M8 once DNS is live.
+  # Held open until DNS is live — see the comment block above.
   "^https?://(www\\.)?koraydevecioglu\\.com/",
-  # Pre-launch: the GitHub repo is still private, so unauthenticated
-  # HEAD requests 404. Referenced from colophon.md, palette-index.ts,
-  # and resume.json. Flip to public at M8 and remove this line.
-  "^https?://github\\.com/koray-devecioglu/personal-website",
 ]
 
 # Follow redirects; some CDN-backed hosts redirect `http` to `https`

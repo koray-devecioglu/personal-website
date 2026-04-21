@@ -46,9 +46,9 @@ author — you handle everything else.
 | M4        | Blog surface — home, /posts, /tags, /series, post layout, RSS/JSON feeds, per-post OG, view transitions | ✅                 |
 | M5        | CV surface — `/cv`, `/cv/print`, `/cv.json`, Playwright PDF pipeline, Zod-validated JSON Resume         | ✅                 |
 | M6        | Indie-web polish — `/now`, `/uses`, `/colophon`, `/reading`, custom 404, ⌘K palette, Pagefind           | ✅                 |
-| **M7**    | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                        | ✅ **just landed** |
-| M8        | Launch (DNS, SSL, email routing, analytics, Search Console, Bing Webmaster)                             | —                  |
-| M9        | Post-launch (comments, webmentions, uptime, error monitoring, newsletter decision)                      | —                  |
+| M7        | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                        | ✅                 |
+| **M8**    | Launch (DNS, SSL, email routing, analytics, Search Console, Bing Webmaster)                             | ✅ **just landed** |
+| M9        | Post-launch (comments, webmentions, uptime, error monitoring, newsletter decision)                      | ← **next**         |
 
 ## Stack (locked in Phase 1)
 
@@ -185,7 +185,7 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 - One concern per PR. Small, reviewable diffs.
 - Keep `docs/phase-1-architecture.md` in sync when a decision moves.
 
-## Layout (as of M7)
+## Layout (as of M8)
 
 ```
 .
@@ -196,7 +196,8 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 │   ├── CONTENT-GUIDE.md         # Post types, frontmatter, new-post CLI
 │   ├── CV-GUIDE.md              # Editing the CV, rebuilding the PDF
 │   ├── INDIE-WEB-GUIDE.md       # /now, /uses, /colophon, /reading + palette
-│   └── QUALITY-GATES.md         # Lighthouse / axe / lychee budgets + how to run locally
+│   ├── QUALITY-GATES.md         # Lighthouse / axe / lychee budgets + how to run locally
+│   └── LAUNCH-RUNBOOK.md        # M8 launch steps — Cloudflare, DNS, email, GSC, Bing
 ├── public/
 │   ├── fonts/            # Self-hosted Fraunces / Inter / JetBrains Mono woff2
 │   └── cv.pdf            # Committed artifact; regenerate via pnpm build:cv
@@ -275,7 +276,9 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 │       └── sandbox.spec.ts
 ├── astro.config.mjs
 ├── eslint.config.mjs
+├── .env.example               # PUBLIC_CF_ANALYTICS_TOKEN + ASTRO_SITE
 ├── .lighthouserc.cjs          # LHCI budgets + preview server wiring
+├── LICENSE                    # MIT (code); prose stays CC BY 4.0 — see footer
 ├── lychee.toml                # Link checker config (accepts, excludes, retries)
 ├── package.json
 ├── playwright.config.ts
@@ -327,10 +330,12 @@ Instagram `koraydevecioglu`. All three live in `src/data/links.ts`.
   `public/cv.pdf`. If this becomes annoying later, we can move it to a
   scheduled GitHub Action.
 - Lighthouse CI, axe, lychee: shipped in M7; budgets and local commands in `docs/QUALITY-GATES.md`.
-- `docs/ARCHITECTURE.md`, `docs/RUNBOOK.md`, `docs/CONTRIBUTING.md`:
-  write as each relevant milestone closes. `docs/DESIGN-SYSTEM.md`
-  landed with M2; `docs/CONTENT-GUIDE.md` landed with M3.
-- `LICENSE` file: lands at M8 (CC BY 4.0 for prose, MIT for code).
+- Launch ops (DNS, Pages, email, GSC, Bing): shipped in M8; step-by-step
+  in `docs/LAUNCH-RUNBOOK.md`.
+- `docs/ARCHITECTURE.md`, `docs/CONTRIBUTING.md`: write as each relevant
+  milestone closes. `docs/DESIGN-SYSTEM.md` landed with M2;
+  `docs/CONTENT-GUIDE.md` landed with M3; `docs/LAUNCH-RUNBOOK.md`
+  landed with M8.
 
 ## Things NOT to do without checking with Koray
 

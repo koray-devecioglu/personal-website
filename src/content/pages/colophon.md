@@ -1,7 +1,7 @@
 ---
 title: "Colophon"
 description: "What this site is built with, how it's deployed, and the decisions behind the stack."
-updated: 2026-04-21
+updated: 2026-04-22
 ---
 
 This site is a single-author project. Everything below is a deliberate
@@ -63,7 +63,9 @@ second paint.
 - **[Cloudflare Web Analytics](https://www.cloudflare.com/web-analytics/)**
   — no cookies, no consent banner, no tracking pixels.
 - **GitHub Actions** for CI: lint, typecheck, test, build, Playwright
-  smoke. Lighthouse + axe + lychee land in M7.
+  smoke, axe-core accessibility scans, Lighthouse CI perf / a11y /
+  best-practices / SEO budgets, and lychee link checks. Every PR gates
+  on all of the above.
 
 ## AI assistance
 
@@ -76,8 +78,8 @@ reviewer, not a ghost-writer.
 
 - **Prose**: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
   — share and adapt with attribution.
-- **Code**: [MIT](https://opensource.org/license/mit) — once the
-  `LICENSE` file lands in M8.
+- **Code**: [MIT](https://opensource.org/license/mit) — see `LICENSE`
+  in the repo.
 
 ## Source
 

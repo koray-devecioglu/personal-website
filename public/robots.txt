@@ -1,0 +1,38 @@
+# Personal site — crawl freely. Every public URL is content.
+#
+# Pre-canonical notes:
+#   - /404 is excluded from the sitemap and carries <meta name="robots"
+#     content="noindex"> at the page level. No need to list it here.
+#   - /cv/print is a print-only surface used by the Playwright PDF
+#     pipeline; also excluded from the sitemap and marked noindex.
+#   - Assets under /fonts, /pagefind, /_astro are Cloudflare-cached
+#     build artefacts — allow them so image bots can fetch OG images.
+User-agent: *
+Allow: /
+
+# Common "AI scraper" crawlers. Not strictly binding on any of them,
+# but listing them here makes the intent explicit: generative training
+# corpora do not have permission to use this site's prose. Per
+# Cloudflare's own docs this is the right place to declare that signal.
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+Sitemap: https://koraydevecioglu.com/sitemap-index.xml

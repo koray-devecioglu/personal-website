@@ -61,7 +61,8 @@ src/
   styles/       — tokens, prose, cv, cv-print, fonts, global
 scripts/        — new-post.ts + build-cv-pdf.ts
 docs/           — architecture, design system, content guide,
-                  cv guide, indie-web guide
+                  cv guide, indie-web guide, quality gates,
+                  launch runbook
 tests/          — Vitest units + content + resume + palette
                   + Playwright e2e (home, blog, cv, indie-web,
                   palette, a11y, sandbox)
@@ -85,6 +86,9 @@ public/         — fonts, favicon, cv.pdf (regenerated via pnpm build:cv)
 - [`docs/QUALITY-GATES.md`](docs/QUALITY-GATES.md) — the CI quality gates,
   their budgets, how to run them locally, and what to do when one turns red
   (M7).
+- [`docs/LAUNCH-RUNBOOK.md`](docs/LAUNCH-RUNBOOK.md) — Cloudflare, DNS, email
+  routing, Search Console, Bing Webmaster — the step-by-step for actually
+  pointing the canonical domain at this build (M8).
 
 ## Status
 
@@ -98,8 +102,10 @@ public/         — fonts, favicon, cv.pdf (regenerated via pnpm build:cv)
 | **M5** CV surface                 | ✅      |
 | **M6** Indie-web polish           | ✅      |
 | **M7** Quality gates              | ✅      |
-| **M8** Launch                     | 🚧 next |
+| **M8** Launch                     | ✅      |
+| **M9** Post-launch                | 🚧 next |
 
 ## License
 
-Prose content: CC BY 4.0. Code: MIT (will land in `LICENSE` file at M8).
+Prose content: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+Code: [MIT](LICENSE).
