@@ -1,4 +1,5 @@
 // @ts-check
+import globals from "globals";
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import astro from "eslint-plugin-astro";
@@ -8,6 +9,7 @@ export default tseslint.config(
     ignores: [
       "dist/**",
       ".astro/**",
+      ".claude/**",
       "node_modules/**",
       "playwright-report/**",
       "test-results/**",
@@ -36,6 +38,31 @@ export default tseslint.config(
           caughtErrorsIgnorePattern: "^_",
         },
       ],
+    },
+  },
+
+  // Node-run config files (Astro, ESLint, Playwright, Vitest, scripts/)
+  // need the node globals so `process`, `__dirname`, etc. resolve.
+  {
+    files: [
+      "*.{js,mjs,cjs,ts}",
+      "astro.config.*",
+      "eslint.config.*",
+      "playwright.config.*",
+      "vitest.config.*",
+      "scripts/**/*.{ts,js,mjs}",
+    ],
+    languageOptions: {
+      globals: { ...globals.node },
+    },
+  },
+
+  // .d.ts files legitimately use triple-slash references for ambient
+  // module declarations (Astro generates env.d.ts this way).
+  {
+    files: ["**/*.d.ts"],
+    rules: {
+      "@typescript-eslint/triple-slash-reference": "off",
     },
   },
 

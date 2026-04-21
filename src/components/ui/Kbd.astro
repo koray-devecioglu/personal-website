@@ -1,0 +1,41 @@
+---
+/**
+ * Kbd — renders a single key hint. Compose multiple for a chord:
+ *
+ *   <Kbd>⌘</Kbd><Kbd>K</Kbd>
+ *
+ * Intentionally a thin wrapper around <kbd> so semantics stay correct for
+ * assistive tech. Visual weight is tuned to feel like a physical cap —
+ * not loud enough to steal attention from prose.
+ */
+interface Props {
+  class?: string;
+}
+const { class: klass } = Astro.props;
+---
+
+<kbd class={["kbd", klass].filter(Boolean).join(" ")}><slot /></kbd>
+
+<style>
+  .kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.6em;
+    padding: 1px 6px;
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    line-height: 1.3;
+    color: var(--fg-muted);
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule-strong);
+    border-bottom-width: 2px;
+    border-radius: var(--radius-sm);
+    vertical-align: 0.05em;
+    white-space: nowrap;
+  }
+  /* Group adjacent kbds with a thin gap so "⌘ K" reads as a pair. */
+  .kbd + .kbd {
+    margin-inline-start: 2px;
+  }
+</style>

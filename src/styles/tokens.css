@@ -18,8 +18,8 @@
      opsz at display sizes to let the display cut breathe, and smaller opsz
      for body reading. */
   --font-serif:
-    "Fraunces", "Iowan Old Style", "Palatino Linotype", "URW Palladio L",
-    P052, Georgia, serif;
+    "Fraunces", "Iowan Old Style", "Palatino Linotype", "URW Palladio L", P052, Georgia,
+    serif;
 
   /* UI chrome: nav, buttons, form controls, labels. Kept neutral. */
   --font-sans:
@@ -69,6 +69,12 @@
   /* Measure (ideal line length). */
   --measure: 68ch;
 
+  /* Content widths used by page scaffolds. Reading column stays on
+     --content-narrow; wider surfaces (index grids, CV timeline) can
+     breathe out to --content-wide. */
+  --content-narrow: 68ch;
+  --content-wide: 78rem;
+
   /* ── Radii ───────────────────────────────────────────────────────────── */
 
   --radius-sm: 3px;
@@ -99,10 +105,17 @@
   --rule: oklch(88% 0.008 75);
   --rule-strong: oklch(78% 0.01 75);
 
-  /* Accent: warm ochre / amber. One hue, two weights. */
+  /* Accent: warm ochre / amber. One hue, two weights plus a tint. */
   --accent: oklch(64% 0.15 70);
   --accent-strong: oklch(52% 0.15 65);
   --accent-subtle: oklch(92% 0.05 80);
+  /* Text drawn on top of --accent / --accent-strong fills — chosen for
+     WCAG AA contrast without shifting the accent hue. */
+  --accent-on: oklch(18% 0.015 55);
+
+  /* Scrim for modal / command-palette backdrops. Landed now so the M6
+     island has something already-themed to reach for. */
+  --scrim: oklch(18% 0.015 55 / 40%);
 
   /* Selection + mark. */
   --selection-bg: oklch(90% 0.08 80);
@@ -115,12 +128,6 @@
 }
 
 /* ── Color: dark theme ─────────────────────────────────────────────────── */
-
-:root[data-theme="dark"],
-:root.dark,
-:root:not([data-theme="light"]) {
-  /* prefers-color-scheme fallback applied via @media below. */
-}
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -135,6 +142,9 @@
     --accent: oklch(75% 0.14 75);
     --accent-strong: oklch(82% 0.15 75);
     --accent-subtle: oklch(32% 0.08 70);
+    --accent-on: oklch(18% 0.012 60);
+
+    --scrim: oklch(10% 0.01 60 / 55%);
 
     --selection-bg: oklch(45% 0.12 75);
     --selection-fg: oklch(98% 0.005 85);
@@ -148,7 +158,9 @@
   }
 }
 
-/* Explicit dark override regardless of OS preference. */
+/* Explicit dark override regardless of OS preference. Keep this block
+   identical to the prefers-color-scheme branch — two copies is clearer
+   than one macro'd source of truth, and easier to audit visually. */
 :root[data-theme="dark"] {
   --bg: oklch(18% 0.012 60);
   --bg-elevated: oklch(22% 0.012 60);
@@ -161,6 +173,9 @@
   --accent: oklch(75% 0.14 75);
   --accent-strong: oklch(82% 0.15 75);
   --accent-subtle: oklch(32% 0.08 70);
+  --accent-on: oklch(18% 0.012 60);
+
+  --scrim: oklch(10% 0.01 60 / 55%);
 
   --selection-bg: oklch(45% 0.12 75);
   --selection-fg: oklch(98% 0.005 85);

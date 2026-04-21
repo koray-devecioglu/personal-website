@@ -1,0 +1,83 @@
+---
+/**
+ * Tag — a small mono chip used on PostCard, post meta, and CV skill rows.
+ *
+ *   variant: solid | outline (default: solid)
+ *   href?:   renders as <a> when present, else as <span>
+ *
+ * Tags always render with a leading "#" — the prefix is part of the chip
+ * affordance (it says "this is a tag, not a link in prose"). Callers pass
+ * the raw slug; we add the sigil.
+ */
+import type { HTMLAttributes } from "astro/types";
+
+type Variant = "solid" | "outline";
+
+type Props =
+  | (HTMLAttributes<"a"> & { href: string; variant?: Variant; class?: string })
+  | (HTMLAttributes<"span"> & {
+      href?: undefined;
+      variant?: Variant;
+      class?: string;
+    });
+
+const { variant = "solid", class: klass, ...rest } = Astro.props;
+const isLink = "href" in rest && typeof rest.href === "string";
+
+const classList = ["tag", `tag--${variant}`, klass].filter(Boolean).join(" ");
+---
+
+{
+  isLink ? (
+    <a {...(rest as HTMLAttributes<"a">)} class={classList}>
+      <span class="tag__sigil" aria-hidden="true">
+        #
+      </span>
+      <slot />
+    </a>
+  ) : (
+    <span {...(rest as HTMLAttributes<"span">)} class={classList}>
+      <span class="tag__sigil" aria-hidden="true">
+        #
+      </span>
+      <slot />
+    </span>
+  )
+}
+
+<style>
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: 1;
+    padding: 3px 8px;
+    border-radius: 999px;
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition:
+      color var(--motion-micro) var(--ease-out),
+      background-color var(--motion-micro) var(--ease-out),
+      border-color var(--motion-micro) var(--ease-out);
+  }
+  .tag__sigil {
+    color: var(--fg-subtle);
+    margin-inline-end: 2px;
+  }
+  .tag--solid {
+    background: var(--bg-elevated);
+    border: 1px solid transparent;
+  }
+  .tag--outline {
+    background: transparent;
+    border: 1px solid var(--rule);
+  }
+  a.tag:hover {
+    color: var(--accent-strong);
+    border-color: var(--accent);
+  }
+  a.tag:hover .tag__sigil {
+    color: var(--accent);
+  }
+</style>
