@@ -16,19 +16,20 @@ pnpm dev            # Astro dev server at http://localhost:4321
 
 ## Scripts
 
-| Command                 | Purpose                                        |
-| ----------------------- | ---------------------------------------------- |
-| `pnpm dev`              | Astro dev server with HMR                      |
-| `pnpm build`            | Production build into `dist/`                  |
-| `pnpm preview`          | Serve the production build locally             |
-| `pnpm typecheck`        | `astro check` (TypeScript + Astro diagnostics) |
-| `pnpm lint`             | ESLint 9 flat config                           |
-| `pnpm lint:fix`         | ESLint with `--fix`                            |
-| `pnpm format`           | Prettier write                                 |
-| `pnpm format:check`     | Prettier check (used in CI)                    |
-| `pnpm test`             | Vitest unit + content-schema tests             |
-| `pnpm test:e2e`         | Playwright e2e smoke                           |
-| `pnpm test:e2e:install` | One-time Playwright browser install            |
+| Command                 | Purpose                                         |
+| ----------------------- | ----------------------------------------------- |
+| `pnpm dev`              | Astro dev server with HMR                       |
+| `pnpm build`            | Production build into `dist/`                   |
+| `pnpm preview`          | Serve the production build locally              |
+| `pnpm typecheck`        | `astro check` (TypeScript + Astro diagnostics)  |
+| `pnpm lint`             | ESLint 9 flat config                            |
+| `pnpm lint:fix`         | ESLint with `--fix`                             |
+| `pnpm format`           | Prettier write                                  |
+| `pnpm format:check`     | Prettier check (used in CI)                     |
+| `pnpm test`             | Vitest unit + content-schema tests              |
+| `pnpm test:e2e`         | Playwright e2e smoke                            |
+| `pnpm test:e2e:install` | One-time Playwright browser install             |
+| `pnpm new-post`         | Scaffold a new content file (see CONTENT-GUIDE) |
 
 ## Layout
 
@@ -53,6 +54,8 @@ tests/          — Vitest units + Playwright e2e
   architecture proposal (will be promoted to `ARCHITECTURE.md` at launch).
 - [`docs/DESIGN-SYSTEM.md`](docs/DESIGN-SYSTEM.md) — tokens, primitives, and
   layout shell landed in M2.
+- [`docs/CONTENT-GUIDE.md`](docs/CONTENT-GUIDE.md) — post types, frontmatter
+  reference, tags, and the `pnpm new-post` scaffolder (M3).
 
 ## Status
 
@@ -61,8 +64,8 @@ tests/          — Vitest units + Playwright e2e
 | **M0** Proposal approved          | ✅      |
 | **M1** Repo scaffold              | ✅      |
 | **M2** Design tokens + primitives | ✅      |
-| **M3** Content engine             | 🚧 next |
-| **M4** Blog surface               | —       |
+| **M3** Content engine             | ✅      |
+| **M4** Blog surface               | 🚧 next |
 | **M5** CV surface                 | —       |
 | **M6** Indie-web polish           | —       |
 | **M7** Quality gates              | —       |

@@ -1,0 +1,82 @@
+---
+/**
+ * Callout — a boxed aside for use inside MDX posts.
+ *
+ *   <Callout tone="note">…</Callout>
+ *
+ * Tones:
+ *   note      — neutral, the default
+ *   tip       — accent tint, for useful side-notes
+ *   warning   — amber rule, for gotchas
+ *
+ * A `title` prop is optional; when present it renders as a mono eyebrow
+ * so the callout reads as "structurally seasoned" rather than graphical.
+ */
+type Tone = "note" | "tip" | "warning";
+
+interface Props {
+  tone?: Tone;
+  title?: string;
+  class?: string;
+}
+
+const { tone = "note", title, class: klass } = Astro.props;
+
+const classList = ["callout", `callout--${tone}`, klass].filter(Boolean).join(" ");
+---
+
+<aside class={classList} role="note">
+  {
+    title && (
+      <p class="callout__title">
+        <span class="callout__sigil" aria-hidden="true">
+          //
+        </span>
+        {title}
+      </p>
+    )
+  }
+  <div class="callout__body">
+    <slot />
+  </div>
+</aside>
+
+<style>
+  .callout {
+    margin: var(--space-8) 0;
+    padding: var(--space-4) var(--space-6);
+    border-inline-start: 3px solid var(--rule-strong);
+    background: var(--bg-elevated);
+    color: var(--fg);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+  .callout--tip {
+    border-inline-start-color: var(--accent);
+    background: var(--accent-subtle);
+  }
+  .callout--warning {
+    border-inline-start-color: var(--accent-strong);
+    background: var(--bg-elevated);
+  }
+  .callout__title {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    color: var(--fg-muted);
+  }
+  .callout--tip .callout__title {
+    color: var(--accent-strong);
+  }
+  .callout__sigil {
+    color: var(--fg-subtle);
+    margin-inline-end: var(--space-2);
+  }
+  .callout__body :global(*:first-child) {
+    margin-block-start: 0;
+  }
+  .callout__body :global(*:last-child) {
+    margin-block-end: 0;
+  }
+</style>
