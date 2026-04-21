@@ -158,13 +158,15 @@ jobs:
           # Walk every HTML page produced by Astro. `--root-dir` must be
           # absolute so root-relative links (`/posts`, `/favicon.svg`)
           # resolve to files under `dist/` instead of bailing out.
+          # The action owns `--output` itself; setting it via `args`
+          # would collide with the `output` input below.
           args: >-
             --config lychee.toml
             --root-dir ${{ github.workspace }}/dist
             --no-progress
             --format markdown
-            --output ./lychee-report.md
             'dist/**/*.html'
+          output: ./lychee-report.md
           fail: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
