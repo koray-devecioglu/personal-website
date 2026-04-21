@@ -41,9 +41,9 @@ author — you handle everything else.
 | --------- | ------------------------------------------------------------------------------------------------------ | ------------------ |
 | M0        | Proposal approved                                                                                      | ✅                 |
 | M1        | Repo scaffold — Astro 5, TS strict, Tailwind v4, CI skeleton                                           | ✅                 |
-| **M2**    | Design tokens polish, self-hosted webfonts, primitives (Button, Kbd, Tag, ThemeToggle), Header, Footer | ✅ **just landed** |
-| M3        | Content collections + Zod schemas, `scripts/new-post.ts`, sample posts of each type                    | ← **next**         |
-| M4        | Blog surface (home, /posts, /tags, /series, post layout, feeds, sitemap, per-post OG)                  | —                  |
+| M2        | Design tokens polish, self-hosted webfonts, primitives (Button, Kbd, Tag, ThemeToggle), Header, Footer | ✅                 |
+| **M3**    | Content collections + Zod schemas, `scripts/new-post.ts`, sample posts of each type                    | ✅ **just landed** |
+| M4        | Blog surface (home, /posts, /tags, /series, post layout, feeds, sitemap, per-post OG)                  | ← **next**         |
 | M5        | CV surface (`/cv`, `/cv/print`, `/cv.pdf`, JSON Resume export) — needs Koray's LinkedIn URL            | —                  |
 | M6        | Indie-web polish (`/now`, `/uses`, `/colophon`, `/reading`, 404, command palette, Pagefind search)     | —                  |
 | M7        | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                       | —                  |
@@ -55,7 +55,7 @@ author — you handle everything else.
 - **Framework:** Astro 5 (static, islands-ready)
 - **Language:** TypeScript strict (`astro/tsconfigs/strict` + `noUncheckedIndexedAccess`)
 - **Styling:** Tailwind v4 via `@tailwindcss/vite`, CSS-first config, tokens in `src/styles/tokens.css`, bridged to Tailwind via `@theme` in `src/styles/global.css`
-- **Content:** Astro Content Collections + Zod (lands in M3)
+- **Content:** Astro Content Collections + Zod — schemas in `src/content/_schemas.ts`, collections wired in `src/content/config.ts`
 - **Markdown:** MDX for interactive posts, plain MD for most; Shiki for code highlighting
 - **Search:** Pagefind (static, client-side, landing in M6)
 - **Icons:** Lucide
@@ -177,24 +177,41 @@ pnpm test:e2e:install # one-time Playwright browser install
 - One concern per PR. Small, reviewable diffs.
 - Keep `docs/phase-1-architecture.md` in sync when a decision moves.
 
-## Layout (as of M2)
+## Layout (as of M3)
 
 ```
 .
 ├── .github/              # CI workflows, PR + issue templates
 ├── docs/
 │   ├── phase-1-architecture.md  # THE bible for architecture decisions
-│   └── DESIGN-SYSTEM.md         # Tokens, primitives, layout catalog
+│   ├── DESIGN-SYSTEM.md         # Tokens, primitives, layout catalog
+│   └── CONTENT-GUIDE.md         # Post types, frontmatter, new-post CLI
 ├── public/
 │   └── fonts/            # Self-hosted Fraunces / Inter / JetBrains Mono woff2
+├── scripts/
+│   └── new-post.ts       # `pnpm new-post` scaffolder
 ├── src/
 │   ├── components/
-│   │   ├── ui/           # Button, Kbd, Tag
+│   │   ├── ui/           # Button, Kbd, Tag, Callout
 │   │   ├── islands/      # ThemeToggle (hydrates client-side)
 │   │   └── layout/       # Header, Footer
+│   ├── content/
+│   │   ├── _schemas.ts   # Pure Zod schemas (testable, no Astro runtime)
+│   │   ├── _tags.ts      # Controlled tag vocabulary
+│   │   ├── config.ts     # Astro Content Collections wiring
+│   │   ├── essays/       # Sample + real posts
+│   │   ├── tutorials/
+│   │   ├── tils/
+│   │   ├── notes/
+│   │   ├── projects/
+│   │   ├── bookmarks/
+│   │   └── series/
 │   ├── data/links.ts     # site + social registry (placeholder URLs)
 │   ├── env.d.ts
 │   ├── layouts/BaseLayout.astro
+│   ├── lib/
+│   │   ├── posts.ts      # getPublishablePosts, draft/scheduled filter
+│   │   └── reading-time.ts  # 240 wpm estimator
 │   ├── pages/
 │   │   ├── index.astro   # M1 placeholder, replaced in M4
 │   │   └── sandbox.astro # design-system showcase, noindex
@@ -203,7 +220,7 @@ pnpm test:e2e:install # one-time Playwright browser install
 │       ├── tokens.css    # design tokens — single source of truth
 │       └── global.css    # base styles + @theme bridge
 ├── tests/
-│   ├── content.test.ts   # unit + schema (placeholder; M3 fills it)
+│   ├── content.test.ts   # schema + FK + tag + reading-time harness
 │   └── e2e/
 │       ├── home.spec.ts
 │       └── sandbox.spec.ts
@@ -239,12 +256,16 @@ GitHub handle is confirmed: `koray-devecioglu`.
 
 ## What's deliberately deferred
 
-- Content schema: placeholder. Lands in M3.
+- Blog surface (home feed, `/posts`, `/tags`, `/series`, post layout,
+  RSS, per-post OG images): lands in M4. Schemas and sample content
+  exist now; routes do not.
+- Cover images on real posts: schema accepts `cover` + `coverAlt`, but
+  M3's sample posts don't ship any. First real covers land with M4.
 - Command palette, search: land in M6.
 - Lighthouse CI, axe, lychee: stubbed in `ci.yml`. Land in M7.
-- `docs/ARCHITECTURE.md`, `docs/CONTENT-GUIDE.md`, `docs/RUNBOOK.md`,
-  `docs/CONTRIBUTING.md`: write as each relevant milestone closes.
-  `docs/DESIGN-SYSTEM.md` landed with M2.
+- `docs/ARCHITECTURE.md`, `docs/RUNBOOK.md`, `docs/CONTRIBUTING.md`:
+  write as each relevant milestone closes. `docs/DESIGN-SYSTEM.md`
+  landed with M2; `docs/CONTENT-GUIDE.md` landed with M3.
 - `LICENSE` file: lands at M8 (CC BY 4.0 for prose, MIT for code).
 
 ## Things NOT to do without checking with Koray

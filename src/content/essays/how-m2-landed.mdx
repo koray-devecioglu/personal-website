@@ -1,0 +1,30 @@
+---
+title: "How the design system landed"
+description: "Placeholder MDX essay: a short tour of the M2 design-system work, used to exercise the .mdx pipeline."
+date: 2026-04-19
+slug: how-m2-landed
+tags: [astro, writing, site-news]
+series: building-this-site
+---
+
+import Callout from "../../components/ui/Callout.astro";
+
+<!--
+  SAMPLE MDX POST — scaffold only.
+  Imports a component from src/components to prove the MDX pipeline
+  compiles and Islands-style imports resolve. Replace before M9.
+-->
+
+The second milestone locked in three things: a token layer in OKLCH,
+three typefaces served from `/public/fonts`, and a handful of UI
+primitives that the rest of the site can lean on.
+
+<Callout tone="tip" title="Why OKLCH">
+  Perceptual uniformity — a 10% lightness change looks like a 10% lightness
+  change, which means I can derive the accent tint and the accent-strong shade
+  from one hue without fighting the color wheel.
+</Callout>
+
+The next milestone is this — a typed content engine, a CLI for new
+posts, and enough validation that I can't publish a malformed file
+even if I try.

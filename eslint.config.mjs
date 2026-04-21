@@ -74,4 +74,12 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": "warn",
     },
   },
+
+  // CLI scripts legitimately print to stdout — that's their UX.
+  {
+    files: ["scripts/**/*.{ts,js,mjs}"],
+    rules: {
+      "no-console": "off",
+    },
+  },
 );
