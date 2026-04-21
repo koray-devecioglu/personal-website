@@ -30,25 +30,25 @@ author — you handle everything else.
   disagrees.
 - For each phase: explain → implement → document → verify.
 - Code must be readable in six months. Clear names, small units, comments
-  only where the *why* isn't obvious.
+  only where the _why_ isn't obvious.
 - When you don't know something about Koray (career detail, preference,
   tone), **ask** — don't invent.
 - Update the relevant `docs/` file in the same PR as the change.
 
 ## Current state
 
-| Milestone | Scope | Status |
-|---|---|---|
-| M0 | Proposal approved | ✅ |
-| **M1** | Repo scaffold — Astro 5, TS strict, Tailwind v4, CI skeleton | ✅ **just landed** |
-| M2 | Design tokens polish, self-hosted webfonts, primitives (Button, Kbd, Tag, ThemeToggle), Header, Footer | ← **next** |
-| M3 | Content collections + Zod schemas, `scripts/new-post.ts`, sample posts of each type | — |
-| M4 | Blog surface (home, /posts, /tags, /series, post layout, feeds, sitemap, per-post OG) | — |
-| M5 | CV surface (`/cv`, `/cv/print`, `/cv.pdf`, JSON Resume export) — needs Koray's LinkedIn URL | — |
-| M6 | Indie-web polish (`/now`, `/uses`, `/colophon`, `/reading`, 404, command palette, Pagefind search) | — |
-| M7 | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile` | — |
-| M8 | Launch (DNS, SSL, email routing, analytics, Search Console, Bing Webmaster) | — |
-| M9 | Post-launch (comments, webmentions, uptime, error monitoring, newsletter decision) | — |
+| Milestone | Scope                                                                                                  | Status             |
+| --------- | ------------------------------------------------------------------------------------------------------ | ------------------ |
+| M0        | Proposal approved                                                                                      | ✅                 |
+| M1        | Repo scaffold — Astro 5, TS strict, Tailwind v4, CI skeleton                                           | ✅                 |
+| **M2**    | Design tokens polish, self-hosted webfonts, primitives (Button, Kbd, Tag, ThemeToggle), Header, Footer | ✅ **just landed** |
+| M3        | Content collections + Zod schemas, `scripts/new-post.ts`, sample posts of each type                    | ← **next**         |
+| M4        | Blog surface (home, /posts, /tags, /series, post layout, feeds, sitemap, per-post OG)                  | —                  |
+| M5        | CV surface (`/cv`, `/cv/print`, `/cv.pdf`, JSON Resume export) — needs Koray's LinkedIn URL            | —                  |
+| M6        | Indie-web polish (`/now`, `/uses`, `/colophon`, `/reading`, 404, command palette, Pagefind search)     | —                  |
+| M7        | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                       | —                  |
+| M8        | Launch (DNS, SSL, email routing, analytics, Search Console, Bing Webmaster)                            | —                  |
+| M9        | Post-launch (comments, webmentions, uptime, error monitoring, newsletter decision)                     | —                  |
 
 ## Stack (locked in Phase 1)
 
@@ -123,7 +123,7 @@ in M2), subsetted, preloaded.
 Pragmatic, direct, engineer-minded, dry humor welcome, no corporate fluff.
 
 Audience: fellow engineers, hiring managers, curious readers from the
-wider tech community — *and* readers who come for food, BBQ, sport, life
+wider tech community — _and_ readers who come for food, BBQ, sport, life
 writing. Design and tone must welcome both groups.
 
 ## Content architecture (lands in M3)
@@ -173,29 +173,40 @@ pnpm test:e2e:install # one-time Playwright browser install
 
 - Conventional commits, scoped by milestone: `feat(m4):`, `chore(m2):`,
   `fix(m3):`, `docs:`.
-- Body explains the *why* when it isn't obvious from the subject.
+- Body explains the _why_ when it isn't obvious from the subject.
 - One concern per PR. Small, reviewable diffs.
 - Keep `docs/phase-1-architecture.md` in sync when a decision moves.
 
-## Layout (as of M1)
+## Layout (as of M2)
 
 ```
 .
 ├── .github/              # CI workflows, PR + issue templates
 ├── docs/
-│   └── phase-1-architecture.md  # THE bible for architecture decisions
-├── public/               # static assets (fonts land here in M2)
+│   ├── phase-1-architecture.md  # THE bible for architecture decisions
+│   └── DESIGN-SYSTEM.md         # Tokens, primitives, layout catalog
+├── public/
+│   └── fonts/            # Self-hosted Fraunces / Inter / JetBrains Mono woff2
 ├── src/
-│   ├── data/links.ts     # site + social registry (has TODO placeholders)
+│   ├── components/
+│   │   ├── ui/           # Button, Kbd, Tag
+│   │   ├── islands/      # ThemeToggle (hydrates client-side)
+│   │   └── layout/       # Header, Footer
+│   ├── data/links.ts     # site + social registry (placeholder URLs)
 │   ├── env.d.ts
 │   ├── layouts/BaseLayout.astro
-│   ├── pages/index.astro # M1 placeholder, replaced in M4
+│   ├── pages/
+│   │   ├── index.astro   # M1 placeholder, replaced in M4
+│   │   └── sandbox.astro # design-system showcase, noindex
 │   └── styles/
+│       ├── fonts.css     # @font-face declarations
 │       ├── tokens.css    # design tokens — single source of truth
 │       └── global.css    # base styles + @theme bridge
 ├── tests/
 │   ├── content.test.ts   # unit + schema (placeholder; M3 fills it)
-│   └── e2e/home.spec.ts  # playwright smoke
+│   └── e2e/
+│       ├── home.spec.ts
+│       └── sandbox.spec.ts
 ├── astro.config.mjs
 ├── eslint.config.mjs
 ├── package.json
@@ -228,14 +239,12 @@ GitHub handle is confirmed: `koray-devecioglu`.
 
 ## What's deliberately deferred
 
-- Fonts: still in system fallbacks. Land in M2.
 - Content schema: placeholder. Lands in M3.
-- Header/Footer, theme toggle: not built yet. Land in M2.
 - Command palette, search: land in M6.
 - Lighthouse CI, axe, lychee: stubbed in `ci.yml`. Land in M7.
 - `docs/ARCHITECTURE.md`, `docs/CONTENT-GUIDE.md`, `docs/RUNBOOK.md`,
-  `docs/CONTRIBUTING.md`, `docs/DESIGN-SYSTEM.md`: write as each relevant
-  milestone closes.
+  `docs/CONTRIBUTING.md`: write as each relevant milestone closes.
+  `docs/DESIGN-SYSTEM.md` landed with M2.
 - `LICENSE` file: lands at M8 (CC BY 4.0 for prose, MIT for code).
 
 ## Things NOT to do without checking with Koray

@@ -3,15 +3,17 @@
  *
  * Order matters:
  *   1. Tailwind v4 import (brings in preflight + utilities).
- *   2. Tokens (loads CSS custom properties we map into @theme).
- *   3. @theme block to expose tokens to Tailwind.
- *   4. Base element styles (using the tokens).
+ *   2. Fonts (@font-face first so tokens can reference them safely).
+ *   3. Tokens (loads CSS custom properties we map into @theme).
+ *   4. @theme block to expose tokens to Tailwind.
+ *   5. Base element styles (using the tokens).
  *
  * Keep this file small. Long-form typography lives in prose.css
  * (added in M4 when the blog surface lands).
  */
 
 @import "tailwindcss";
+@import "./fonts.css";
 @import "./tokens.css";
 
 @theme {
@@ -78,7 +80,12 @@ body {
 }
 
 /* Headings use the same serif; we adjust weight/leading per element. */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-serif);
   font-weight: 600;
   line-height: var(--leading-tight);
@@ -87,7 +94,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Monospace for code, kbd, samp — uniform. */
-code, kbd, samp, pre {
+code,
+kbd,
+samp,
+pre {
   font-family: var(--font-mono);
   font-size: 0.95em;
 }

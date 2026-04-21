@@ -1,0 +1,293 @@
+---
+/**
+ * /sandbox — design-system showcase.
+ *
+ * This page exists to render every primitive, token, and layout piece
+ * landed in M2 on a single URL so Koray (and future-me) can eyeball the
+ * whole system at once. Not linked from site chrome; excluded from the
+ * sitemap; carries `noindex` metadata.
+ *
+ * When M6 lands the command palette + sitewide search, this page should
+ * be reachable from the palette's "Dev" section so it stays discoverable
+ * without bloating public navigation.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/ui/Button.astro";
+import Kbd from "../components/ui/Kbd.astro";
+import Tag from "../components/ui/Tag.astro";
+
+const neutralTokens = [
+  "--bg",
+  "--bg-elevated",
+  "--fg",
+  "--fg-muted",
+  "--fg-subtle",
+  "--rule",
+  "--rule-strong",
+] as const;
+
+const accentTokens = [
+  "--accent",
+  "--accent-strong",
+  "--accent-subtle",
+  "--accent-on",
+  "--focus-ring",
+] as const;
+
+const typeScale = [
+  { token: "--text-xs", sample: "extra-small metadata" },
+  { token: "--text-sm", sample: "small caption" },
+  { token: "--text-base", sample: "base reading size" },
+  { token: "--text-lg", sample: "large lede paragraph" },
+  { token: "--text-xl", sample: "Section heading" },
+  { token: "--text-2xl", sample: "Heading two" },
+  { token: "--text-3xl", sample: "Heading one" },
+  { token: "--text-4xl", sample: "Hero heading" },
+  { token: "--text-display", sample: "Display" },
+] as const;
+---
+
+<BaseLayout
+  title="Sandbox"
+  description="Design-system showcase page. Not indexed."
+  noindex
+>
+  <section class="sandbox">
+    <header class="sandbox__head">
+      <p class="sandbox__eyebrow">M2 · design system</p>
+      <h1 class="sandbox__title">Sandbox</h1>
+      <p class="sandbox__lede">
+        A dev-only page that renders every M2 primitive so the system can be reviewed
+        end-to-end on one URL. Theme toggle lives in the header — exercise it to see the
+        dark palette.
+      </p>
+    </header>
+
+    <section aria-labelledby="s-type">
+      <h2 id="s-type">Typography</h2>
+      <p class="note">
+        Body runs in <em>Fraunces</em> (serif). UI chrome uses <span class="sans"
+          >Inter</span
+        >. Structural seasoning — dates, badges, keyboard hints — uses
+        <span class="mono">JetBrains Mono</span>.
+      </p>
+      <ol class="scale" aria-label="Type scale">
+        {
+          typeScale.map((row) => (
+            <li class="scale__row">
+              <code class="scale__token">{row.token}</code>
+              <span class="scale__sample" style={`font-size: var(${row.token});`}>
+                {row.sample}
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section aria-labelledby="s-color">
+      <h2 id="s-color">Color tokens</h2>
+      <h3 class="sub">Neutrals</h3>
+      <ul class="swatches">
+        {
+          neutralTokens.map((t) => (
+            <li>
+              <span class="swatch" style={`background: var(${t});`} />
+              <code>{t}</code>
+            </li>
+          ))
+        }
+      </ul>
+      <h3 class="sub">Accent & state</h3>
+      <ul class="swatches">
+        {
+          accentTokens.map((t) => (
+            <li>
+              <span class="swatch" style={`background: var(${t});`} />
+              <code>{t}</code>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section aria-labelledby="s-buttons">
+      <h2 id="s-buttons">Buttons</h2>
+      <div class="grid">
+        <div>
+          <h3 class="sub">Primary</h3>
+          <div class="row">
+            <Button variant="primary" size="sm">Small</Button>
+            <Button variant="primary" size="md">Medium</Button>
+            <Button variant="primary" size="lg">Large</Button>
+            <Button variant="primary" disabled>Disabled</Button>
+          </div>
+        </div>
+        <div>
+          <h3 class="sub">Secondary</h3>
+          <div class="row">
+            <Button variant="secondary" size="sm">Small</Button>
+            <Button variant="secondary" size="md">Medium</Button>
+            <Button variant="secondary" size="lg">Large</Button>
+            <Button variant="secondary" disabled>Disabled</Button>
+          </div>
+        </div>
+        <div>
+          <h3 class="sub">Ghost</h3>
+          <div class="row">
+            <Button variant="ghost" size="sm">Small</Button>
+            <Button variant="ghost" size="md">Medium</Button>
+            <Button variant="ghost" size="lg">Large</Button>
+            <Button variant="ghost" disabled>Disabled</Button>
+          </div>
+        </div>
+        <div>
+          <h3 class="sub">As link</h3>
+          <div class="row">
+            <Button variant="primary" href="https://astro.build">External</Button>
+            <Button variant="secondary" href="/">Internal</Button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="s-tags">
+      <h2 id="s-tags">Tags</h2>
+      <div class="row">
+        <Tag>testing</Tag>
+        <Tag>playwright</Tag>
+        <Tag variant="outline">engineering</Tag>
+        <Tag variant="outline">typography</Tag>
+        <Tag href="/sandbox">linked</Tag>
+      </div>
+    </section>
+
+    <section aria-labelledby="s-kbd">
+      <h2 id="s-kbd">Keyboard hints</h2>
+      <p class="row">
+        Open the palette with <Kbd>⌘</Kbd><Kbd>K</Kbd> · toggle theme with <Kbd>⌘</Kbd
+        ><Kbd>.</Kbd>
+      </p>
+    </section>
+  </section>
+
+  <style>
+    .sandbox {
+      max-width: var(--content-wide);
+      margin: 0 auto;
+      padding: var(--space-16) var(--space-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+    }
+    .sandbox__head {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+    .sandbox__eyebrow {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wider);
+      color: var(--fg-subtle);
+      margin: 0;
+    }
+    .sandbox__title {
+      font-size: var(--text-display);
+      margin: 0;
+    }
+    .sandbox__lede {
+      font-size: var(--text-lg);
+      color: var(--fg-muted);
+      max-width: var(--content-narrow);
+      margin: 0;
+    }
+
+    h2 {
+      font-size: var(--text-2xl);
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: var(--space-2);
+      margin: 0 0 var(--space-6);
+    }
+    .sub {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wider);
+      color: var(--fg-subtle);
+      margin: 0 0 var(--space-3);
+    }
+    .note {
+      color: var(--fg-muted);
+      margin: 0 0 var(--space-6);
+    }
+    .sans {
+      font-family: var(--font-sans);
+    }
+    .mono {
+      font-family: var(--font-mono);
+    }
+
+    .scale {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+    .scale__row {
+      display: grid;
+      grid-template-columns: minmax(140px, max-content) 1fr;
+      align-items: baseline;
+      gap: var(--space-6);
+      padding: var(--space-2) 0;
+      border-top: 1px solid var(--rule);
+    }
+    .scale__token {
+      color: var(--fg-subtle);
+    }
+    .scale__sample {
+      line-height: 1.2;
+    }
+
+    .swatches {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 var(--space-6);
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--space-4);
+    }
+    .swatches li {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .swatch {
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--rule);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-8);
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    section {
+      display: block;
+    }
+  </style>
+</BaseLayout>

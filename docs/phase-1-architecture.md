@@ -49,28 +49,28 @@ Optimized for apps, not content sites. Would be a weird fit here.
 
 ### Stack bill of materials
 
-| Layer | Choice | Why |
-|---|---|---|
-| Framework | Astro 5 | See above |
-| Language | TypeScript (strict) | Self-explanatory |
-| Package manager | pnpm | Fast, strict, Corepack-managed |
-| Node | LTS, pinned via `.node-version` + `.nvmrc` | Reproducibility |
-| Styling | Tailwind v4 (CSS-first) + CSS custom properties | Tokens as the source of truth; no config sprawl |
-| Content | Astro Content Collections + Zod | Typed frontmatter, build-time validation |
-| Markdown | Remark/rehype pipeline + MDX | Plugins: GFM, smartypants, footnotes, slug, autolink-headings, reading-time, Shiki, KaTeX (gated), Mermaid (gated) |
-| Syntax highlighting | Shiki (dual theme: light/dark) | Zero-JS, VS Code themes |
-| Search | Pagefind | Static, client-side, free, ~100KB |
-| Icons | Lucide (tree-shaken SVG) | Clean, consistent, no icon fonts |
-| Testing | Vitest (unit/schema), Playwright (e2e smoke) | Standard, fast |
-| Linting | ESLint 9 flat config + Prettier | Standard |
-| Quality gates | Lighthouse CI + axe-core + lychee (links) | All free, all in Actions |
-| Dependencies | Renovate | Better than Dependabot for weekly grouped PRs |
-| Hosting | Cloudflare Pages | Free, unlimited bandwidth, edge everywhere, no cold starts (static) |
-| DNS | Cloudflare | Free, fast, integrates with Pages |
-| Email | Cloudflare Email Routing | Free forwarding to personal inbox |
-| Analytics | Cloudflare Web Analytics | Free, privacy-respecting, no cookies |
-| Comments | giscus (GitHub Discussions) | Free, no DB, lazy-loaded, opt-in per post |
-| Monitoring | UptimeRobot (uptime, free) + Sentry (errors, free tier) | Opt-in after M8 |
+| Layer               | Choice                                                  | Why                                                                                                                |
+| ------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Framework           | Astro 5                                                 | See above                                                                                                          |
+| Language            | TypeScript (strict)                                     | Self-explanatory                                                                                                   |
+| Package manager     | pnpm                                                    | Fast, strict, Corepack-managed                                                                                     |
+| Node                | LTS, pinned via `.node-version` + `.nvmrc`              | Reproducibility                                                                                                    |
+| Styling             | Tailwind v4 (CSS-first) + CSS custom properties         | Tokens as the source of truth; no config sprawl                                                                    |
+| Content             | Astro Content Collections + Zod                         | Typed frontmatter, build-time validation                                                                           |
+| Markdown            | Remark/rehype pipeline + MDX                            | Plugins: GFM, smartypants, footnotes, slug, autolink-headings, reading-time, Shiki, KaTeX (gated), Mermaid (gated) |
+| Syntax highlighting | Shiki (dual theme: light/dark)                          | Zero-JS, VS Code themes                                                                                            |
+| Search              | Pagefind                                                | Static, client-side, free, ~100KB                                                                                  |
+| Icons               | Lucide (tree-shaken SVG)                                | Clean, consistent, no icon fonts                                                                                   |
+| Testing             | Vitest (unit/schema), Playwright (e2e smoke)            | Standard, fast                                                                                                     |
+| Linting             | ESLint 9 flat config + Prettier                         | Standard                                                                                                           |
+| Quality gates       | Lighthouse CI + axe-core + lychee (links)               | All free, all in Actions                                                                                           |
+| Dependencies        | Renovate                                                | Better than Dependabot for weekly grouped PRs                                                                      |
+| Hosting             | Cloudflare Pages                                        | Free, unlimited bandwidth, edge everywhere, no cold starts (static)                                                |
+| DNS                 | Cloudflare                                              | Free, fast, integrates with Pages                                                                                  |
+| Email               | Cloudflare Email Routing                                | Free forwarding to personal inbox                                                                                  |
+| Analytics           | Cloudflare Web Analytics                                | Free, privacy-respecting, no cookies                                                                               |
+| Comments            | giscus (GitHub Discussions)                             | Free, no DB, lazy-loaded, opt-in per post                                                                          |
+| Monitoring          | UptimeRobot (uptime, free) + Sentry (errors, free tier) | Opt-in after M8                                                                                                    |
 
 ---
 
@@ -191,22 +191,22 @@ A site that reads like a warm, well-set book. The content here is wider than "so
 
 **Principles, in one sentence each:**
 
-- *Content sets the grid; chrome does not.*
-- *The site welcomes a BBQ essay as warmly as a refactoring deep-dive.*
-- *Monospace is structural seasoning (metadata, code, keyboard hints), never decorative costume.*
-- *Every motion has a job; nothing bounces for fun.*
-- *Dark mode is not an inverted light mode.*
-- *Print is a first-class output, not an afterthought.*
+- _Content sets the grid; chrome does not._
+- _The site welcomes a BBQ essay as warmly as a refactoring deep-dive._
+- _Monospace is structural seasoning (metadata, code, keyboard hints), never decorative costume._
+- _Every motion has a job; nothing bounces for fun._
+- _Dark mode is not an inverted light mode._
+- _Print is a first-class output, not an afterthought._
 
 ### Tokens (single source of truth: `src/styles/tokens.css`)
 
 **Typography** — three families, self-hosted WOFF2, subsetted, preloaded. All open-source, all variable fonts:
 
-- `--font-serif`: **Fraunces Variable** — display *and* body, via its optical-size axis. Warm, slightly quirky (SOFT and WONK axes let us tune terminal softness and glyph eccentricity), editorial, distinctive without shouting. Carries pull quotes and long-form reading equally well.
+- `--font-serif`: **Fraunces Variable** — display _and_ body, via its optical-size axis. Warm, slightly quirky (SOFT and WONK axes let us tune terminal softness and glyph eccentricity), editorial, distinctive without shouting. Carries pull quotes and long-form reading equally well.
 - `--font-sans`: **Inter Variable** — UI chrome only (nav, buttons, labels, form controls). Neutral, legible at small sizes, tuned for UI.
 - `--font-mono`: **JetBrains Mono Variable** — code, date ranges, type badges, keyboard hints, numeric columns in CV / tables. Ligatures off by default (they're divisive in prose contexts).
 
-*Why serif body, not sans:* the content spread (tech + food + sport + life) is closer to a personal essay publication than a tech blog. Serif body reads welcoming and editorial; sans body reads tech-publication. This is the single biggest identity lever and we're pulling it toward "writer's site."
+_Why serif body, not sans:_ the content spread (tech + food + sport + life) is closer to a personal essay publication than a tech blog. Serif body reads welcoming and editorial; sans body reads tech-publication. This is the single biggest identity lever and we're pulling it toward "writer's site."
 
 **Type scale** — fluid, `clamp()`-based, 1.2 modular ratio on narrow screens, 1.25 on wide:
 
@@ -287,14 +287,14 @@ Fixed-width left column in mono (date range + location). Title in serif, company
 
 ### Post types (Astro Content Collections)
 
-| Type | Where | Feel | Frontmatter extras |
-|---|---|---|---|
-| `essay` | `src/content/essays/` | Long-form opinion/argument | — |
-| `tutorial` | `src/content/tutorials/` | Step-by-step guide | `prereqs[]`, `stack[]` |
-| `til` | `src/content/tils/` | Today-I-learned, short | `sourceLink?` |
-| `note` | `src/content/notes/` | Loose thinking, draft-ish | — |
-| `project` | `src/content/projects/` | Case study / write-up | `role`, `stack[]`, `links`, `status`, `featured?` |
-| `bookmark` | `src/content/bookmarks/` | Pocket-style linkpost with commentary | `url`, `via?` |
+| Type       | Where                    | Feel                                  | Frontmatter extras                                |
+| ---------- | ------------------------ | ------------------------------------- | ------------------------------------------------- |
+| `essay`    | `src/content/essays/`    | Long-form opinion/argument            | —                                                 |
+| `tutorial` | `src/content/tutorials/` | Step-by-step guide                    | `prereqs[]`, `stack[]`                            |
+| `til`      | `src/content/tils/`      | Today-I-learned, short                | `sourceLink?`                                     |
+| `note`     | `src/content/notes/`     | Loose thinking, draft-ish             | —                                                 |
+| `project`  | `src/content/projects/`  | Case study / write-up                 | `role`, `stack[]`, `links`, `status`, `featured?` |
+| `bookmark` | `src/content/bookmarks/` | Pocket-style linkpost with commentary | `url`, `via?`                                     |
 
 All share a **core schema** enforced by Zod at build time:
 
@@ -305,23 +305,30 @@ const core = z.object({
   description: z.string().min(1).max(300),
   date: z.coerce.date(),
   updated: z.coerce.date().optional(),
-  slug: z.string().regex(/^[a-z0-9-]+$/).optional(), // override
-  tags: z.array(z.string().regex(/^[a-z0-9-]+$/)),    // validated against allow-list
-  series: z.string().optional(),                      // FK to series collection
+  slug: z
+    .string()
+    .regex(/^[a-z0-9-]+$/)
+    .optional(), // override
+  tags: z.array(z.string().regex(/^[a-z0-9-]+$/)), // validated against allow-list
+  series: z.string().optional(), // FK to series collection
   draft: z.boolean().default(false),
-  scheduled: z.coerce.date().optional(),              // hidden until this date
+  scheduled: z.coerce.date().optional(), // hidden until this date
   cover: image().optional(),
-  coverAlt: z.string().optional(),                    // required if cover present (refine)
-  ogImage: z.string().optional(),                     // overrides generated OG
+  coverAlt: z.string().optional(), // required if cover present (refine)
+  ogImage: z.string().optional(), // overrides generated OG
   canonical: z.string().url().optional(),
-  lang: z.enum(['en', 'tr']).default('en'),
-  translations: z.array(z.object({
-    lang: z.enum(['en', 'tr']),
-    slug: z.string(),
-  })).optional(),
+  lang: z.enum(["en", "tr"]).default("en"),
+  translations: z
+    .array(
+      z.object({
+        lang: z.enum(["en", "tr"]),
+        slug: z.string(),
+      }),
+    )
+    .optional(),
   toc: z.boolean().default(true),
-  math: z.boolean().default(false),                   // gates KaTeX loading
-  diagram: z.boolean().default(false),                // gates Mermaid loading
+  math: z.boolean().default(false), // gates KaTeX loading
+  diagram: z.boolean().default(false), // gates Mermaid loading
 });
 ```
 
@@ -439,18 +446,18 @@ After Cloudflare Pages emits the preview URL, comment it on the PR with a mini L
 
 ## 7. Roadmap — zero to launch
 
-| Milestone | Scope | Rough duration | Exit criterion |
-|---|---|---|---|
-| **M0** | This proposal approved | — | Your sign-off + answers to the questions below |
-| **M1** | Repo scaffold | Day 1 | `pnpm dev` runs; ESLint + TS + Prettier + Vitest + Playwright + CI skeleton green |
-| **M2** | Design tokens + primitives + layouts | Day 2–3 | Tokens locked; Button / Kbd / Tag / ThemeToggle / Header / Footer rendered on a sandbox page |
-| **M3** | Content engine | Day 3–4 | Collections + Zod schemas shipped; `scripts/new-post.ts` works; one sample post of each type in the repo; `pnpm build` green with no schema errors |
-| **M4** | Blog surface | Day 4–6 | `/`, `/posts`, `/tags`, `/series`, post layout with TOC + reading progress + related posts; RSS/Atom/JSON feeds; sitemap; per-post OG image generator |
-| **M5** | CV surface | Day 6–8 | `/cv`, `/cv/print`, `/cv.pdf` (build-time Playwright); JSON Resume export. *Requires your career details — I'll ask at the start of M5.* |
-| **M6** | Indie-web polish | Day 8–9 | `/now`, `/uses`, `/colophon`, `/reading`; custom 404; command palette; Pagefind search wired into the palette |
-| **M7** | Quality gates in CI | Day 9–10 | Lighthouse CI, axe-core, lychee all running and green; Renovate installed |
-| **M8** | Launch | Day 10–11 | DNS cut over to Cloudflare; HTTPS green; email forwarding live; analytics receiving; Search Console + Bing Webmaster verified; sitemap submitted; announce post published |
-| **M9** | Post-launch polish | Ongoing | Comments (giscus), webmentions, uptime + error monitoring, newsletter decision |
+| Milestone | Scope                                | Rough duration | Exit criterion                                                                                                                                                            |
+| --------- | ------------------------------------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **M0**    | This proposal approved               | —              | Your sign-off + answers to the questions below                                                                                                                            |
+| **M1**    | Repo scaffold                        | Day 1          | `pnpm dev` runs; ESLint + TS + Prettier + Vitest + Playwright + CI skeleton green                                                                                         |
+| **M2**    | Design tokens + primitives + layouts | Day 2–3        | Tokens locked; Button / Kbd / Tag / ThemeToggle / Header / Footer rendered on a sandbox page                                                                              |
+| **M3**    | Content engine                       | Day 3–4        | Collections + Zod schemas shipped; `scripts/new-post.ts` works; one sample post of each type in the repo; `pnpm build` green with no schema errors                        |
+| **M4**    | Blog surface                         | Day 4–6        | `/`, `/posts`, `/tags`, `/series`, post layout with TOC + reading progress + related posts; RSS/Atom/JSON feeds; sitemap; per-post OG image generator                     |
+| **M5**    | CV surface                           | Day 6–8        | `/cv`, `/cv/print`, `/cv.pdf` (build-time Playwright); JSON Resume export. _Requires your career details — I'll ask at the start of M5._                                  |
+| **M6**    | Indie-web polish                     | Day 8–9        | `/now`, `/uses`, `/colophon`, `/reading`; custom 404; command palette; Pagefind search wired into the palette                                                             |
+| **M7**    | Quality gates in CI                  | Day 9–10       | Lighthouse CI, axe-core, lychee all running and green; Renovate installed                                                                                                 |
+| **M8**    | Launch                               | Day 10–11      | DNS cut over to Cloudflare; HTTPS green; email forwarding live; analytics receiving; Search Console + Bing Webmaster verified; sitemap submitted; announce post published |
+| **M9**    | Post-launch polish                   | Ongoing        | Comments (giscus), webmentions, uptime + error monitoring, newsletter decision                                                                                            |
 
 Day estimates assume focused evenings/weekend time, not full workdays. Nothing here requires a heroic push — slippage is fine, the plan has no hard deadlines.
 
@@ -520,4 +527,4 @@ M1 (repo scaffold) can start without these; placeholders go into `src/data/links
 
 ---
 
-*End of Phase 1 proposal.*
+_End of Phase 1 proposal._

@@ -19,7 +19,15 @@ export default defineConfig({
     prefetchAll: false,
     defaultStrategy: "hover",
   },
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    sitemap({
+      // Dev-only surfaces that happen to be built in prod are still
+      // excluded from the sitemap. `noindex` metadata handles crawlers
+      // that reach them anyway.
+      filter: (page) => !page.includes("/sandbox"),
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

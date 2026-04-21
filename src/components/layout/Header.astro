@@ -1,0 +1,62 @@
+---
+/**
+ * Header — site chrome, top of every page.
+ *
+ * Intentionally light at M2:
+ *   - Wordmark on the left (links home).
+ *   - Theme toggle on the right.
+ *
+ * Nav (Writing, CV, About, …) lands milestone-by-milestone in M4/M5/M6
+ * when those surfaces exist. Shipping empty chrome now is cleaner than
+ * shipping broken links.
+ */
+import { SITE } from "../../data/links";
+import ThemeToggle from "../islands/ThemeToggle.astro";
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="wordmark" aria-label={`${SITE.name} — home`}>
+      <span class="wordmark__name">{SITE.name}</span>
+    </a>
+    <div class="site-header__actions">
+      <ThemeToggle />
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .site-header__inner {
+    max-width: var(--content-wide);
+    margin: 0 auto;
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+  .wordmark {
+    color: var(--fg);
+    text-decoration: none;
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    font-weight: 500;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1;
+  }
+  .wordmark:hover .wordmark__name {
+    color: var(--accent-strong);
+  }
+  .wordmark__name {
+    transition: color var(--motion-micro) var(--ease-out);
+  }
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+</style>

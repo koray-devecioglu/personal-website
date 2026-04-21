@@ -4,31 +4,40 @@
  *
  * Owns:
  *   - <html lang>, <head> meta (title, description, OG, canonical)
- *   - Global stylesheet import
- *   - Initial theme application (no flash) — reads localStorage then falls
- *     through to prefers-color-scheme
- *   - Skip-link for keyboard users
+ *   - Global stylesheet import (fonts, tokens, @theme, base elements)
+ *   - Preload of the critical Fraunces subset (prevents FOUT on LCP text)
+ *   - Initial theme application (no flash) — reads localStorage and sets
+ *     data-theme before first paint; absent value falls through to
+ *     prefers-color-scheme via the CSS rules in tokens.css
+ *   - Skip-link, Header, Footer
  *
  * Keeps zero business logic. Page-specific markup lives in pages/.
  */
 import "../styles/global.css";
 import { SITE } from "../data/links";
+import Header from "../components/layout/Header.astro";
+import Footer from "../components/layout/Footer.astro";
 
 interface Props {
   title?: string;
   description?: string;
   canonical?: string;
+  /**
+   * Hide the page from crawlers (sandbox, future drafts). Leaves the page
+   * reachable by direct URL but out of the search index.
+   */
+  noindex?: boolean;
 }
 
 const {
   title,
   description = SITE.description,
   canonical,
+  noindex = false,
 } = Astro.props;
 
 const pageTitle = title ? `${title} — ${SITE.name}` : SITE.name;
-const canonicalUrl =
-  canonical ?? new URL(Astro.url.pathname, SITE.url).toString();
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, SITE.url).toString();
 ---
 
 <!doctype html>
@@ -41,6 +50,7 @@ const canonicalUrl =
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE.name} />
@@ -55,10 +65,31 @@ const canonicalUrl =
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="color-scheme" content="light dark" />
 
-    {/*
-      Apply the persisted theme before first paint to avoid a flash
-      of the wrong theme. Inline by design — tiny, runs once.
-    */}
+    {
+      /*
+      Preload the critical serif cut. Fraunces carries H1 + body, so this
+      directly affects LCP. Latin-ext, italic, Inter, and JetBrains Mono
+      are intentionally not preloaded — we accept a second-paint swap on
+      the secondary families to keep the network budget tight.
+    */
+    }
+    <link
+      rel="preload"
+      href="/fonts/fraunces-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+
+    {
+      /*
+      Apply the persisted theme before first paint to avoid a flash of the
+      wrong theme. Three states: "light", "dark", "system". When the value
+      is "system" (or absent / invalid), we leave data-theme unset and let
+      prefers-color-scheme decide via tokens.css. Inline by design — tiny,
+      runs once, must beat first paint.
+    */
+    }
     <script is:inline>
       (function () {
         try {
@@ -74,11 +105,18 @@ const canonicalUrl =
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>
+    <Header />
     <main id="main">
       <slot />
     </main>
+    <Footer />
 
     <style>
+      body {
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+      }
       .skip-link {
         position: absolute;
         left: 0;

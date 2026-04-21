@@ -33,3 +33,6 @@ playwright/.cache/
 # Misc
 *.local
 .wrangler/
+
+# Agent scratchpads (Claude worktrees, ephemeral state)
+.claude/

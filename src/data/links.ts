@@ -14,8 +14,7 @@ export const SITE = {
   name: "Koray Devecioglu",
   domain: "koraydevecioglu.com",
   url: "https://koraydevecioglu.com",
-  description:
-    "Personal site of Koray Devecioglu — essays, notes, projects, and a CV.",
+  description: "Personal site of Koray Devecioglu — essays, notes, projects, and a CV.",
   email: "hi@koraydevecioglu.com",
   copyright: "© Koray Devecioglu 2026",
   locale: "en",

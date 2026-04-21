@@ -1,0 +1,180 @@
+---
+/**
+ * Button — the one interactive primitive that earns three variants.
+ *
+ *   variant:
+ *     primary   — filled accent; call-to-action on a surface (subscribe, open)
+ *     secondary — outlined; sits next to a primary without competing
+ *     ghost     — borderless; inline actions, toolbar-style affordances
+ *
+ *   size: sm | md | lg
+ *
+ * Polymorphic: pass `href` and the element renders as <a> (with external-
+ * link rel hygiene); omit it and the element renders as <button>. Extra
+ * HTML attributes pass through via `...rest`.
+ *
+ * The component only owns structural styling — color, typography, spacing,
+ * motion. It never animates on hover (we decided "nothing bounces for
+ * fun"); the hover signal is a subtle tone shift plus an accent underline
+ * where appropriate.
+ */
+import type { HTMLAttributes } from "astro/types";
+
+type Variant = "primary" | "secondary" | "ghost";
+type Size = "sm" | "md" | "lg";
+
+type BaseProps = {
+  variant?: Variant;
+  size?: Size;
+  disabled?: boolean;
+  class?: string;
+};
+
+type AnchorProps = BaseProps &
+  HTMLAttributes<"a"> & {
+    href: string;
+    type?: never;
+  };
+
+type ButtonProps = BaseProps &
+  HTMLAttributes<"button"> & {
+    href?: undefined;
+    type?: "button" | "submit" | "reset";
+  };
+
+type Props = AnchorProps | ButtonProps;
+
+const {
+  variant = "secondary",
+  size = "md",
+  disabled = false,
+  class: klass,
+  ...rest
+} = Astro.props;
+
+const isLink = "href" in rest && typeof rest.href === "string";
+
+const classList = [
+  "btn",
+  `btn--${variant}`,
+  `btn--${size}`,
+  disabled ? "btn--disabled" : null,
+  klass,
+]
+  .filter(Boolean)
+  .join(" ");
+
+// External link hygiene. Anything non-relative or without a leading "/"
+// that isn't a hash / mailto / tel gets noopener + noreferrer unless the
+// caller explicitly set rel.
+let computedRel: string | undefined;
+if (isLink) {
+  const href = (rest as { href: string }).href;
+  const isExternal = /^(https?:)?\/\//.test(href);
+  if (isExternal && !("rel" in rest && rest.rel)) {
+    computedRel = "noopener noreferrer";
+  }
+}
+---
+
+{
+  isLink ? (
+    <a
+      {...(rest as HTMLAttributes<"a">)}
+      class={classList}
+      aria-disabled={disabled || undefined}
+      rel={computedRel ?? (rest as HTMLAttributes<"a">).rel}
+    >
+      <slot />
+    </a>
+  ) : (
+    <button
+      {...(rest as HTMLAttributes<"button">)}
+      class={classList}
+      type={(rest as ButtonProps).type ?? "button"}
+      disabled={disabled}
+    >
+      <slot />
+    </button>
+  )
+}
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    line-height: 1;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      background-color var(--motion-micro) var(--ease-out),
+      color var(--motion-micro) var(--ease-out),
+      border-color var(--motion-micro) var(--ease-out);
+    /* Reset button defaults */
+    background: transparent;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Sizes ───────────────────────────────────────────────────────────── */
+  .btn--sm {
+    padding: 6px var(--space-3);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+  }
+  .btn--md {
+    padding: 10px var(--space-4);
+    font-size: var(--text-sm);
+  }
+  .btn--lg {
+    padding: 14px var(--space-6);
+    font-size: var(--text-base);
+  }
+
+  /* ── Variants ────────────────────────────────────────────────────────── */
+
+  .btn--primary {
+    background: var(--accent-strong);
+    color: var(--accent-on);
+    border-color: var(--accent-strong);
+  }
+  .btn--primary:hover:not(.btn--disabled) {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .btn--secondary {
+    background: var(--bg-elevated);
+    color: var(--fg);
+    border-color: var(--rule-strong);
+  }
+  .btn--secondary:hover:not(.btn--disabled) {
+    border-color: var(--fg-muted);
+  }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--fg-muted);
+    border-color: transparent;
+  }
+  .btn--ghost:hover:not(.btn--disabled) {
+    color: var(--fg);
+    background: var(--bg-elevated);
+  }
+
+  /* ── States ──────────────────────────────────────────────────────────── */
+
+  .btn--disabled,
+  .btn[aria-disabled="true"],
+  .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+</style>

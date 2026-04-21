@@ -1,0 +1,224 @@
+---
+/**
+ * ThemeToggle — three-state cycle: system → light → dark → system…
+ *
+ * "System" is the default. Persisting "dark"/"light" writes data-theme on
+ * <html>, which the CSS reads. Persisting "system" clears data-theme,
+ * letting the `prefers-color-scheme: dark` rules in tokens.css decide.
+ *
+ * The inline script in BaseLayout applies the stored value before first
+ * paint. This component's script runs after hydration to handle clicks.
+ *
+ * Motion: uses the View Transitions API for a crossfade when available
+ * and when the user hasn't opted out of motion. Everywhere else, the
+ * theme swap is instant.
+ *
+ * Icons are inline SVG (Lucide sun/moon/monitor geometry, simplified).
+ * Three icons × ~200 bytes each is well under the cost of pulling in a
+ * runtime icon library for this one island.
+ */
+---
+
+<button
+  class="theme-toggle"
+  type="button"
+  aria-label="Switch theme"
+  title="Switch theme (system / light / dark)"
+  data-theme-toggle
+>
+  {/* sun (light) */}
+  <svg
+    class="icon icon--sun"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="4"></circle>
+    <path
+      d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+    ></path>
+  </svg>
+  {/* moon (dark) */}
+  <svg
+    class="icon icon--moon"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+  </svg>
+  {/* monitor (system) */}
+  <svg
+    class="icon icon--system"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <rect x="2.5" y="4" width="19" height="13" rx="2"></rect>
+    <path d="M8 20h8M12 17v3"></path>
+  </svg>
+  <span class="sr-only" data-theme-label>System theme</span>
+</button>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--fg-muted);
+    cursor: pointer;
+    transition:
+      color var(--motion-micro) var(--ease-out),
+      background-color var(--motion-micro) var(--ease-out),
+      border-color var(--motion-micro) var(--ease-out);
+  }
+  .theme-toggle:hover {
+    color: var(--fg);
+    background: var(--bg-elevated);
+    border-color: var(--rule);
+  }
+  .icon {
+    width: 18px;
+    height: 18px;
+    display: none;
+  }
+  /* Which icon shows reflects the *stored* state, not the *resolved*
+     state, so the user can see that "system" is currently selected even
+     if the resolved theme is dark. */
+  :root:not([data-theme]) .icon--system,
+  :root[data-theme-stored="system"] .icon--system {
+    display: block;
+  }
+  :root[data-theme="light"] .icon--sun {
+    display: block;
+  }
+  :root[data-theme="dark"] .icon--moon {
+    display: block;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+
+<script>
+  /**
+   * Cycle order: system → light → dark → system.
+   *
+   * "system" is stored explicitly as `"system"` in localStorage (and
+   * mirrored as `data-theme-stored="system"` on <html>) so the UI can
+   * render the right icon. Resolved CSS still reads `data-theme` only.
+   */
+  type Stored = "system" | "light" | "dark";
+
+  const STORAGE_KEY = "theme";
+  const ORDER: Stored[] = ["system", "light", "dark"];
+  const LABELS: Record<Stored, string> = {
+    system: "System theme",
+    light: "Light theme",
+    dark: "Dark theme",
+  };
+
+  function readStored(): Stored {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw === "light" || raw === "dark" || raw === "system") return raw;
+    } catch {
+      /* noop */
+    }
+    return "system";
+  }
+
+  function apply(next: Stored) {
+    const root = document.documentElement;
+    root.dataset.themeStored = next;
+    if (next === "system") {
+      delete root.dataset.theme;
+    } else {
+      root.dataset.theme = next;
+    }
+    try {
+      if (next === "system") {
+        localStorage.removeItem(STORAGE_KEY);
+      } else {
+        localStorage.setItem(STORAGE_KEY, next);
+      }
+    } catch {
+      /* noop */
+    }
+    const labelEls = document.querySelectorAll<HTMLElement>("[data-theme-label]");
+    labelEls.forEach((el) => {
+      el.textContent = LABELS[next];
+    });
+    const buttons = document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]");
+    buttons.forEach((b) => {
+      b.setAttribute("aria-label", LABELS[next]);
+    });
+  }
+
+  function next(current: Stored): Stored {
+    const i = ORDER.indexOf(current);
+    const n = ORDER[(i + 1) % ORDER.length];
+    return n ?? "system";
+  }
+
+  /**
+   * startViewTransition gives us a native crossfade on Chromium-based
+   * browsers. On Safari / Firefox we fall through to an instant swap,
+   * which is fine — theme toggles don't need parallax.
+   */
+  function swap(target: Stored) {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    type VtDocument = Document & {
+      startViewTransition?: (cb: () => void) => unknown;
+    };
+    const doc = document as VtDocument;
+    if (!reduced && typeof doc.startViewTransition === "function") {
+      doc.startViewTransition(() => apply(target));
+    } else {
+      apply(target);
+    }
+  }
+
+  function init() {
+    apply(readStored());
+    document
+      .querySelectorAll<HTMLButtonElement>("[data-theme-toggle]")
+      .forEach((btn) => {
+        btn.addEventListener("click", () => {
+          swap(next(readStored()));
+        });
+      });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+</script>
