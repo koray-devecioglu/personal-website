@@ -30,8 +30,12 @@ routing needs the domain already active in Cloudflare.
 ## Step 1 — Add the site to Cloudflare (~5 min)
 
 1. Sign in at <https://dash.cloudflare.com>.
-2. Click **Add a site** → enter `koraydevecioglu.com` (apex only,
-   without `www`) → **Continue**.
+2. In the top-right, click **+ Add** → **Connect a domain** (Cloudflare
+   renamed "Add a site" → "Connect a domain"; same flow). Enter
+   `koraydevecioglu.com` (apex only, without `www`) → **Continue**.
+   - Do **not** pick "Transfer a domain" (that would move the
+     registration away from Squarespace — separate decision, can be
+     done later) or "Register a domain" (that's for new domains).
 3. Pick the **Free** plan → **Continue**.
 4. Cloudflare scans the current DNS records from Squarespace. Review
    the imported records — at minimum you should see whatever Squarespace
