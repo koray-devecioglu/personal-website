@@ -45,8 +45,8 @@ author — you handle everything else.
 | M3        | Content collections + Zod schemas, `scripts/new-post.ts`, sample posts of each type                     | ✅                 |
 | M4        | Blog surface — home, /posts, /tags, /series, post layout, RSS/JSON feeds, per-post OG, view transitions | ✅                 |
 | M5        | CV surface — `/cv`, `/cv/print`, `/cv.json`, Playwright PDF pipeline, Zod-validated JSON Resume         | ✅                 |
-| **M6**    | Indie-web polish — `/now`, `/uses`, `/colophon`, `/reading`, custom 404, ⌘K palette, Pagefind           | ✅ **just landed** |
-| **M7**    | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                        | ← **next**         |
+| M6        | Indie-web polish — `/now`, `/uses`, `/colophon`, `/reading`, custom 404, ⌘K palette, Pagefind           | ✅                 |
+| **M7**    | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                        | ✅ **just landed** |
 | M8        | Launch (DNS, SSL, email routing, analytics, Search Console, Bing Webmaster)                             | —                  |
 | M9        | Post-launch (comments, webmentions, uptime, error monitoring, newsletter decision)                      | —                  |
 
@@ -166,7 +166,10 @@ pnpm lint:fix          # ESLint --fix
 pnpm format            # Prettier write
 pnpm format:check      # Prettier check (what CI runs)
 pnpm test              # Vitest
-pnpm test:e2e          # Playwright (chromium smoke)
+pnpm test:e2e          # Playwright (chromium smoke + axe a11y gate)
+pnpm test:a11y         # Playwright a11y spec only (@axe-core/playwright)
+pnpm lhci              # Lighthouse CI — perf / a11y / best-practices / SEO budgets
+pnpm lint:links        # Lychee over dist/ (run after pnpm build)
 pnpm test:e2e:install  # one-time Playwright browser install
 pnpm new-post          # scaffold a new post (flag-driven)
 pnpm build:cv          # regenerate public/cv.pdf after CV changes
@@ -182,7 +185,7 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 - One concern per PR. Small, reviewable diffs.
 - Keep `docs/phase-1-architecture.md` in sync when a decision moves.
 
-## Layout (as of M6)
+## Layout (as of M7)
 
 ```
 .
@@ -192,7 +195,8 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 │   ├── DESIGN-SYSTEM.md         # Tokens, primitives, layout catalog
 │   ├── CONTENT-GUIDE.md         # Post types, frontmatter, new-post CLI
 │   ├── CV-GUIDE.md              # Editing the CV, rebuilding the PDF
-│   └── INDIE-WEB-GUIDE.md       # /now, /uses, /colophon, /reading + palette
+│   ├── INDIE-WEB-GUIDE.md       # /now, /uses, /colophon, /reading + palette
+│   └── QUALITY-GATES.md         # Lighthouse / axe / lychee budgets + how to run locally
 ├── public/
 │   ├── fonts/            # Self-hosted Fraunces / Inter / JetBrains Mono woff2
 │   └── cv.pdf            # Committed artifact; regenerate via pnpm build:cv
@@ -263,13 +267,16 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 │   │   └── astro-content.ts   # virtual-module stub for vitest
 │   └── e2e/
 │       ├── home.spec.ts
-│       ├── blog.spec.ts  # posts, tags, series, feeds, OG, active nav
-│       ├── cv.spec.ts    # /cv, /cv/print (noindex), /cv.json, active nav
+│       ├── blog.spec.ts       # posts, tags, series, feeds, OG, active nav
+│       ├── cv.spec.ts         # /cv, /cv/print (noindex), /cv.json, active nav
 │       ├── indie-web.spec.ts  # /now, /uses, /colophon, /reading, 404
 │       ├── palette.spec.ts    # ⌘K, focus, navigation, data blob
+│       ├── a11y.spec.ts       # axe-core gate (no serious/critical violations)
 │       └── sandbox.spec.ts
 ├── astro.config.mjs
 ├── eslint.config.mjs
+├── .lighthouserc.cjs          # LHCI budgets + preview server wiring
+├── lychee.toml                # Link checker config (accepts, excludes, retries)
 ├── package.json
 ├── playwright.config.ts
 ├── renovate.json
@@ -319,7 +326,7 @@ Instagram `koraydevecioglu`. All three live in `src/data/links.ts`.
   doesn't ship with Chromium. `pnpm build:cv` runs locally and commits
   `public/cv.pdf`. If this becomes annoying later, we can move it to a
   scheduled GitHub Action.
-- Lighthouse CI, axe, lychee: stubbed in `ci.yml`. Land in M7.
+- Lighthouse CI, axe, lychee: shipped in M7; budgets and local commands in `docs/QUALITY-GATES.md`.
 - `docs/ARCHITECTURE.md`, `docs/RUNBOOK.md`, `docs/CONTRIBUTING.md`:
   write as each relevant milestone closes. `docs/DESIGN-SYSTEM.md`
   landed with M2; `docs/CONTENT-GUIDE.md` landed with M3.

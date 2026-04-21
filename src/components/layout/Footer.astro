@@ -167,7 +167,9 @@ import { SITE, SOCIAL } from "../../data/links";
   }
   .legal__license {
     margin: 0;
-    color: var(--fg-subtle);
+    /* Footer copy runs at --text-xs; `--fg-subtle` drops below WCAG AA
+       at that size against the warm paper. Step one notch darker. */
+    color: var(--fg-muted);
   }
   .legal a {
     color: inherit;
@@ -222,7 +224,8 @@ import { SITE, SOCIAL } from "../../data/links";
     margin: 0;
     font-family: var(--font-mono);
     font-size: var(--text-xs);
-    color: var(--fg-subtle);
+    /* Same WCAG AA bump as `.legal__license` — subtle at xs fails AA. */
+    color: var(--fg-muted);
   }
   .colophon a {
     color: var(--fg-muted);

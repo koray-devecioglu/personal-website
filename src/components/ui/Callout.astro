@@ -66,11 +66,11 @@ const classList = ["callout", `callout--${tone}`, klass].filter(Boolean).join(" 
     letter-spacing: var(--tracking-wider);
     color: var(--fg-muted);
   }
-  .callout--tip .callout__title {
-    color: var(--accent-strong);
-  }
+  /* Tip callouts already carry the accent via the left rule + subtle
+     fill; re-colouring the eyebrow text on top of `--accent-subtle`
+     drops contrast below AA, so keep the default muted ink. */
   .callout__sigil {
-    color: var(--fg-subtle);
+    color: var(--fg-muted);
     margin-inline-end: var(--space-2);
   }
   .callout__body :global(*:first-child) {
