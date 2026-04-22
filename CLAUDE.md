@@ -14,8 +14,10 @@ purposes in one codebase:
 2. A polished, living CV / portfolio.
 3. A structured content hub organized by post type, topic, and series.
 
-Solo project. Greenfield. The domain is registered, not yet pointed at
-anything. GitHub repo lives at `github.com/koray-devecioglu/personal-website`.
+Solo project. **Live as of 2026-04-22** at
+<https://koraydevecioglu.com>. GitHub repo is public at
+`github.com/koray-devecioglu/personal-website`. Hosting + DNS +
+email routing + analytics all run on Cloudflare's free tier.
 
 ## Your role
 
@@ -37,18 +39,18 @@ author — you handle everything else.
 
 ## Current state
 
-| Milestone | Scope                                                                                                   | Status             |
-| --------- | ------------------------------------------------------------------------------------------------------- | ------------------ |
-| M0        | Proposal approved                                                                                       | ✅                 |
-| M1        | Repo scaffold — Astro 5, TS strict, Tailwind v4, CI skeleton                                            | ✅                 |
-| M2        | Design tokens polish, self-hosted webfonts, primitives (Button, Kbd, Tag, ThemeToggle), Header, Footer  | ✅                 |
-| M3        | Content collections + Zod schemas, `scripts/new-post.ts`, sample posts of each type                     | ✅                 |
-| M4        | Blog surface — home, /posts, /tags, /series, post layout, RSS/JSON feeds, per-post OG, view transitions | ✅                 |
-| M5        | CV surface — `/cv`, `/cv/print`, `/cv.json`, Playwright PDF pipeline, Zod-validated JSON Resume         | ✅                 |
-| M6        | Indie-web polish — `/now`, `/uses`, `/colophon`, `/reading`, custom 404, ⌘K palette, Pagefind           | ✅                 |
-| M7        | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                        | ✅                 |
-| **M8**    | Launch (DNS, SSL, email routing, analytics, Search Console, Bing Webmaster)                             | ✅ **just landed** |
-| M9        | Post-launch (comments, webmentions, uptime, error monitoring, newsletter decision)                      | ← **next**         |
+| Milestone | Scope                                                                                                   | Status     |
+| --------- | ------------------------------------------------------------------------------------------------------- | ---------- |
+| M0        | Proposal approved                                                                                       | ✅         |
+| M1        | Repo scaffold — Astro 5, TS strict, Tailwind v4, CI skeleton                                            | ✅         |
+| M2        | Design tokens polish, self-hosted webfonts, primitives (Button, Kbd, Tag, ThemeToggle), Header, Footer  | ✅         |
+| M3        | Content collections + Zod schemas, `scripts/new-post.ts`, sample posts of each type                     | ✅         |
+| M4        | Blog surface — home, /posts, /tags, /series, post layout, RSS/JSON feeds, per-post OG, view transitions | ✅         |
+| M5        | CV surface — `/cv`, `/cv/print`, `/cv.json`, Playwright PDF pipeline, Zod-validated JSON Resume         | ✅         |
+| M6        | Indie-web polish — `/now`, `/uses`, `/colophon`, `/reading`, custom 404, ⌘K palette, Pagefind           | ✅         |
+| M7        | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                        | ✅         |
+| M8        | Launch (DNS, SSL, email routing, analytics, Search Console, Bing Webmaster)                             | ✅         |
+| **M9**    | Post-launch (comments, webmentions, uptime, error monitoring, newsletter decision)                      | ← **next** |
 
 ## Stack (locked in Phase 1)
 
@@ -193,11 +195,12 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 ├── docs/
 │   ├── phase-1-architecture.md  # THE bible for architecture decisions
 │   ├── DESIGN-SYSTEM.md         # Tokens, primitives, layout catalog
-│   ├── CONTENT-GUIDE.md         # Post types, frontmatter, new-post CLI
+│   ├── CONTENT-GUIDE.md         # Post types, frontmatter, new-post CLI (reference)
+│   ├── AUTHORING.md             # "Write my first post" walkthrough (workflow)
 │   ├── CV-GUIDE.md              # Editing the CV, rebuilding the PDF
 │   ├── INDIE-WEB-GUIDE.md       # /now, /uses, /colophon, /reading + palette
 │   ├── QUALITY-GATES.md         # Lighthouse / axe / lychee budgets + how to run locally
-│   └── LAUNCH-RUNBOOK.md        # M8 launch steps — Cloudflare, DNS, email, GSC, Bing
+│   └── LAUNCH-RUNBOOK.md        # M8 launch steps + post-launch ops recipes
 ├── public/
 │   ├── fonts/            # Self-hosted Fraunces / Inter / JetBrains Mono woff2
 │   └── cv.pdf            # Committed artifact; regenerate via pnpm build:cv
@@ -298,8 +301,12 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
   `/public/` or an external URL.
 - **Real indie-web copy.** `/now`, `/uses`, and `/reading` ship with
   placeholder markdown. `/colophon` is accurate — it describes the
-  site itself. Edit the four files under `src/content/pages/`. See
-  `docs/INDIE-WEB-GUIDE.md`.
+  site itself. Edit the three placeholder files under
+  `src/content/pages/`. See `docs/INDIE-WEB-GUIDE.md`.
+- **First real posts.** The sample posts (`welcome`, `how-m2-landed`,
+  etc.) exist to exercise every post type and layout. Treat them as
+  scaffolding — keep, delete, or rewrite as you begin publishing.
+  See `docs/AUTHORING.md` for the sit-down-and-write workflow.
 
 Confirmed handles: GitHub `koray-devecioglu`, LinkedIn `koraydevecioglu`,
 Instagram `koraydevecioglu`. All three live in `src/data/links.ts`.
@@ -331,11 +338,13 @@ Instagram `koraydevecioglu`. All three live in `src/data/links.ts`.
   scheduled GitHub Action.
 - Lighthouse CI, axe, lychee: shipped in M7; budgets and local commands in `docs/QUALITY-GATES.md`.
 - Launch ops (DNS, Pages, email, GSC, Bing): shipped in M8; step-by-step
-  in `docs/LAUNCH-RUNBOOK.md`.
+  in `docs/LAUNCH-RUNBOOK.md`, including post-launch ops recipes
+  (`www` → apex redirect, analytics-token rotation, email routing
+  verification).
 - `docs/ARCHITECTURE.md`, `docs/CONTRIBUTING.md`: write as each relevant
   milestone closes. `docs/DESIGN-SYSTEM.md` landed with M2;
-  `docs/CONTENT-GUIDE.md` landed with M3; `docs/LAUNCH-RUNBOOK.md`
-  landed with M8.
+  `docs/CONTENT-GUIDE.md` landed with M3; `docs/AUTHORING.md` landed
+  with M8's wrap-up; `docs/LAUNCH-RUNBOOK.md` landed with M8.
 
 ## Things NOT to do without checking with Koray
 
