@@ -5,7 +5,15 @@
   "type": "module",
   "description": "koraydevecioglu.com — personal site, blog, and CV.",
   "author": "Koray Devecioglu <koraydevecioglu@gmail.com>",
-  "license": "UNLICENSED",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/koray-devecioglu/personal-website.git"
+  },
+  "homepage": "https://koraydevecioglu.com",
+  "bugs": {
+    "url": "https://github.com/koray-devecioglu/personal-website/issues"
+  },
   "packageManager": "pnpm@9.15.0",
   "engines": {
     "node": ">=22.0.0 <23"

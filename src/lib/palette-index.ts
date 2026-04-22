@@ -13,7 +13,7 @@
  * query and merges its hits into the result list.
  */
 
-import { SOCIAL } from "../data/links";
+import { SITE, SOCIAL } from "../data/links";
 import {
   collectTags,
   formatPostDate,
@@ -101,6 +101,15 @@ const ACTIONS: PaletteItem[] = [
     subtitle: "/feed.json",
     href: "/feed.json",
     keywords: ["feed", "subscribe", "json"],
+  },
+  {
+    id: "action:email",
+    kind: "action",
+    title: "Send email",
+    subtitle: SITE.email,
+    href: `mailto:${SITE.email}`,
+    external: true,
+    keywords: ["contact", "mail", "reach", "write", "hello", "hi"],
   },
   {
     id: "action:source",

@@ -2,9 +2,14 @@
 
 _Authored for M3. Updated as new types and fields land._
 
-This is the operational manual for writing on the site. It covers the
-available post types, what each frontmatter field does, how tags are
-governed, and the one-command scaffolder.
+This is the **reference manual** for writing on the site. It covers
+the available post types, what each frontmatter field does, how tags
+are governed, and the one-command scaffolder.
+
+> Looking for a "sit down and write my first post" walkthrough?
+> See [**`AUTHORING.md`**](./AUTHORING.md) — the workflow-oriented
+> companion to this document. Use this one as a lookup; use that one
+> as a tutorial.
 
 For the "why" behind these decisions, see
 [`docs/phase-1-architecture.md`](./phase-1-architecture.md) §4.

@@ -112,6 +112,9 @@ once before `pnpm preview` is enough to exercise Pagefind end-to-end.
   other theme-aware island.
 - **Copy page URL** — writes `window.location.href` to the clipboard.
 - **RSS feed / JSON feed** — navigates to `/rss.xml`, `/feed.json`.
+- **Send email** — opens a `mailto:` to `SITE.email`
+  (`hi@koraydevecioglu.com`). Single source of truth for the
+  address lives in `src/data/links.ts`.
 - **View source on GitHub** — opens the repo in a new tab.
 
 ### Accessibility
