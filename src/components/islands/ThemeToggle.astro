@@ -221,4 +221,9 @@
   } else {
     init();
   }
+
+  // Astro's ClientRouter swaps the DOM on navigation, so the click
+  // handler bound to the previous page's button vanishes with it.
+  // Re-bind against the freshly mounted button after each swap.
+  document.addEventListener("astro:after-swap", init);
 </script>
