@@ -293,10 +293,6 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 
 ## Residual info Koray still owes
 
-- **Real CV content.** `src/data/resume.json` ships as placeholder
-  (fictional employers / schools, real basics). Replace the `work`,
-  `education`, `skills`, `languages`, `publications`, and `projects`
-  arrays. See `docs/CV-GUIDE.md` for the workflow.
 - A résumé photo (optional) for `basics.image` — served from
   `/public/` or an external URL.
 - **Real indie-web copy.** `/now`, `/uses`, and `/reading` ship with

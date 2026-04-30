@@ -1,16 +1,14 @@
 {
-  "_placeholder": true,
-  "_note": "PLACEHOLDER résumé — realistic structure, fictional employers / schools. Replace the `work`, `education`, `skills`, `languages`, `publications`, and `projects` arrays with real content before launch. `basics.name`, `basics.email`, and profile URLs already reflect Koray's real identity.",
-
   "basics": {
     "name": "Koray Devecioglu",
-    "label": "Senior software engineer",
+    "label": "Software engineer",
     "email": "hi@koraydevecioglu.com",
     "url": "https://koraydevecioglu.com",
-    "summary": "Placeholder summary — replace. Two or three sentences that explain what Koray builds, what he's good at, and what kind of problems he's looking for next. Voice stays the same as the blog: concrete, direct, no corporate fluff.",
+    "summary": "Software engineer with a decade of experience across embedded systems, networking, and connected products. Currently building smart lighting experiences for Philips Hue at Signify; previously worked on embedded Wi-Fi at Airties, tactical and consumer networking at NETAŞ, and image processing at EVSTEK. Comfortable from kernel-level C up to product-shaped problems.",
     "location": {
-      "city": "—",
-      "countryCode": "TR"
+      "city": "Eindhoven",
+      "region": "North Brabant",
+      "countryCode": "NL"
     },
     "profiles": [
       {
@@ -28,96 +26,124 @@
 
   "work": [
     {
-      "name": "Northwind Systems",
-      "position": "Senior software engineer",
-      "url": "https://example.com/northwind",
-      "location": "Remote",
-      "startDate": "2023-06",
-      "summary": "Placeholder role. Platform team for a multi-tenant B2B SaaS, focused on reliability and developer experience.",
+      "name": "Signify",
+      "position": "Software Engineer",
+      "url": "https://www.signify.com",
+      "location": "Eindhoven, Netherlands",
+      "startDate": "2022-06",
       "highlights": [
-        "Designed and shipped a typed event bus that replaced three ad-hoc pub/sub mechanisms, cutting onboarding time for new services from days to hours.",
-        "Led the migration from a monolithic Postgres to per-tenant schema isolation — zero downtime, 40% reduction in noisy-neighbour latency.",
-        "Mentored two engineers through promotion; authored the team's incident-writeup template now used org-wide."
+        "Build reliable, scalable smart lighting experiences for Philips Hue, focused on connected-system interaction and reliability.",
+        "Work across cross-functional teams to integrate intelligence into everyday environments and improve product experience.",
+        "Apply systems and problem-solving skills to performance and reliability challenges in smart lighting technology."
       ]
     },
     {
-      "name": "Contoso Logistics",
-      "position": "Software engineer",
-      "url": "https://example.com/contoso",
-      "location": "Istanbul, Turkey",
-      "startDate": "2020-09",
-      "endDate": "2023-05",
-      "summary": "Placeholder role. Owned the routing engine for a same-day delivery platform across three countries.",
+      "name": "Airties",
+      "position": "Senior Software Engineer",
+      "url": "https://www.airties.com",
+      "location": "İzmir, Turkey",
+      "startDate": "2020-11",
+      "endDate": "2022-05",
       "highlights": [
-        "Rebuilt the ETA estimator around a streaming model; reduced MAPE from 18% to 7% on the top three metros.",
-        "Introduced property-based testing into the routing codebase; regressions-found-before-prod went from 40% to 85%.",
-        "Shipped the driver-facing iOS app's offline-first queue — held up through a regional ISP outage that used to take ops offline."
+        "Led design and development of embedded software in C for Airties' Smart Wi-Fi portfolio.",
+        "Specialised in Linux kernel and IEEE 802.11; ran delivery on Agile cycles.",
+        "Tailored software features for major operator clients including AT&T and Vodafone."
       ]
     },
     {
-      "name": "Fabrikam",
-      "position": "Junior software engineer",
-      "url": "https://example.com/fabrikam",
-      "location": "Istanbul, Turkey",
-      "startDate": "2018-08",
-      "endDate": "2020-08",
-      "summary": "Placeholder first role. Backend squad for a consumer-facing e-commerce site.",
+      "name": "NETAŞ",
+      "position": "Embedded Software Engineer",
+      "url": "https://www.netas.com.tr",
+      "location": "İstanbul, Turkey",
+      "startDate": "2016-05",
+      "endDate": "2020-11",
+      "summary": "Four and a half years of embedded networking work across three projects: TASMUS tactical field communications, the ZTE Home Gateway technology transfer, and Electric Vehicle charging.",
       "highlights": [
-        "Cut the checkout API's p95 latency from 1.1s to 280ms by precomputing cart totals and reworking the tax pipeline.",
-        "Wrote the team's first load-test harness; findings drove a rewrite of the inventory reservation path."
+        "Built embedded software in C/C++ for TASMUS, the Turkish Armed Forces' Tactical Field Communication System — routing architectures plus OSPF, BGP, PIM-SM, MSDP, IGMP, DHCP, ECMP, and load-balancing across TCP/IP and IPv4/IPv6.",
+        "Joined a technology-transfer project between ZTE (China) and NETAŞ (Turkey), including a one-month on-site stint with ZTE R&D in China; built modem web interfaces using TR-069, JavaScript, HTML, CSS, and Lua.",
+        "Designed Dynamic Load Management algorithms for Electric Vehicle charging in C++ with a RAD Studio C++ Builder GUI; implemented DHCP, IPSec, and ZeroMQ networking layers."
+      ]
+    },
+    {
+      "name": "EVSTEK Information Tech",
+      "position": "Software Engineer",
+      "location": "Kocaeli, Turkey",
+      "startDate": "2015-12",
+      "endDate": "2016-05",
+      "highlights": [
+        "Designed and implemented digital image-processing methods in C++.",
+        "Modelled and simulated project features in MATLAB and Simulink against spec.",
+        "Maintained and extended user-interface software."
       ]
     }
   ],
 
   "education": [
     {
-      "institution": "Placeholder Technical University",
-      "area": "Computer engineering",
-      "studyType": "B.Sc.",
-      "startDate": "2014",
+      "institution": "Kocaeli Üniversitesi",
+      "area": "Electronics and Communications Engineering",
+      "studyType": "M.Sc.",
+      "startDate": "2016",
       "endDate": "2018"
+    },
+    {
+      "institution": "Anadolu Üniversitesi",
+      "area": "Business Administration",
+      "studyType": "B.A.",
+      "startDate": "2012",
+      "endDate": "2016"
+    },
+    {
+      "institution": "Kocaeli Üniversitesi",
+      "area": "Electronics and Communications Engineering",
+      "studyType": "B.Sc.",
+      "startDate": "2011",
+      "endDate": "2015"
     }
   ],
 
   "skills": [
     {
       "name": "Languages",
-      "keywords": ["TypeScript", "Go", "Python", "SQL", "Shell"]
+      "keywords": ["C", "C++", "Rust", "MATLAB", "JavaScript", "Lua"]
     },
     {
       "name": "Systems",
-      "keywords": ["Postgres", "Redis", "Kafka", "Docker", "Kubernetes", "AWS"]
+      "keywords": ["Linux kernel", "Embedded systems", "TCP/IP", "IPv4/IPv6", "Async networking"]
+    },
+    {
+      "name": "Networking protocols",
+      "keywords": [
+        "IEEE 802.11",
+        "Zigbee",
+        "OSPF",
+        "BGP",
+        "PIM-SM",
+        "MSDP",
+        "IGMP",
+        "DHCP",
+        "IPSec",
+        "TR-069",
+        "ZeroMQ"
+      ]
     },
     {
       "name": "Practice",
       "keywords": [
-        "Distributed systems",
-        "API design",
-        "Performance engineering",
-        "Mentoring",
-        "Incident response"
+        "Digital image processing",
+        "Agile delivery",
+        "Cross-functional collaboration",
+        "Technical documentation"
       ]
     }
   ],
 
   "languages": [
     { "language": "Turkish", "fluency": "Native" },
-    { "language": "English", "fluency": "Fluent" }
+    { "language": "English", "fluency": "Professional working proficiency" }
   ],
 
-  "projects": [
-    {
-      "name": "koraydevecioglu.com",
-      "description": "This site. Astro 5, TypeScript strict, Tailwind v4, MDX, built content-first with a Zod-validated collection layer and a typed résumé pipeline.",
-      "url": "https://github.com/koray-devecioglu/personal-website",
-      "startDate": "2026-03",
-      "highlights": [
-        "Milestone-driven build with per-phase PRs and a reproducible local gate.",
-        "Zero-cookie analytics, self-hosted variable fonts, dynamic OG images at build time."
-      ],
-      "keywords": ["Astro", "TypeScript", "Zod", "Tailwind v4"]
-    }
-  ],
+  "projects": [],
 
   "publications": [],
 
