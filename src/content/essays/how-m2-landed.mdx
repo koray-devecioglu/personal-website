@@ -1,24 +1,71 @@
 ---
-title: "How the design system landed"
-description: "Placeholder MDX essay: a short tour of the M2 design-system work, used to exercise the .mdx pipeline."
-date: 2026-04-19
+title: "How the design system actually landed"
+description: "The practical design decisions behind this site: typography, tokens, and the tiny component set that kept everything consistent."
+date: 2026-04-25
 slug: how-m2-landed
-tags: [astro, writing, site-news]
+tags: [astro, writing, site-news, performance]
 series: building-this-site
+comments: true
 ---
 
 import Callout from "../../components/ui/Callout.astro";
 
-The second milestone locked in three things: a token layer in OKLCH,
-three typefaces served from `/public/fonts`, and a handful of UI
-primitives that the rest of the site can lean on.
+I started with the classic dangerous sentence:
+
+> "I'll just make a tiny design system."
+
+![Colorful map connecting design tokens to UI primitives and pages.](/images/series/design-system-map.svg)
+
+Two hours later I was naming color tokens like a person assigning
+superhero aliases to beige.
+
+So I simplified hard.
+
+## The three decisions that mattered
+
+### 1) Typography first, components second
+
+This site is mostly reading, so type does most of the visual work.
+I locked in three fonts with strict roles:
+
+- Fraunces for long-form voice.
+- Inter for interface chrome.
+- JetBrains Mono for structural hints (dates, tags, keyboard cues).
+
+Once that felt right, component styling became much easier.
 
 <Callout tone="tip" title="Why OKLCH">
-  Perceptual uniformity — a 10% lightness change looks like a 10% lightness
-  change, which means I can derive the accent tint and the accent-strong shade
-  from one hue without fighting the color wheel.
+  Perceptual uniformity. A 10% lightness adjustment *looks* like a 10%
+  adjustment, so extending one accent into subtle variants stops being guesswork
+  and starts being math.
 </Callout>
 
-The next milestone is this — a typed content engine, a CLI for new
-posts, and enough validation that I can't publish a malformed file
-even if I try.
+### 2) Tokens as the only source of visual truth
+
+Color, spacing, radius, motion, typography scale — all centralized.
+If the token file is healthy, the whole UI is healthy.
+
+It sounds boring. It is also the reason this site did not turn into
+"fifteen almost-identical grays."
+
+### 3) Small primitives, no design-system cosplay
+
+I only built what I needed:
+
+- `Button`
+- `Tag`
+- `Kbd`
+- `ThemeToggle`
+- `Callout`
+
+That is enough to express the site clearly without maintaining a
+component museum.
+
+## What changed after this milestone
+
+The biggest gain was not visual polish. It was speed.
+
+Once primitives were stable, building pages stopped being CSS roulette
+and became content assembly.
+
+Future me says thanks.

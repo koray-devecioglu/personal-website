@@ -1,13 +1,8 @@
 ---
 title: "Building this site"
-summary: "A running chronicle of the rebuild — architecture decisions, tradeoffs, and the occasional rewrite."
+summary: "A short, honest series on building this site: decisions, mistakes, small wins, and launch-day lessons."
 order:
   - welcome
   - how-m2-landed
+  - launch-day-lessons
 ---
-
-<!--
-  SAMPLE SERIES — scaffold only. Replace before M9.
-  The body is intentionally ignored by the current renderer; `summary`
-  is what appears on the index.
--->

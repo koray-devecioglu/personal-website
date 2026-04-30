@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Design system token map</title>
+  <desc id="desc">A colorful board showing design tokens and UI primitives connected with lines.</desc>
+  <rect width="1200" height="630" fill="#f7f4ef" />
+  <rect x="80" y="70" width="1040" height="490" rx="24" fill="#fff" stroke="#d9d1c5" stroke-width="4" />
+  <text x="130" y="130" font-family="Inter, sans-serif" font-size="34" font-weight="700" fill="#3a2f25">Design system: small, useful, honest</text>
+  <rect x="130" y="180" width="280" height="120" rx="16" fill="#ffe4ba" stroke="#c78e3d" stroke-width="4" />
+  <text x="160" y="245" font-family="JetBrains Mono, monospace" font-size="26" fill="#4a3624">tokens.css</text>
+  <rect x="470" y="180" width="260" height="120" rx="16" fill="#d9f5ef" stroke="#2f8f7f" stroke-width="4" />
+  <text x="510" y="245" font-family="JetBrains Mono, monospace" font-size="24" fill="#1f5f55">primitives</text>
+  <rect x="790" y="180" width="280" height="120" rx="16" fill="#e2e7ff" stroke="#5064b8" stroke-width="4" />
+  <text x="845" y="245" font-family="JetBrains Mono, monospace" font-size="24" fill="#35478a">pages</text>
+  <line x1="410" y1="240" x2="470" y2="240" stroke="#7f6a57" stroke-width="4" />
+  <line x1="730" y1="240" x2="790" y2="240" stroke="#7f6a57" stroke-width="4" />
+  <rect x="150" y="360" width="160" height="70" rx="12" fill="#f3f3f3" stroke="#b7b7b7" />
+  <text x="183" y="405" font-family="Inter, sans-serif" font-size="22" fill="#3d3d3d">Button</text>
+  <rect x="340" y="360" width="160" height="70" rx="12" fill="#f3f3f3" stroke="#b7b7b7" />
+  <text x="393" y="405" font-family="Inter, sans-serif" font-size="22" fill="#3d3d3d">Tag</text>
+  <rect x="530" y="360" width="160" height="70" rx="12" fill="#f3f3f3" stroke="#b7b7b7" />
+  <text x="586" y="405" font-family="Inter, sans-serif" font-size="22" fill="#3d3d3d">Kbd</text>
+  <rect x="720" y="360" width="160" height="70" rx="12" fill="#f3f3f3" stroke="#b7b7b7" />
+  <text x="748" y="405" font-family="Inter, sans-serif" font-size="22" fill="#3d3d3d">ThemeToggle</text>
+  <rect x="910" y="360" width="160" height="70" rx="12" fill="#f3f3f3" stroke="#b7b7b7" />
+  <text x="949" y="405" font-family="Inter, sans-serif" font-size="22" fill="#3d3d3d">Callout</text>
+</svg>
