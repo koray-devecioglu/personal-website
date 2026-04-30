@@ -17,10 +17,10 @@ import "../../styles/global.css";
 import "../../styles/cv-print.css";
 import CVContent from "../../components/cv/CVContent.astro";
 import { loadResume } from "../../lib/resume";
-import { SITE } from "../../data/links";
+import { PROFILE_LABEL, SITE } from "../../data/links";
 
 const resume = loadResume();
-const title = `${resume.basics.name} — CV`;
+const title = `${resume.basics.name} — ${PROFILE_LABEL.doc}`;
 ---
 
 <!doctype html>

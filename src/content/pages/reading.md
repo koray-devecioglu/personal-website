@@ -1,34 +1,33 @@
 ---
 title: "Reading"
 description: "A short, honest log of what I'm reading — books, essays, and the occasional paper."
-updated: 2026-04-21
+updated: 2026-04-30
 ---
 
-A public reading log, in the loose spirit of [Tom MacWright's Books page](https://macwright.com/books/).
-I don't keep a star rating — whether I finished a book and what
-stuck with me is enough signal for most people. Links point to
-publishers or author pages; nothing here is an affiliate link.
+A public reading log inspired by
+[Tom MacWright's Books page](https://macwright.com/books/).
+No star ratings. Just what I am reading, what I finished, and what
+actually stayed with me.
 
 ## Currently reading
 
-- _Placeholder: a literary novel I keep picking up and putting down._
-- _Placeholder: a non-fiction book on systems thinking or craft._
+- **_Designing Data-Intensive Applications_** — Martin Kleppmann  
+  Slow read, high signal. Every chapter makes me rethink "simple"
+  system choices.
+- **_The Creative Act_** — Rick Rubin  
+  Less about art theory, more about attention and taste.
 
 ## Finished recently
 
-- _A work of fiction, finished in a single trip._
-- _A technical book whose ideas have already leaked into two
-  post drafts._
-- _A biography I'd recommend without reservation._
+- **_Deep Work_** — Cal Newport  
+  Re-read. The ideas are familiar; applying them is still hard.
+- **_The Pragmatic Programmer_** — Andrew Hunt, David Thomas  
+  Timeless for a reason. The code examples age; the habits do not.
+- **_Atomic Habits_** — James Clear  
+  Useful framing for systems over motivation.
 
-## Wishlist
+## Next up
 
-- _Something recommended by someone I trust enough to trust again._
-- _Something I've been orbiting for a year without pulling the
-  trigger._
-
----
-
-> _Placeholder content until the first honest sweep. Koray owes this
-> page real titles — it will get them in a follow-up commit once
-> the shelf has been photographed and catalogued._
+- **_A Philosophy of Software Design_** — John Ousterhout
+- **_Thinking in Systems_** — Donella H. Meadows
+- A great novel recommended by a friend with consistently good taste

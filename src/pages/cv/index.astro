@@ -18,6 +18,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CVContent from "../../components/cv/CVContent.astro";
 import { loadResume } from "../../lib/resume";
+import { PROFILE_LABEL } from "../../data/links";
 import "../../styles/cv.css";
 
 const resume = loadResume();
@@ -25,7 +26,7 @@ const resume = loadResume();
 
 <BaseLayout
   seoInput={{
-    title: `${resume.basics.name} — CV`,
+    title: `${resume.basics.name} — ${PROFILE_LABEL.doc}`,
     description: resume.basics.summary,
     path: "/cv",
   }}
@@ -46,7 +47,7 @@ const resume = loadResume();
   <CVContent resume={resume} />
 
   <div class="cv">
-    <nav class="cv-toolbar" aria-label="CV formats">
+    <nav class="cv-toolbar" aria-label={`${PROFILE_LABEL.doc} formats`}>
       <a href="/cv/print">Print-friendly version</a>
       <span class="cv-toolbar__sep" aria-hidden="true">·</span>
       <a href="/cv.json">JSON Resume</a>

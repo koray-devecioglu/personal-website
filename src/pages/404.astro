@@ -11,6 +11,7 @@
  * itself.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { PROFILE_LABEL } from "../data/links";
 ---
 
 <BaseLayout
@@ -35,7 +36,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <li><a href="/posts">Posts</a></li>
         <li><a href="/tags">Tags</a></li>
         <li><a href="/series">Series</a></li>
-        <li><a href="/cv">CV</a></li>
+        <li><a href="/cv">{PROFILE_LABEL.nav}</a></li>
         <li><a href="/now">Now</a></li>
         <li><a href="/uses">Uses</a></li>
         <li><a href="/colophon">Colophon</a></li>

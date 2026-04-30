@@ -4,6 +4,7 @@ description: "Placeholder tutorial: how to use `pnpm new-post` to bootstrap any 
 date: 2026-04-20
 slug: scaffold-a-post
 tags: [astro, tooling, writing]
+draft: true
 prereqs:
   [
     "Node 22 and pnpm 9 installed",

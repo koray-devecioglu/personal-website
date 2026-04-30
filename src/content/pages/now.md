@@ -1,7 +1,7 @@
 ---
 title: "Now"
 description: "A focused snapshot of what has my attention right now — work, writing, and a few small things on the side."
-updated: 2026-04-21
+updated: 2026-04-30
 ---
 
 This is a [/now page](https://nownownow.com/about) — not a changelog,
@@ -10,26 +10,28 @@ If it isn't below, it isn't currently getting my time.
 
 ## Working on
 
-- Shipping the remaining polish milestones for this site.
-- Day-to-day engineering work I'll write up as the edges come off.
+- Publishing the first real post series on this site instead of keeping
+  it in "still polishing" mode forever.
+- Turning day-to-day engineering problems into short notes while they
+  are still fresh and useful.
+- Keeping my CV/Journey page up to date so it reflects real projects,
+  not a yearly rewrite panic.
 
 ## Writing
 
-- Notes as things land; essays when an idea needs more room.
-- Keeping the backlog honest — draft or ship, nothing in between.
+- Short, practical pieces on architecture, tooling, and shipping.
+- Build logs when process is the interesting part.
+- Occasional personal essays when something outside work teaches the
+  same lesson better.
 
 ## Reading
 
-- Whichever book sits on the nightstand longest wins.
-  The current rotation is over on the [reading page](/reading).
+- Rotating between one technical book and one non-technical book.
+- Capturing a few lines after each finished book on the
+  [reading page](/reading) so recommendations do not rely on memory.
 
 ## Off screen
 
-- BBQ projects that demand long patient afternoons.
-- Running, slower than I'd like, more often than I did last year.
-- Enough travel to keep the camera roll from looking like a diff.
-
----
-
-> _Last updated 21 April 2026. This page is an unapologetic placeholder
-> until Koray rewrites it with real specifics._
+- BBQ experiments that reward patience and punish overconfidence.
+- Running regularly (still negotiating with my pace).
+- Trying to travel a little more and scroll a little less.

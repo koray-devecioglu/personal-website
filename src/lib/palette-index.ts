@@ -13,7 +13,7 @@
  * query and merges its hits into the result list.
  */
 
-import { SITE, SOCIAL } from "../data/links";
+import { PROFILE_LABEL, SITE, SOCIAL } from "../data/links";
 import {
   collectTags,
   formatPostDate,
@@ -50,7 +50,7 @@ const JUMP_ROUTES: PaletteItem[] = [
   { id: "jump:posts", kind: "jump", title: "All posts", href: "/posts" },
   { id: "jump:tags", kind: "jump", title: "Tags", href: "/tags" },
   { id: "jump:series", kind: "jump", title: "Series", href: "/series" },
-  { id: "jump:cv", kind: "jump", title: "CV", href: "/cv" },
+  { id: "jump:cv", kind: "jump", title: PROFILE_LABEL.nav, href: "/cv" },
   { id: "jump:now", kind: "jump", title: "Now", href: "/now" },
   { id: "jump:uses", kind: "jump", title: "Uses", href: "/uses" },
   { id: "jump:colophon", kind: "jump", title: "Colophon", href: "/colophon" },

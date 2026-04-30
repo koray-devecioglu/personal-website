@@ -4,6 +4,7 @@ description: "Placeholder note: running commentary kept during the M3 content-en
 date: 2026-04-21
 slug: site-notes
 tags: [site-news]
+draft: true
 ---
 
 <!--
