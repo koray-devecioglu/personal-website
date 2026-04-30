@@ -4,6 +4,7 @@ description: "Placeholder bookmark: the Zod documentation, kept close because it
 date: 2026-04-16
 slug: zod-docs
 tags: [typescript, tooling]
+draft: true
 url: "https://zod.dev"
 via: "Half of the Astro examples"
 ---

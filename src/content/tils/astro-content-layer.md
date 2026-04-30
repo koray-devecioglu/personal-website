@@ -4,6 +4,7 @@ description: "Placeholder TIL: the Astro 5 migration moved from implicit folder 
 date: 2026-04-17
 slug: astro-content-layer
 tags: [astro, tooling]
+draft: true
 sourceLink: https://docs.astro.build/en/guides/content-collections/
 ---
 

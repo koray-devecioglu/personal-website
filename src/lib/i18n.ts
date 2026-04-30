@@ -10,7 +10,7 @@
  * without touching components.
  */
 
-import { SITE } from "../data/links";
+import { PROFILE_LABEL, SITE } from "../data/links";
 
 const dictionaries = {
   en: {
@@ -18,7 +18,7 @@ const dictionaries = {
     "nav.posts": "Posts",
     "nav.tags": "Tags",
     "nav.series": "Series",
-    "nav.cv": "CV",
+    "nav.cv": PROFILE_LABEL.nav,
 
     "home.hero.eyebrow": "Writing · CV · Notes",
     "home.hero.title": "Thinking out loud, in public.",

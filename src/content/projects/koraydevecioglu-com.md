@@ -4,6 +4,7 @@ description: "Placeholder project write-up for the site itself, used to exercise
 date: 2026-04-15
 slug: koraydevecioglu-com
 tags: [astro, architecture, site-news]
+draft: true
 role: "Designer, engineer, sole author"
 stack: ["astro", "typescript", "tailwind", "mdx", "zod"]
 status: active

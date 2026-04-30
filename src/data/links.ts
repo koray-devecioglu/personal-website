@@ -17,6 +17,17 @@ export const SITE = {
   locale: "en",
 } as const;
 
+/**
+ * Public label for the `/cv` surface.
+ *
+ * Route intentionally stays `/cv` for URL stability and existing links.
+ */
+export const PROFILE_LABEL = {
+  nav: "Journey",
+  heading: "Career Journey",
+  doc: "Career Journey",
+} as const;
+
 export const SOCIAL = {
   github: {
     handle: "koray-devecioglu",
