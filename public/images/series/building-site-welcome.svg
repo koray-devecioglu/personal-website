@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Notebook and terminal illustration</title>
+  <desc id="desc">A playful illustration of a notebook beside a terminal window, representing building a site in public.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8efe0" />
+      <stop offset="100%" stop-color="#f2dcc0" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect x="90" y="80" width="620" height="470" rx="28" fill="#fffaf3" stroke="#c78e3d" stroke-width="6" />
+  <line x1="180" y1="150" x2="650" y2="150" stroke="#e6c7a0" stroke-width="4" />
+  <line x1="180" y1="210" x2="650" y2="210" stroke="#e6c7a0" stroke-width="4" />
+  <line x1="180" y1="270" x2="650" y2="270" stroke="#e6c7a0" stroke-width="4" />
+  <line x1="180" y1="330" x2="650" y2="330" stroke="#e6c7a0" stroke-width="4" />
+  <line x1="180" y1="390" x2="650" y2="390" stroke="#e6c7a0" stroke-width="4" />
+  <rect x="520" y="130" width="560" height="360" rx="20" fill="#231f20" />
+  <circle cx="560" cy="162" r="8" fill="#ff6b6b" />
+  <circle cx="588" cy="162" r="8" fill="#ffd166" />
+  <circle cx="616" cy="162" r="8" fill="#4ecdc4" />
+  <text x="570" y="235" font-family="JetBrains Mono, monospace" font-size="28" fill="#f5f5f5">&gt; pnpm dev</text>
+  <text x="570" y="285" font-family="JetBrains Mono, monospace" font-size="24" fill="#9be7c4">Local: http://localhost:4321</text>
+  <text x="570" y="335" font-family="JetBrains Mono, monospace" font-size="24" fill="#ffd58f">Building this site in public...</text>
+  <circle cx="130" cy="510" r="34" fill="#c78e3d" />
+  <path d="M114 510h32M130 494v32" stroke="#fffaf3" stroke-width="6" stroke-linecap="round" />
+</svg>
