@@ -1,0 +1,210 @@
+---
+/**
+ * Comments — giscus widget, lazy-loaded and theme-synced.
+ *
+ * Why lazy: the giscus client + its iframe weigh ~80 KB and pull a
+ * cross-origin script from giscus.app. Most readers never scroll to
+ * the bottom of a long-form essay, so loading on visibility (via
+ * IntersectionObserver) means most page loads pay zero cost for a
+ * feature they don't use.
+ *
+ * Why a wrapper instead of dropping the giscus <script> directly:
+ *   - Three-state theme sync (system / light / dark). The site's
+ *     ThemeToggle and CommandPalette already dispatch a `theme-change`
+ *     custom event; this component listens and forwards a giscus
+ *     `setConfig` postMessage so the iframe re-themes in step.
+ *   - SPA-safe. Astro's ClientRouter swaps the DOM on navigation;
+ *     binding the observer + theme listener fresh on each
+ *     `astro:after-swap` keeps a per-post comment widget instead of a
+ *     stale handle from the previous page.
+ *
+ * Server-side concerns: the component renders a placeholder <section>
+ * carrying the giscus config as data attributes. Nothing executes
+ * until the browser observer fires.
+ */
+
+import { GISCUS } from "../../data/comments";
+
+const data = {
+  repo: GISCUS.repo,
+  repoId: GISCUS.repoId,
+  category: GISCUS.category,
+  categoryId: GISCUS.categoryId,
+  mapping: GISCUS.mapping,
+  strict: GISCUS.strict ? "1" : "0",
+  reactionsEnabled: GISCUS.reactionsEnabled ? "1" : "0",
+  emitMetadata: GISCUS.emitMetadata ? "1" : "0",
+  inputPosition: GISCUS.inputPosition,
+  lang: GISCUS.lang,
+};
+---
+
+<section
+  class="comments"
+  aria-label="Comments"
+  data-comments
+  data-comments-repo={data.repo}
+  data-comments-repo-id={data.repoId}
+  data-comments-category={data.category}
+  data-comments-category-id={data.categoryId}
+  data-comments-mapping={data.mapping}
+  data-comments-strict={data.strict}
+  data-comments-reactions-enabled={data.reactionsEnabled}
+  data-comments-emit-metadata={data.emitMetadata}
+  data-comments-input-position={data.inputPosition}
+  data-comments-lang={data.lang}
+>
+  <h2 class="comments__heading">Comments</h2>
+  <p class="comments__hint">
+    Comments are powered by <a
+      href="https://giscus.app"
+      rel="noopener noreferrer"
+      target="_blank">giscus</a
+    >. Sign in with GitHub to leave a reply.
+  </p>
+  <div class="comments__mount" data-comments-mount></div>
+</section>
+
+<script>
+  type SiteTheme = "light" | "dark" | undefined;
+
+  function giscusThemeFor(siteTheme: SiteTheme): string {
+    if (siteTheme === "light") return "light";
+    if (siteTheme === "dark") return "dark";
+    return "preferred_color_scheme";
+  }
+
+  function readSiteTheme(): SiteTheme {
+    const v = document.documentElement.dataset.theme;
+    return v === "light" || v === "dark" ? v : undefined;
+  }
+
+  function injectGiscus(section: HTMLElement, mount: HTMLElement): void {
+    if (mount.dataset.commentsLoaded === "true") return;
+    mount.dataset.commentsLoaded = "true";
+
+    const ds = section.dataset;
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+
+    // The giscus client reads these dataset entries off its own
+    // <script> tag at boot. Keep names verbatim.
+    script.setAttribute("data-repo", ds.commentsRepo ?? "");
+    script.setAttribute("data-repo-id", ds.commentsRepoId ?? "");
+    script.setAttribute("data-category", ds.commentsCategory ?? "");
+    script.setAttribute("data-category-id", ds.commentsCategoryId ?? "");
+    script.setAttribute("data-mapping", ds.commentsMapping ?? "pathname");
+    script.setAttribute("data-strict", ds.commentsStrict ?? "1");
+    script.setAttribute("data-reactions-enabled", ds.commentsReactionsEnabled ?? "1");
+    script.setAttribute("data-emit-metadata", ds.commentsEmitMetadata ?? "0");
+    script.setAttribute("data-input-position", ds.commentsInputPosition ?? "bottom");
+    script.setAttribute("data-theme", giscusThemeFor(readSiteTheme()));
+    script.setAttribute("data-lang", ds.commentsLang ?? "en");
+
+    mount.appendChild(script);
+  }
+
+  function postThemeToFrame(theme: string): void {
+    const frame = document.querySelector<HTMLIFrameElement>("iframe.giscus-frame");
+    if (!frame || !frame.contentWindow) return;
+    frame.contentWindow.postMessage(
+      { giscus: { setConfig: { theme } } },
+      "https://giscus.app",
+    );
+  }
+
+  type ThemeChangeEvent = CustomEvent<{ theme?: SiteTheme }>;
+  function isThemeChange(e: Event): e is ThemeChangeEvent {
+    return e.type === "theme-change";
+  }
+
+  /**
+   * Per-page work — find the placeholder and arm the visibility observer
+   * for it. Safe to call repeatedly across SPA navigations: the previous
+   * page's section is gone, the new one is a fresh DOM node, and the
+   * observer is local to this call so nothing accumulates.
+   */
+  function armObserver(): void {
+    const section = document.querySelector<HTMLElement>("[data-comments]");
+    const mount = document.querySelector<HTMLElement>("[data-comments-mount]");
+    if (!section || !mount) return;
+
+    // Observe the section, not the mount, so the trigger fires when the
+    // heading scrolls into view rather than waiting for the iframe slot.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          injectGiscus(section, mount);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "400px 0px" },
+    );
+    observer.observe(section);
+  }
+
+  /**
+   * Document-level listener — bound exactly once per page load and
+   * re-fires on every SPA navigation thereafter, since `document`
+   * survives ClientRouter swaps. Forwards `theme-change` to whichever
+   * giscus frame is currently mounted (or none).
+   */
+  function bindThemeListenerOnce(): void {
+    if (document.documentElement.dataset.commentsThemeBound === "true") return;
+    document.documentElement.dataset.commentsThemeBound = "true";
+    document.addEventListener("theme-change", (e) => {
+      if (!isThemeChange(e)) return;
+      postThemeToFrame(giscusThemeFor(e.detail.theme));
+    });
+  }
+
+  function boot(): void {
+    bindThemeListenerOnce();
+    armObserver();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot, { once: true });
+  } else {
+    boot();
+  }
+  document.addEventListener("astro:after-swap", boot);
+</script>
+
+<style>
+  .comments {
+    margin-block-start: var(--space-12);
+    padding-block-start: var(--space-8);
+    border-top: 1px solid var(--rule);
+  }
+  .comments__heading {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    font-weight: 650;
+    margin: 0 0 var(--space-2);
+  }
+  .comments__hint {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+    margin: 0 0 var(--space-6);
+  }
+  .comments__hint a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--rule-strong);
+  }
+  .comments__hint a:hover {
+    color: var(--accent-strong);
+    text-decoration-color: var(--accent);
+  }
+  .comments__mount {
+    /* The giscus iframe injects itself here. Reserve a small minimum
+       height so a slow load doesn't cause a content-shift jolt. */
+    min-height: 120px;
+  }
+</style>

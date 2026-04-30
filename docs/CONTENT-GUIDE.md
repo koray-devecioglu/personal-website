@@ -66,6 +66,7 @@ unless noted.
 | `toc`          | `boolean`           | Render a TOC. Default `true`.                                     |
 | `math`         | `boolean`           | Opt-in KaTeX. Default `false`.                                    |
 | `diagram`      | `boolean`           | Opt-in Mermaid. Default `false`.                                  |
+| `comments`     | `boolean`           | Opt-in giscus comment thread. Default `false`. See below.         |
 
 ## Tags
 
@@ -131,6 +132,37 @@ series: building-this-site
 The test harness (`tests/content.test.ts`) asserts both directions:
 every post's series FK resolves, and every slug in an `order[]`
 resolves to a real post.
+
+## Comments
+
+Comments are powered by [giscus](https://giscus.app), backed by GitHub
+Discussions on this repo. They are **opt-in per post** — most notes,
+TILs, and quick bookmarks don't benefit from a comment thread, and
+silence-by-default keeps the chrome out of the way of short pieces.
+
+```yaml
+---
+title: "A post worth discussing"
+comments: true
+---
+```
+
+Operationally:
+
+- The widget is **lazy-loaded** — the giscus client only fetches when
+  the comments section scrolls within 400 px of the viewport, so most
+  page loads pay zero cost.
+- Threads are keyed to the **page pathname**, so a slug rename means
+  losing the thread (we use strict matching to avoid accidental
+  cross-collision between sibling slugs).
+- Theme follows the site's `data-theme` attribute. Toggling
+  light / dark / system flips the comments widget in step.
+- New discussions are created in the repo's **Announcements**
+  category, automatically by the giscus app the first time someone
+  comments. Moderation happens on GitHub.
+- Configuration (repo, category, IDs) lives in
+  [`src/data/comments.ts`](../src/data/comments.ts) — one-file edit
+  if anything changes.
 
 ## `pnpm new-post`
 

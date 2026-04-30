@@ -39,18 +39,18 @@ author — you handle everything else.
 
 ## Current state
 
-| Milestone | Scope                                                                                                   | Status     |
-| --------- | ------------------------------------------------------------------------------------------------------- | ---------- |
-| M0        | Proposal approved                                                                                       | ✅         |
-| M1        | Repo scaffold — Astro 5, TS strict, Tailwind v4, CI skeleton                                            | ✅         |
-| M2        | Design tokens polish, self-hosted webfonts, primitives (Button, Kbd, Tag, ThemeToggle), Header, Footer  | ✅         |
-| M3        | Content collections + Zod schemas, `scripts/new-post.ts`, sample posts of each type                     | ✅         |
-| M4        | Blog surface — home, /posts, /tags, /series, post layout, RSS/JSON feeds, per-post OG, view transitions | ✅         |
-| M5        | CV surface — `/cv`, `/cv/print`, `/cv.json`, Playwright PDF pipeline, Zod-validated JSON Resume         | ✅         |
-| M6        | Indie-web polish — `/now`, `/uses`, `/colophon`, `/reading`, custom 404, ⌘K palette, Pagefind           | ✅         |
-| M7        | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                        | ✅         |
-| M8        | Launch (DNS, SSL, email routing, analytics, Search Console, Bing Webmaster)                             | ✅         |
-| **M9**    | Post-launch (comments, webmentions, uptime, error monitoring, newsletter decision)                      | ← **next** |
+| Milestone | Scope                                                                                                   | Status |
+| --------- | ------------------------------------------------------------------------------------------------------- | ------ |
+| M0        | Proposal approved                                                                                       | ✅     |
+| M1        | Repo scaffold — Astro 5, TS strict, Tailwind v4, CI skeleton                                            | ✅     |
+| M2        | Design tokens polish, self-hosted webfonts, primitives (Button, Kbd, Tag, ThemeToggle), Header, Footer  | ✅     |
+| M3        | Content collections + Zod schemas, `scripts/new-post.ts`, sample posts of each type                     | ✅     |
+| M4        | Blog surface — home, /posts, /tags, /series, post layout, RSS/JSON feeds, per-post OG, view transitions | ✅     |
+| M5        | CV surface — `/cv`, `/cv/print`, `/cv.json`, Playwright PDF pipeline, Zod-validated JSON Resume         | ✅     |
+| M6        | Indie-web polish — `/now`, `/uses`, `/colophon`, `/reading`, custom 404, ⌘K palette, Pagefind           | ✅     |
+| M7        | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                        | ✅     |
+| M8        | Launch (DNS, SSL, email routing, analytics, Search Console, Bing Webmaster)                             | ✅     |
+| **M9**    | Post-launch (comments ✅, webmentions, uptime, error monitoring, newsletter decision)                   | 🚧     |
 
 ## Stack (locked in Phase 1)
 
@@ -213,7 +213,7 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 │   │   ├── islands/      # ThemeToggle, CommandPalette (vanilla TS)
 │   │   ├── layout/       # Header (with primary nav + ⌘K), Footer
 │   │   ├── post/         # PostCard, PostHeader, PostMeta, PostFooter,
-│   │   │                 #   SeriesBanner, TableOfContents
+│   │   │                 #   SeriesBanner, TableOfContents, Comments
 │   │   └── cv/           # CVContent (shared between /cv and /cv/print)
 │   ├── content/
 │   │   ├── _schemas.ts   # Pure Zod schemas (testable, no Astro runtime)
@@ -222,6 +222,7 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 │   │   ├── essays/ tutorials/ tils/ notes/ projects/ bookmarks/ series/
 │   │   └── pages/        # /now, /uses, /colophon, /reading markdown
 │   ├── data/
+│   │   ├── comments.ts   # giscus config — repo, category, theme map
 │   │   ├── links.ts      # site + social registry (real URLs)
 │   │   └── resume.json   # JSON Resume 1.0.0 — CV source of truth
 │   ├── env.d.ts

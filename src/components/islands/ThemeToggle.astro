@@ -179,6 +179,13 @@
     buttons.forEach((b) => {
       b.setAttribute("aria-label", LABELS[next]);
     });
+
+    // Keep other islands (e.g. comments) in sync with theme changes
+    // regardless of where the toggle originates.
+    const eventTheme = next === "system" ? undefined : next;
+    document.dispatchEvent(
+      new CustomEvent("theme-change", { detail: { theme: eventTheme } }),
+    );
   }
 
   function next(current: Stored): Stored {

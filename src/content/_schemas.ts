@@ -71,10 +71,12 @@ export function postCore(image: ImageFactory) {
 
     // Per-post render toggles. Default-on for TOC; default-off for the
     // heavier dependencies (KaTeX, Mermaid) so they load only when a
-    // post actually uses them.
+    // post actually uses them. `comments` is opt-in per post — most
+    // notes / TILs don't need a comment thread.
     toc: z.boolean().default(true),
     math: z.boolean().default(false),
     diagram: z.boolean().default(false),
+    comments: z.boolean().default(false),
   });
 }
 

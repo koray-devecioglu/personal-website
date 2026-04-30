@@ -173,6 +173,24 @@ math: true # enables KaTeX rendering for $…$ and $$…$$
 diagram: true # enables Mermaid for ```mermaid code blocks
 ````
 
+### Comments (opt-in)
+
+If a post is the kind that benefits from discussion (an essay, a
+debatable claim, a request-for-feedback piece), opt it in:
+
+```yaml
+---
+title: "A post worth discussing"
+comments: true
+---
+```
+
+A giscus thread, backed by GitHub Discussions on this repo, will
+appear below the post footer. The widget is lazy-loaded and theme-aware.
+Most notes, TILs, and bookmarks should leave this off — silence is
+the default for a reason. Full reference in
+[CONTENT-GUIDE.md → Comments](./CONTENT-GUIDE.md#comments).
+
 ## 5. Local verify (30 seconds)
 
 Before you commit, run the verify gate:
