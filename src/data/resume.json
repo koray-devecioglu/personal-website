@@ -109,7 +109,13 @@
     },
     {
       "name": "Systems",
-      "keywords": ["Linux kernel", "Embedded systems", "TCP/IP", "IPv4/IPv6", "Async networking"]
+      "keywords": [
+        "Linux kernel",
+        "Embedded systems",
+        "TCP/IP",
+        "IPv4/IPv6",
+        "Async networking"
+      ]
     },
     {
       "name": "Networking protocols",
