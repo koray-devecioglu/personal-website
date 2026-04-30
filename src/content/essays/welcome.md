@@ -5,6 +5,7 @@ date: 2026-04-18
 slug: welcome
 tags: [site-news, writing]
 series: building-this-site
+comments: true
 ---
 
 <!--

@@ -15,6 +15,7 @@
 import type { MarkdownHeading } from "astro";
 
 import BaseLayout from "./BaseLayout.astro";
+import Comments from "../components/post/Comments.astro";
 import PostHeader from "../components/post/PostHeader.astro";
 import PostFooter from "../components/post/PostFooter.astro";
 import SeriesBanner from "../components/post/SeriesBanner.astro";
@@ -79,6 +80,7 @@ const showToc = post.data.toc !== false && headings.some((h) => h.depth <= 3);
     <div class="post__footer-col">
       {updated && <p class="post__updated">Updated {formatPostDate(updated)}</p>}
       <PostFooter seriesPosition={seriesPosition} prev={prev} next={next} />
+      {post.data.comments && <Comments />}
     </div>
   </article>
 </BaseLayout>

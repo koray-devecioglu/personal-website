@@ -219,6 +219,29 @@ describe("series FK integrity", () => {
   );
 });
 
+// ── Comments opt-in flag ──────────────────────────────────────────────
+
+describe("comments opt-in", () => {
+  it("defaults to false when absent from frontmatter", () => {
+    const parsed = essaySchema(imageStub).parse({
+      title: "t",
+      description: "d",
+      date: "2026-01-01",
+    });
+    expect(parsed.comments).toBe(false);
+  });
+
+  it("accepts an explicit `true` opt-in", () => {
+    const parsed = essaySchema(imageStub).parse({
+      title: "t",
+      description: "d",
+      date: "2026-01-01",
+      comments: true,
+    });
+    expect(parsed.comments).toBe(true);
+  });
+});
+
 // ── Cover / coverAlt ──────────────────────────────────────────────────
 
 describe("cover/coverAlt contract", () => {
