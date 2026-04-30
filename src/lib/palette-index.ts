@@ -38,8 +38,6 @@ export interface PaletteItem {
   href?: string;
   /** Action identifier handled client-side. */
   action?: string;
-  /** Optional mono keyboard hint shown in the right gutter. */
-  hint?: string;
   /** Extra tokens folded into the match haystack but not displayed. */
   keywords?: string[];
   /** Whether this link leaves the site. Renders with an arrow glyph. */
@@ -48,25 +46,15 @@ export interface PaletteItem {
 
 /** Static routes that should always be reachable from the palette. */
 const JUMP_ROUTES: PaletteItem[] = [
-  { id: "jump:home", kind: "jump", title: "Home", href: "/", hint: "g h" },
-  { id: "jump:posts", kind: "jump", title: "All posts", href: "/posts", hint: "g p" },
-  { id: "jump:tags", kind: "jump", title: "Tags", href: "/tags", hint: "g t" },
-  { id: "jump:series", kind: "jump", title: "Series", href: "/series", hint: "g s" },
-  { id: "jump:cv", kind: "jump", title: "CV", href: "/cv", hint: "g c" },
-  { id: "jump:now", kind: "jump", title: "Now", href: "/now", hint: "g n" },
-  { id: "jump:uses", kind: "jump", title: "Uses", href: "/uses", hint: "g u" },
-  {
-    id: "jump:colophon",
-    kind: "jump",
-    title: "Colophon",
-    href: "/colophon",
-  },
-  {
-    id: "jump:reading",
-    kind: "jump",
-    title: "Reading",
-    href: "/reading",
-  },
+  { id: "jump:home", kind: "jump", title: "Home", href: "/" },
+  { id: "jump:posts", kind: "jump", title: "All posts", href: "/posts" },
+  { id: "jump:tags", kind: "jump", title: "Tags", href: "/tags" },
+  { id: "jump:series", kind: "jump", title: "Series", href: "/series" },
+  { id: "jump:cv", kind: "jump", title: "CV", href: "/cv" },
+  { id: "jump:now", kind: "jump", title: "Now", href: "/now" },
+  { id: "jump:uses", kind: "jump", title: "Uses", href: "/uses" },
+  { id: "jump:colophon", kind: "jump", title: "Colophon", href: "/colophon" },
+  { id: "jump:reading", kind: "jump", title: "Reading", href: "/reading" },
 ];
 
 /** Actions the palette can execute client-side. */
