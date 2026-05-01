@@ -169,10 +169,19 @@
   margin-block: 2em;
 }
 
-.prose figure img {
+/* Apply rounded corners to every prose image, not just <figure>-wrapped
+ * ones. Markdown `![]()` syntax emits a bare <img>, which is what real
+ * posts use today. `max-width: 100%` keeps small inline images at their
+ * natural size; the figure rule below tightens it to a full-bleed
+ * `width: 100%` for explicitly figured editorial illustrations. */
+.prose img {
   border-radius: var(--radius-md);
-  width: 100%;
+  max-width: 100%;
   height: auto;
+}
+
+.prose figure img {
+  width: 100%;
 }
 
 .prose figcaption {
