@@ -4,4 +4,5 @@ summary: "A series on how software engineering is changing in the age of AI — 
 order:
   - software-engineering-changed
   - ai-writes-code-engineers-build-systems
+  - knowing-what-to-build
 ---
