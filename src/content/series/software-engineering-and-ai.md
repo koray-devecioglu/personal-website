@@ -5,4 +5,5 @@ order:
   - software-engineering-changed
   - ai-writes-code-engineers-build-systems
   - knowing-what-to-build
+  - everything-works-until-it-doesnt
 ---
