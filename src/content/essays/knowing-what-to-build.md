@@ -8,6 +8,8 @@ series: software-engineering-and-ai
 comments: true
 ---
 
+![Editorial illustration of a vast network of branching paths with crossed-out dead ends scattered throughout, and a single clear traced line leading through the chaos to a small glowing teal code block, suggesting that finding what to build is largely the work of pruning many possible directions down to the right one.](/images/posts/knowing-what-to-build/cover.webp)
+
 The hardest engineering work happens before code exists.
 
 It always has.
@@ -59,6 +61,8 @@ None of this shows up in a commit.
 But it decides whether the commit was worth making.
 
 ## Constraints, not capabilities
+
+![Editorial illustration of several tangled paths with crossed-out dead-end options scattered around them and one clear traced line cutting cleanly through to a single glowing code block, illustrating that engineering is largely the work of choosing what not to build.](/images/posts/knowing-what-to-build/constraints.webp)
 
 A surprising amount of engineering is choosing what _not_ to build.
 
