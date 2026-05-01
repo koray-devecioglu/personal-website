@@ -27,6 +27,7 @@ export const ALLOWED_TAGS = [
   "performance",
   "refactoring",
   "devops",
+  "ai",
 
   // Writing craft + meta
   "writing",

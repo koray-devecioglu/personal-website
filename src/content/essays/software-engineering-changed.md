@@ -3,7 +3,8 @@ title: "Software engineering changed. Most people didn't notice."
 description: "I write less code than I used to — and I'm a better engineer because of it. On how AI moved the bottleneck from typing to thinking, and what that means for the engineers who'll do well next."
 date: 2026-05-01
 slug: software-engineering-changed
-tags: [architecture, tooling]
+tags: [architecture, tooling, ai]
+series: software-engineering-and-ai
 comments: true
 ---
 

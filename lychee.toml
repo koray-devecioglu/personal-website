@@ -39,6 +39,13 @@ exclude = [
   "^https?://([a-z0-9-]+\\.)?linkedin\\.com/",
   # Instagram often returns 500 for unauthenticated profile HEAD checks.
   "^https?://(www\\.)?instagram\\.com/",
+  # During PR builds, newly generated content routes don't exist on the
+  # production hostname yet. Lychee still sees absolute canonical/OG URLs
+  # inside dist HTML and would 404 them pre-merge.
+  #
+  # We still validate internal route integrity via root-dir file checks,
+  # so this only skips premature live-host checks for dynamic content pages.
+  "^https?://(www\\.)?koraydevecioglu\\.com/(posts|series|tags)/",
 ]
 
 # Follow redirects; some CDN-backed hosts redirect `http` to `https`
