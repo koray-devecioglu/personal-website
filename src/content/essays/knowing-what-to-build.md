@@ -1,11 +1,10 @@
 ---
 title: "Code is easy now. Knowing what to build isn't."
 description: "AI made code generation cheap. The bottleneck moved upstream — to problem framing, constraint-setting, and the small decisions that decide whether what gets built was worth building at all."
-date: 2026-05-01
+date: 2026-05-02
 slug: knowing-what-to-build
 tags: [architecture, tooling, ai]
 series: software-engineering-and-ai
-draft: true
 comments: true
 ---
 
