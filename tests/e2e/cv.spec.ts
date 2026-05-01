@@ -61,7 +61,9 @@ test.describe("cv surface", () => {
     page,
   }) => {
     await page.goto("/cv");
-    const link = page.locator(".site-nav__link.is-active", { hasText: /CV/i });
+    const link = page.locator(".site-nav__link.is-active", {
+      hasText: /(CV|Journey)/i,
+    });
     await expect(link).toBeVisible();
   });
 });
