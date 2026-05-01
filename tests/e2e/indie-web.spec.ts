@@ -54,7 +54,7 @@ test.describe("404 page", () => {
     // these links.
     const nav = page.getByRole("navigation", { name: /Site navigation/i });
     await expect(nav.getByRole("link", { name: /^Home$/ })).toBeVisible();
-    await expect(nav.getByRole("link", { name: /^CV$/ })).toBeVisible();
+    await expect(nav.getByRole("link", { name: /^(CV|Journey)$/ })).toBeVisible();
   });
 
   test("/404 is explicitly noindex", async ({ page }) => {
