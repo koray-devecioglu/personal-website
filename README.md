@@ -178,12 +178,36 @@ The **code** (components, TS, CSS, build scripts, CI config) is
 share and adapt with attribution, but you shouldn't pass Koray's
 essays off as your own writing.
 
-## Contributing
+## Support & contact
+
+Need a hand, spotted something broken, or want to reach the maintainer?
+
+- **Onboarding / how things work** — start with the
+  [documentation](#documentation) table above; each milestone ships its
+  own guide.
+- **Bugs, broken links, a11y issues** — open a
+  [GitHub issue](https://github.com/koray-devecioglu/personal-website/issues)
+  using the bug-report template.
+- **Feature ideas for the tooling** — open a feature-request issue.
+- **Anything else** — email `hi@koraydevecioglu.com`, or find Koray on
+  [GitHub](https://github.com/koray-devecioglu),
+  [LinkedIn](https://www.linkedin.com/in/koraydevecioglu/), and
+  [Instagram](https://www.instagram.com/koraydevecioglu/) (all registered
+  in [`src/data/links.ts`](src/data/links.ts)).
+
+## Maintainer & contributing
+
+Built and maintained by **Koray Devecioglu**
+([@koray-devecioglu](https://github.com/koray-devecioglu)) — sole author
+and product owner.
 
 This is a single-author personal site — PRs adding content are out of
 scope. But typo fixes, broken-link reports, accessibility issues, or
 bugs in the tooling (`new-post`, build scripts, CI) are welcome. Open
-an issue first if the change is non-trivial.
+an issue first if the change is non-trivial, and run the full local
+gate — `pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build`
+— before opening a PR. The CI gate is the point, so every change goes
+through a PR, even solo.
 
 ## License
 
