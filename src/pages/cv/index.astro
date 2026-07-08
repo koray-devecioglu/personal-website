@@ -18,6 +18,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CVContent from "../../components/cv/CVContent.astro";
 import { loadResume } from "../../lib/resume";
+import { personJsonLd } from "../../lib/structured-data";
 import { PROFILE_LABEL } from "../../data/links";
 import "../../styles/cv.css";
 
@@ -30,6 +31,7 @@ const resume = loadResume();
     description: resume.basics.summary,
     path: "/cv",
   }}
+  jsonLd={personJsonLd({ jobTitle: resume.basics.label })}
 >
   {
     resume._placeholder && (
