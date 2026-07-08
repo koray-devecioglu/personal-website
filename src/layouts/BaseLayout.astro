@@ -24,6 +24,7 @@ import { SITE } from "../data/links";
 import { pageSeo, type SeoInput, type SeoOutput } from "../lib/seo";
 import Header from "../components/layout/Header.astro";
 import Footer from "../components/layout/Footer.astro";
+import ScrollReveal from "../components/islands/ScrollReveal.astro";
 
 interface Props {
   /** Pre-built SEO payload. Preferred — goes straight to the head. */
@@ -153,6 +154,10 @@ const cfAnalyticsSnippet = cfAnalyticsToken
     }
     <script is:inline>
       (function () {
+        // Flag JS availability before first paint. motion.css only hides
+        // [data-reveal] content behind html[data-js], so no-JS visitors
+        // (and crawlers) always see everything immediately.
+        document.documentElement.dataset.js = "";
         try {
           const stored = localStorage.getItem("theme");
           if (stored === "dark" || stored === "light") {
@@ -173,6 +178,7 @@ const cfAnalyticsSnippet = cfAnalyticsToken
       <slot />
     </main>
     <Footer />
+    <ScrollReveal />
 
     {cfAnalyticsSnippet && <Fragment set:html={cfAnalyticsSnippet} />}
 

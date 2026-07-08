@@ -15,6 +15,7 @@
 @import "./fonts.css";
 @import "./tokens.css";
 @import "./prose.css";
+@import "./motion.css";
 
 @theme {
   --font-sans: var(--font-sans);
@@ -44,6 +45,8 @@ html {
   -moz-osx-font-smoothing: grayscale;
   /* Avoid horizontal jitter when the scrollbar toggles. */
   scrollbar-gutter: stable;
+  /* Anchor targets clear the sticky header instead of hiding under it. */
+  scroll-padding-top: 5rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

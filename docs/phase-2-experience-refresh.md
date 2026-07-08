@@ -5,14 +5,14 @@
 > directions weighed in the open, one recommendation defended, then a
 > phased plan. Koray asked for a site that feels "modern, interactive,
 > playful, polished, and fun to explore" without losing the professional
-> register — and explicitly *not* random animation everywhere.
+> register — and explicitly _not_ random animation everywhere.
 
 ## 1. Audit — where the site actually stands
 
 The good news first: this is not an old static portfolio. It launched
 2026-04-22 on a locked, deliberate design system. The audit therefore
-splits into *what is genuinely strong* (don't touch) and *where the
-"fun to explore" request has room to land* (do touch).
+splits into _what is genuinely strong_ (don't touch) and _where the
+"fun to explore" request has room to land_ (do touch).
 
 ### Strong — keep, protect
 
@@ -36,7 +36,7 @@ splits into *what is genuinely strong* (don't touch) and *where the
 
 1. **The home page is spare to a fault.** Text hero + a flat list of
    posts. It doesn't say who Koray is beyond one sentence, doesn't show
-   the career, the project, the series, or the "code *and* BBQ" range
+   the career, the project, the series, or the "code _and_ BBQ" range
    that the whole design brief promises. First-time visitors get no
    reason to explore.
 2. **Nothing moves.** The motion tokens exist but the only transitions
@@ -46,7 +46,7 @@ splits into *what is genuinely strong* (don't touch) and *where the
    crossfade.
 3. **Cards don't invite.** `PostCard` is an editorial row (good
    instinct) but hover feedback is a single color change and the post
-   *type* (essay / TIL / tutorial) — a real navigational signal — isn't
+   _type_ (essay / TIL / tutorial) — a real navigational signal — isn't
    visible in lists.
 4. **Header is static.** Non-sticky, so navigation disappears on long
    essays; active state is a plain border.
@@ -73,13 +73,13 @@ splits into *what is genuinely strong* (don't touch) and *where the
 
 ## 2. Five creative directions
 
-| # | Direction | Feeling it creates | Pros | Cons |
-|---|-----------|--------------------|------|------|
-| 1 | **Minimal premium portfolio** — sharpen what exists, add almost no motion | Quiet luxury; a beautifully set book | Zero risk; cheap; ages well | Doesn't answer the brief — still reads static; personality stays hidden |
-| 2 | **Playful interactive developer portfolio** — mascots, drag toys, konami codes, springy everything | Dribbble-demo energy; memorable | Very "fun to explore"; shows craft | High risk of childish; fights the humanist-editorial brand and the hiring-manager audience; heavy JS |
-| 3 | **Futuristic / tech-inspired** — dark-first, glassmorphism, glows, terminal motifs | Cyberpunk product-launch | Instantly "modern" to some eyes | Exactly what CLAUDE.md forbids ("terminal cosplay", generic AI-template vibe); alienates the food/travel half of the audience |
-| 4 | **Story-driven personal homepage** — long scrolling narrative about Koray, chapters, big photography | Editorial feature piece; intimate | Best storytelling; unique | Needs photography and long copy that don't exist yet; heavy content dependency; hides the blog |
-| 5 | **Motion-heavy but elegant** — scroll-jacked scenes, parallax everywhere, Lenis smooth-scroll | Awwwards submission | Impressive on first visit | Wrong for a *reading* site; costs CWV budget; motion for its own sake violates "every motion has a job" |
+| #   | Direction                                                                                            | Feeling it creates                   | Pros                               | Cons                                                                                                                          |
+| --- | ---------------------------------------------------------------------------------------------------- | ------------------------------------ | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Minimal premium portfolio** — sharpen what exists, add almost no motion                            | Quiet luxury; a beautifully set book | Zero risk; cheap; ages well        | Doesn't answer the brief — still reads static; personality stays hidden                                                       |
+| 2   | **Playful interactive developer portfolio** — mascots, drag toys, konami codes, springy everything   | Dribbble-demo energy; memorable      | Very "fun to explore"; shows craft | High risk of childish; fights the humanist-editorial brand and the hiring-manager audience; heavy JS                          |
+| 3   | **Futuristic / tech-inspired** — dark-first, glassmorphism, glows, terminal motifs                   | Cyberpunk product-launch             | Instantly "modern" to some eyes    | Exactly what CLAUDE.md forbids ("terminal cosplay", generic AI-template vibe); alienates the food/travel half of the audience |
+| 4   | **Story-driven personal homepage** — long scrolling narrative about Koray, chapters, big photography | Editorial feature piece; intimate    | Best storytelling; unique          | Needs photography and long copy that don't exist yet; heavy content dependency; hides the blog                                |
+| 5   | **Motion-heavy but elegant** — scroll-jacked scenes, parallax everywhere, Lenis smooth-scroll        | Awwwards submission                  | Impressive on first visit          | Wrong for a _reading_ site; costs CWV budget; motion for its own sake violates "every motion has a job"                       |
 
 ### Recommendation: **"Living Editorial"** — direction 1's discipline + direction 2's warmth + direction 4's storytelling, in that priority order
 
@@ -93,7 +93,7 @@ editorial voice untouched, and add three layers on top:
    shared-element view transitions (post title morphs from list to
    article), a sticky glass header. Every motion tied to an event the
    user caused: arriving, scrolling, hovering, navigating.
-2. **A storytelling layer on the home page** — who Koray is *now*
+2. **A storytelling layer on the home page** — who Koray is _now_
    (pulled live from the CV data), what the site covers (the code/BBQ
    range as three editorial doors), the career in one glance (mini
    timeline teaser feeding /cv), the series as bodies of work.
@@ -102,7 +102,7 @@ editorial voice untouched, and add three layers on top:
    already in the font files — a typographic toy, which is exactly
    on-brand playfulness), tactile buttons, a timeline-shaped CV.
 
-Feeling created: *a well-set magazine that notices you're there.*
+Feeling created: _a well-set magazine that notices you're there._
 Professional at first glance, rewarding on the second.
 
 ## 3. Phased plan
@@ -130,7 +130,7 @@ files), no dead code found worth a standalone pass.
   `components/islands/ScrollReveal.astro` (new), `BaseLayout.astro`,
   `Header.astro`, `ui/Button.astro`.
 - **Risks:** hidden-content trap (reveal styles must only apply when JS
-  is present *and* motion is allowed — no-JS users and reduced-motion
+  is present _and_ motion is allowed — no-JS users and reduced-motion
   users must see everything immediately); sticky header vs. anchor
   scroll (needs `scroll-padding-top`).
 - **Test:** toggle `prefers-reduced-motion` and JS-off; axe pass;
@@ -207,7 +207,7 @@ files), no dead code found worth a standalone pass.
   `build`, e2e where the environment allows), doc sync
   (`DESIGN-SYSTEM.md` motion section, `CLAUDE.md` milestone table),
   commit trail per phase.
-- **Test:** the gates *are* the test.
+- **Test:** the gates _are_ the test.
 
 ## 4. Quick wins vs. bigger bets
 
