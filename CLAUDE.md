@@ -39,18 +39,19 @@ author — you handle everything else.
 
 ## Current state
 
-| Milestone | Scope                                                                                                   | Status |
-| --------- | ------------------------------------------------------------------------------------------------------- | ------ |
-| M0        | Proposal approved                                                                                       | ✅     |
-| M1        | Repo scaffold — Astro 5, TS strict, Tailwind v4, CI skeleton                                            | ✅     |
-| M2        | Design tokens polish, self-hosted webfonts, primitives (Button, Kbd, Tag, ThemeToggle), Header, Footer  | ✅     |
-| M3        | Content collections + Zod schemas, `scripts/new-post.ts`, sample posts of each type                     | ✅     |
-| M4        | Blog surface — home, /posts, /tags, /series, post layout, RSS/JSON feeds, per-post OG, view transitions | ✅     |
-| M5        | CV surface — `/cv`, `/cv/print`, `/cv.json`, Playwright PDF pipeline, Zod-validated JSON Resume         | ✅     |
-| M6        | Indie-web polish — `/now`, `/uses`, `/colophon`, `/reading`, custom 404, ⌘K palette, Pagefind           | ✅     |
-| M7        | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                        | ✅     |
-| M8        | Launch (DNS, SSL, email routing, analytics, Search Console, Bing Webmaster)                             | ✅     |
-| **M9**    | Post-launch (comments ✅, webmentions, uptime, error monitoring, newsletter decision)                   | 🚧     |
+| Milestone | Scope                                                                                                                                     | Status |
+| --------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| M0        | Proposal approved                                                                                                                         | ✅     |
+| M1        | Repo scaffold — Astro 5, TS strict, Tailwind v4, CI skeleton                                                                              | ✅     |
+| M2        | Design tokens polish, self-hosted webfonts, primitives (Button, Kbd, Tag, ThemeToggle), Header, Footer                                    | ✅     |
+| M3        | Content collections + Zod schemas, `scripts/new-post.ts`, sample posts of each type                                                       | ✅     |
+| M4        | Blog surface — home, /posts, /tags, /series, post layout, RSS/JSON feeds, per-post OG, view transitions                                   | ✅     |
+| M5        | CV surface — `/cv`, `/cv/print`, `/cv.json`, Playwright PDF pipeline, Zod-validated JSON Resume                                           | ✅     |
+| M6        | Indie-web polish — `/now`, `/uses`, `/colophon`, `/reading`, custom 404, ⌘K palette, Pagefind                                             | ✅     |
+| M7        | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                                                          | ✅     |
+| M8        | Launch (DNS, SSL, email routing, analytics, Search Console, Bing Webmaster)                                                               | ✅     |
+| **M9**    | Post-launch (comments ✅, webmentions, uptime, error monitoring, newsletter decision)                                                     | 🚧     |
+| M10       | Experience refresh ("Living Editorial") — motion layer, storytelling home, CV timeline, JSON-LD. See `docs/phase-2-experience-refresh.md` | ✅     |
 
 ## Stack (locked in Phase 1)
 
@@ -194,6 +195,7 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 ├── .github/              # CI workflows, PR + issue templates
 ├── docs/
 │   ├── phase-1-architecture.md  # THE bible for architecture decisions
+│   ├── phase-2-experience-refresh.md # M10 redesign — audit, directions, motion layer
 │   ├── DESIGN-SYSTEM.md         # Tokens, primitives, layout catalog
 │   ├── CONTENT-GUIDE.md         # Post types, frontmatter, new-post CLI (reference)
 │   ├── AUTHORING.md             # "Write my first post" walkthrough (workflow)
@@ -210,7 +212,7 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 ├── src/
 │   ├── components/
 │   │   ├── ui/           # Button, Kbd, Tag, Callout
-│   │   ├── islands/      # ThemeToggle, CommandPalette (vanilla TS)
+│   │   ├── islands/      # ThemeToggle, CommandPalette, ScrollReveal (vanilla TS)
 │   │   ├── layout/       # Header (with primary nav + ⌘K), Footer
 │   │   ├── post/         # PostCard, PostHeader, PostMeta, PostFooter,
 │   │   │                 #   SeriesBanner, TableOfContents, Comments
@@ -237,10 +239,11 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 │   │   ├── feed.ts           # feedItemsFor + buildJsonFeed
 │   │   ├── og.ts             # satori + resvg OG card renderer
 │   │   ├── i18n.ts           # UI dictionary (en-only for now)
+│   │   ├── structured-data.ts # JSON-LD builders (Person/WebSite/BlogPosting)
 │   │   ├── resume.ts         # Zod schema + loader + date helpers
 │   │   └── palette-index.ts  # command-palette data + match/search helpers
 │   ├── pages/
-│   │   ├── index.astro           # hero + latest posts
+│   │   ├── index.astro           # hero + currently strip + latest + topics + series + career teaser
 │   │   ├── sandbox.astro         # design-system showcase, noindex
 │   │   ├── posts/index.astro     # unified stream
 │   │   ├── posts/[slug].astro    # dynamic post route
@@ -260,12 +263,14 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 │       ├── fonts.css     # @font-face declarations
 │       ├── tokens.css    # design tokens — single source of truth
 │       ├── prose.css     # post-body typography
+│       ├── motion.css    # [data-reveal] entrance primitive (see ScrollReveal)
 │       ├── cv.css        # CV screen layout
 │       ├── cv-print.css  # CV print / PDF layout (A4, ink-friendly)
 │       └── global.css    # base styles + @theme bridge + imports
 ├── tests/
 │   ├── content.test.ts   # schema + FK + tag + reading-time + pages
 │   ├── lib.test.ts       # seo / feed / posts helper coverage
+│   ├── structured-data.test.ts # JSON-LD builders + script-safe serialisation
 │   ├── resume.test.ts    # CV schema + date helpers
 │   ├── palette.test.ts   # palette match / search helper coverage
 │   ├── stubs/

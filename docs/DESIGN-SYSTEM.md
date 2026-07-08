@@ -64,9 +64,13 @@ dark). One accent hue: **warm ochre / amber**.
 
 - Spacing scale: `--space-1` (4px) through `--space-24` (96px).
 - Radii: `--radius-sm` / `--radius-md` / `--radius-lg`.
-- Shadows: two tokens only — `--shadow-sm`, `--shadow-md`.
+- Shadows: `--shadow-sm`, `--shadow-md`, `--shadow-lg` (hover lifts).
 - Motion: `--motion-micro` (120ms) / `--motion-standard` (200ms) /
-  `--motion-page` (400ms). Default easing: `--ease-out`.
+  `--motion-page` (400ms) / `--motion-reveal` (550ms, entrance
+  choreography). Easings: `--ease-out` (default), `--ease-in-out`,
+  `--ease-spring` (shallow overshoot for tactile micro-lifts — settle,
+  don't bounce). All durations zero out under
+  `prefers-reduced-motion: reduce`.
 
 ### Content widths
 
@@ -127,6 +131,48 @@ stays small.
 The toggle uses `document.startViewTransition` for a crossfade on
 browsers that support it and when the user hasn't opted out of motion.
 Everywhere else the swap is instant.
+
+## Motion layer (Phase-2 experience refresh)
+
+See `docs/phase-2-experience-refresh.md` for the full rationale. The
+choreography rides three mechanisms, all dependency-free:
+
+### Scroll reveal — `[data-reveal]`
+
+Put `data-reveal` on any element and it fades/rises in when it enters
+the viewport (or on load, if it starts there). Styles live in
+`src/styles/motion.css`; the observer lives in
+`src/components/islands/ScrollReveal.astro` (included once by
+`BaseLayout`, re-arms on `astro:page-load`).
+
+Safety model — the hidden state is double-gated, so content can only be
+hidden for users who will definitely see it revealed:
+
+- `html[data-js]` (set pre-paint by `BaseLayout`) — no JS, nothing hides.
+- `prefers-reduced-motion: no-preference` — reduced motion, nothing hides.
+- `@media print` force-reveals everything — paper never scrolls.
+
+Stagger is batch-relative: elements revealed by the same observer
+callback cascade in DOM order; an element scrolled into view alone
+reveals with zero delay.
+
+### View-transition morphs
+
+`PostCard` and `PostHeader` share a per-post `transition:name`
+(`post-title-<collection>-<slug>`), so list → article navigation morphs
+the title into place. Non-supporting browsers get the ClientRouter
+crossfade.
+
+### Micro-interactions
+
+- Header: sticky translucent glass (`color-mix` + `backdrop-filter`);
+  nav underline draws in from the left on hover, stays on the active item.
+- Button: 1px lift + `--shadow-md` on primary hover, 1px press on
+  `:active`, `--ease-spring`.
+- Cards (home): 2px lift, accent top bar scales in, shadow deepens.
+- PostCard: mono type badge; hover arrow slides in after the title.
+- Hero title: Fraunces `opsz` 48 → 144 "breathing" hover
+  (reduced-motion users get no hover state at all).
 
 ## Layout shell
 
