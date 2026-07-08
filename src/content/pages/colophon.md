@@ -57,7 +57,7 @@ second paint.
 
 - **[Cloudflare Pages](https://pages.cloudflare.com)** for hosting —
   free tier, edge everywhere, unlimited bandwidth.
-- **[Cloudflare DNS + Email Routing](https://www.cloudflare.com/products/email-routing/)**
+- **[Cloudflare DNS + Email Routing](https://developers.cloudflare.com/email-routing/)**
   — `hi@koraydevecioglu.com` forwards straight to my inbox. No
   mailboxes to manage.
 - **[Cloudflare Web Analytics](https://www.cloudflare.com/web-analytics/)**
