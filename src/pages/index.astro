@@ -17,7 +17,7 @@ import PostCard from "../components/post/PostCard.astro";
 import Button from "../components/ui/Button.astro";
 import Tag from "../components/ui/Tag.astro";
 
-import { getPublishablePosts, getSeriesBundles } from "../lib/posts";
+import { collectTags, getPublishablePosts, getSeriesBundles } from "../lib/posts";
 import { readingTime } from "../lib/reading-time";
 import { pageSeo } from "../lib/seo";
 import { personJsonLd, websiteJsonLd } from "../lib/structured-data";
@@ -29,6 +29,11 @@ const LATEST_COUNT = 6;
 const all = await getPublishablePosts();
 const latest = all.slice(0, LATEST_COUNT);
 const readingMinutes = latest.map((post) => readingTime(post.body ?? "").minutes);
+
+// `/tags/[slug]` only generates routes for tags with published posts.
+// Topic-door chips for not-yet-used tags render as static chips (no
+// href) and turn into links automatically once content lands.
+const liveTags = new Set(collectTags(all).map((entry) => entry.tag));
 
 const seriesBundles = await getSeriesBundles();
 
@@ -157,7 +162,10 @@ const jsonLd = [websiteJsonLd(), personJsonLd({ jobTitle: basics.label })];
             <p class="card__blurb">{topic.blurb}</p>
             <div class="card__tags">
               {topic.tags.map((tag) => (
-                <Tag variant="outline" href={`/tags/${tag}`}>
+                <Tag
+                  variant="outline"
+                  href={liveTags.has(tag) ? `/tags/${tag}` : undefined}
+                >
                   {tag}
                 </Tag>
               ))}
