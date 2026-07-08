@@ -7,11 +7,15 @@
  * leaves the card boundary quiet — cards should feel like editorial
  * index entries, not buttons.
  *
+ * The title carries a per-post `transition:name`, mirrored by
+ * PostHeader's h1, so navigating from a list to the article morphs the
+ * title into place on view-transition browsers (crossfade elsewhere).
+ *
  * Accepts a pre-computed `readingMinutes` so the caller controls the
  * cost of reading-time computation (one read of `render()` per post).
  */
 import PostMeta from "./PostMeta.astro";
-import { postPath, type ReadablePost } from "../../lib/posts";
+import { postPath, typeLabelFor, type ReadablePost } from "../../lib/posts";
 
 interface Props {
   post: ReadablePost;
@@ -21,11 +25,18 @@ interface Props {
 const { post, readingMinutes } = Astro.props;
 const { title, description, date, tags } = post.data;
 const href = postPath(post);
+const typeLabel = typeLabelFor(post);
 ---
 
 <article class="post-card">
   <a class="post-card__link" href={href}>
-    <h2 class="post-card__title">{title}</h2>
+    <p class="post-card__type">{typeLabel}</p>
+    <h2
+      class="post-card__title"
+      transition:name={`post-title-${post.collection}-${post.id}`}
+    >
+      {title}<span class="post-card__arrow" aria-hidden="true">→</span>
+    </h2>
     <p class="post-card__dek">{description}</p>
   </a>
   <PostMeta date={date} readingMinutes={readingMinutes} tags={tags} linkTags={true} />
@@ -47,6 +58,14 @@ const href = postPath(post);
     text-decoration: none;
     display: block;
   }
+  .post-card__type {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--accent-strong);
+    margin: 0 0 var(--space-2);
+  }
   .post-card__title {
     font-family: var(--font-serif);
     font-size: var(--text-2xl);
@@ -61,6 +80,22 @@ const href = postPath(post);
   .post-card__link:hover .post-card__title,
   .post-card__link:focus-visible .post-card__title {
     color: var(--accent-strong);
+  }
+  /* The arrow earns its motion: it appears where the click will take
+     you, only once the pointer commits to the row. */
+  .post-card__arrow {
+    display: inline-block;
+    margin-inline-start: 0.35ch;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition:
+      opacity var(--motion-standard) var(--ease-out),
+      transform var(--motion-standard) var(--ease-spring);
+  }
+  .post-card__link:hover .post-card__arrow,
+  .post-card__link:focus-visible .post-card__arrow {
+    opacity: 1;
+    transform: translateX(0);
   }
   .post-card__dek {
     font-family: var(--font-serif);

@@ -251,6 +251,56 @@ a.cv__entry-company:hover {
   letter-spacing: var(--tracking-wide);
 }
 
+/* ── Experience timeline (screen only) ───────────────────────────── */
+
+/*
+ * On screen, the experience list reads as a timeline: a hairline rail
+ * down the left, a node per role, the current role's node in accent
+ * with a soft halo. Scoped via :has(#cv-experience) so the markup that
+ * /cv/print and the PDF pipeline share stays untouched; browsers
+ * without :has() simply keep the flat list — pure decoration, zero
+ * information lives only in the rail.
+ */
+
+.cv__section:has(#cv-experience) .cv__list {
+  position: relative;
+  padding-inline-start: var(--space-6);
+}
+
+.cv__section:has(#cv-experience) .cv__list::before {
+  content: "";
+  position: absolute;
+  inset-block: 8px;
+  inset-inline-start: 0;
+  width: 1px;
+  background: var(--rule-strong);
+}
+
+.cv__section:has(#cv-experience) .cv__entry {
+  position: relative;
+}
+
+.cv__section:has(#cv-experience) .cv__entry::before {
+  content: "";
+  position: absolute;
+  /* 13px dot (9px + 2×2px border) centred on the 1px rail, which sits
+     one --space-6 pad to the left of the entry box. */
+  inset-inline-start: calc(-1 * var(--space-6) - 6px);
+  top: 5px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--rule-strong);
+}
+
+/* First entry is the current role — resume.json is reverse-chronological. */
+.cv__section:has(#cv-experience) .cv__entry:first-child::before {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-subtle);
+}
+
 /* ── Skills, languages ───────────────────────────────────────────── */
 
 .cv__skills {

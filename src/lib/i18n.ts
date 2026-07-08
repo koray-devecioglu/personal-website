@@ -24,8 +24,17 @@ const dictionaries = {
     "home.hero.title": "Thinking out loud, in public.",
     "home.hero.subtitle":
       "Koray Devecioglu — engineer. Essays on code and craft, notes from the kitchen and the trail, projects I've shipped.",
+    "home.currently.label": "Now",
+    "home.currently.cv": "Full CV →",
     "home.latest.title": "Latest",
     "home.latest.viewAll": "All posts →",
+    "home.topics.title": "What you'll find here",
+    "home.series.title": "Series",
+    "home.series.viewAll": "All series →",
+    "home.series.count.one": "1 post",
+    "home.series.count.many": "{{count}} posts",
+    "home.career.title": "The short version",
+    "home.career.cta": "Full CV →",
 
     "post.readingTime": "{{minutes}} min read",
     "post.updated": "Updated {{date}}",

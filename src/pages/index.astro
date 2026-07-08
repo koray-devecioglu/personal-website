@@ -2,25 +2,78 @@
 /**
  * Home.
  *
- * Editorial hero + latest readable posts. Deliberately spare — the
- * home page exists to point at writing, not to explain the site at
- * length. The /colophon and /about routes in M6 carry the longer
- * answers.
+ * Phase-2 experience refresh ("Living Editorial"). Six sections, in
+ * order: a choreographed hero with a live "currently" strip pulled
+ * from resume.json; latest readable posts; three editorial "topic
+ * doors" pointing at the site's range (code, food, life); a series
+ * showcase; and a career-teaser timeline that feeds /cv. Every
+ * section reveals on scroll via the shared [data-reveal] primitive —
+ * see src/styles/motion.css and src/components/islands/ScrollReveal.astro.
+ * Deliberately still spare on prose: the page points at writing and
+ * the CV, it doesn't try to be the "About" page.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/post/PostCard.astro";
 import Button from "../components/ui/Button.astro";
+import Tag from "../components/ui/Tag.astro";
 
-import { getPublishablePosts } from "../lib/posts";
+import { collectTags, getPublishablePosts, getSeriesBundles } from "../lib/posts";
 import { readingTime } from "../lib/reading-time";
 import { pageSeo } from "../lib/seo";
+import { personJsonLd, websiteJsonLd } from "../lib/structured-data";
 import { t } from "../lib/i18n";
+import { loadResume } from "../lib/resume";
 
 const LATEST_COUNT = 6;
 
 const all = await getPublishablePosts();
 const latest = all.slice(0, LATEST_COUNT);
 const readingMinutes = latest.map((post) => readingTime(post.body ?? "").minutes);
+
+// `/tags/[slug]` only generates routes for tags with published posts.
+// Topic-door chips for not-yet-used tags render as static chips (no
+// href) and turn into links automatically once content lands.
+const liveTags = new Set(collectTags(all).map((entry) => entry.tag));
+
+const seriesBundles = await getSeriesBundles();
+
+const resume = loadResume();
+const { basics, work } = resume;
+const latestRole = work[0];
+const countryName = basics.location?.countryCode
+  ? new Intl.DisplayNames(["en"], { type: "region" }).of(basics.location.countryCode)
+  : undefined;
+
+// Chronological (oldest → newest) for the timeline teaser — the résumé
+// itself stays newest-first for /cv, so we reverse a copy here.
+const careerStops = [...work].reverse();
+
+// Copy for the topic doors lives here, not in lib/i18n.ts — it's page
+// content (like a post's body), not chrome.
+interface TopicDoor {
+  title: string;
+  blurb: string;
+  tags: string[];
+}
+const TOPICS: TopicDoor[] = [
+  {
+    title: "Code & craft",
+    blurb:
+      "Essays, tutorials, and TILs on systems, TypeScript, architecture, and building software that lasts.",
+    tags: ["typescript", "architecture", "ai", "testing"],
+  },
+  {
+    title: "Fire & food",
+    blurb:
+      "Low-and-slow BBQ, kitchen experiments, and the occasional recipe that survived contact with guests.",
+    tags: ["bbq", "food"],
+  },
+  {
+    title: "Away from the desk",
+    blurb: "Running, travel notes, and books worth the bag space.",
+    tags: ["running", "travel", "books"],
+  },
+];
 
 const seo = pageSeo({
   title: "Koray Devecioglu",
@@ -29,16 +82,51 @@ const seo = pageSeo({
     "Personal site of Koray Devecioglu — essays on code and craft, notes from the kitchen and the trail, projects I've shipped.",
   path: "/",
 });
+
+const jsonLd = [websiteJsonLd(), personJsonLd({ jobTitle: basics.label })];
 ---
 
-<BaseLayout seo={seo}>
+<BaseLayout seo={seo} jsonLd={jsonLd}>
   <section class="hero">
-    <p class="hero__eyebrow">{t("home.hero.eyebrow")}</p>
-    <h1 class="hero__title">{t("home.hero.title")}</h1>
-    <p class="hero__subtitle">{t("home.hero.subtitle")}</p>
-    <div class="hero__actions">
-      <Button href="/posts" variant="primary">Read the posts →</Button>
-      <Button href="/series" variant="ghost">Browse series</Button>
+    <div class="hero__content">
+      <p class="hero__eyebrow" data-reveal>{t("home.hero.eyebrow")}</p>
+      <h1 class="hero__title" data-reveal>{t("home.hero.title")}</h1>
+      <p class="hero__subtitle" data-reveal>{t("home.hero.subtitle")}</p>
+      <div class="hero__actions" data-reveal>
+        <Button href="/posts" variant="primary">Read the posts →</Button>
+        <Button href="/series" variant="ghost">Browse series</Button>
+      </div>
+      {
+        latestRole && (
+          <div class="hero__currently" data-reveal>
+            <span class="hero__currently-label">{t("home.currently.label")}</span>
+            <span class="hero__currently-sep" aria-hidden="true">
+              ·
+            </span>
+            <span>
+              {latestRole.position} @ {latestRole.name}
+            </span>
+            {basics.location?.city && (
+              <>
+                <span class="hero__currently-sep" aria-hidden="true">
+                  ·
+                </span>
+                <span>
+                  {`Based in ${basics.location.city}${
+                    countryName ? `, ${countryName}` : ""
+                  }`}
+                </span>
+              </>
+            )}
+            <span class="hero__currently-sep" aria-hidden="true">
+              ·
+            </span>
+            <a class="hero__currently-cv" href="/cv">
+              {t("home.currently.cv")}
+            </a>
+          </div>
+        )
+      }
     </div>
   </section>
 
@@ -53,7 +141,7 @@ const seo = pageSeo({
       ) : (
         <ol class="latest__list">
           {latest.map((post, i) => (
-            <li>
+            <li data-reveal>
               <PostCard post={post} readingMinutes={readingMinutes[i]} />
             </li>
           ))}
@@ -61,6 +149,91 @@ const seo = pageSeo({
       )
     }
   </section>
+
+  <section class="topics">
+    <header class="section-header">
+      <h2 class="section-header__title">{t("home.topics.title")}</h2>
+    </header>
+    <div class="topics__grid">
+      {
+        TOPICS.map((topic) => (
+          <article class="card" data-reveal>
+            <h3 class="card__title">{topic.title}</h3>
+            <p class="card__blurb">{topic.blurb}</p>
+            <div class="card__tags">
+              {topic.tags.map((tag) => (
+                <Tag
+                  variant="outline"
+                  href={liveTags.has(tag) ? `/tags/${tag}` : undefined}
+                >
+                  {tag}
+                </Tag>
+              ))}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  {
+    seriesBundles.length > 0 && (
+      <section class="series-teaser">
+        <header class="section-header">
+          <h2 class="section-header__title">{t("home.series.title")}</h2>
+          <a class="section-header__link" href="/series">
+            {t("home.series.viewAll")}
+          </a>
+        </header>
+        <div class="series-teaser__grid">
+          {seriesBundles.map((bundle) => {
+            const countLabel =
+              bundle.posts.length === 1
+                ? t("home.series.count.one")
+                : t("home.series.count.many", { count: bundle.posts.length });
+            return (
+              <article class="card" data-reveal>
+                <p class="card__eyebrow">Series</p>
+                <h3 class="card__title">
+                  <a href={`/series/${bundle.entry.id}`}>{bundle.entry.data.title}</a>
+                </h3>
+                <p class="card__blurb">{bundle.entry.data.summary}</p>
+                <p class="card__meta">{countLabel}</p>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    careerStops.length > 0 && (
+      <section class="career">
+        <header class="section-header">
+          <h2 class="section-header__title">{t("home.career.title")}</h2>
+          <a class="section-header__link" href="/cv">
+            {t("home.career.cta")}
+          </a>
+        </header>
+        <ol class="timeline">
+          {careerStops.map((stop) => {
+            const startYear = stop.startDate.slice(0, 4);
+            const endYear = stop.endDate?.slice(0, 4);
+            return (
+              <li class="timeline__item" data-reveal>
+                <p class="timeline__date">
+                  {startYear} — {endYear ?? "now"}
+                </p>
+                <h3 class="timeline__company">{stop.name}</h3>
+                <p class="timeline__position">{stop.position}</p>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
+    )
+  }
 </BaseLayout>
 
 <style>
@@ -71,7 +244,26 @@ const seo = pageSeo({
     padding-inline: var(--space-6);
   }
   .hero {
+    position: relative;
     padding-block: var(--space-16) var(--space-12);
+  }
+  /* Ambient wash — a whisper of warm light on the paper, not a spotlight.
+     No animation; it just sits there in both themes. */
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: -120px -160px auto;
+    height: 480px;
+    z-index: -1;
+    pointer-events: none;
+    /* Explicit ellipse that fades to nothing well inside its own box —
+       an unsized gradient clips at the box edge and prints a visible
+       rectangle. */
+    background: radial-gradient(
+      520px 340px at 28% 32%,
+      color-mix(in oklab, var(--accent) 13%, transparent),
+      transparent 72%
+    );
   }
   .hero__eyebrow {
     font-family: var(--font-mono);
@@ -92,6 +284,17 @@ const seo = pageSeo({
     text-wrap: balance;
     max-width: 18ch;
   }
+  /* Optical-size "breathing" hover — Fraunces sharpens as opsz climbs.
+     Gated so the transition (and the hover state itself) only exists
+     for users who haven't asked for reduced motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__title {
+      transition: font-variation-settings var(--motion-page) var(--ease-out);
+    }
+    .hero__title:hover {
+      font-variation-settings: "opsz" 144;
+    }
+  }
   .hero__subtitle {
     font-family: var(--font-serif);
     font-size: var(--text-xl);
@@ -104,6 +307,47 @@ const seo = pageSeo({
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
+  }
+
+  /* ── "Currently" strip ─────────────────────────────────────────────── */
+  .hero__currently {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    margin-top: var(--space-8);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+  }
+  .hero__currently-sep {
+    color: var(--fg-subtle);
+  }
+  .hero__currently-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    color: var(--accent-strong);
+  }
+  .hero__currently-label::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .hero__currently-cv {
+    color: var(--fg-muted);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--rule-strong);
+    transition: color var(--motion-micro) var(--ease-out);
+  }
+  .hero__currently-cv:hover,
+  .hero__currently-cv:focus-visible {
+    color: var(--accent-strong);
   }
 
   .latest {
@@ -146,5 +390,219 @@ const seo = pageSeo({
   .latest__empty {
     font-family: var(--font-serif);
     color: var(--fg-muted);
+  }
+
+  /* ── Shared: section width + heading row ───────────────────────────── */
+  .topics,
+  .series-teaser,
+  .career {
+    max-width: 64rem;
+    margin-inline: auto;
+    padding-inline: var(--space-6);
+    /* Consecutive sections share rhythm: 32px top / 48px bottom keeps
+       the page breathing without dead zones between blocks (the footer
+       adds its own 96px above itself). */
+    padding-block: var(--space-8) var(--space-12);
+  }
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+    border-bottom: 1px solid var(--rule);
+    padding-block-end: var(--space-3);
+    margin-block-end: var(--space-6);
+  }
+  .section-header__title {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    color: var(--fg-muted);
+    font-weight: 500;
+    margin: 0;
+  }
+  .section-header__link {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--fg-muted);
+    text-decoration: none;
+  }
+  .section-header__link:hover,
+  .section-header__link:focus-visible {
+    color: var(--accent-strong);
+  }
+
+  /* ── Shared: card (topic doors + series teaser) ────────────────────── */
+  .card {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    transition:
+      transform var(--motion-standard) var(--ease-spring),
+      box-shadow var(--motion-standard) var(--ease-out),
+      border-color var(--motion-standard) var(--ease-out);
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--motion-standard) var(--ease-out);
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--rule-strong);
+  }
+  .card:hover::before {
+    transform: scaleX(1);
+  }
+  .card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--accent-strong);
+    margin: 0 0 var(--space-2);
+  }
+  .card__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    font-weight: 600;
+    margin: 0 0 var(--space-2);
+  }
+  .card__title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--motion-micro) var(--ease-out);
+  }
+  .card__title a:hover,
+  .card__title a:focus-visible {
+    color: var(--accent-strong);
+  }
+  .card__blurb {
+    font-family: var(--font-serif);
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    line-height: var(--leading-normal);
+    margin: 0 0 var(--space-4);
+  }
+  .card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .card__meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--fg-subtle);
+    margin: var(--space-4) 0 0;
+  }
+
+  /* ── Topic doors ────────────────────────────────────────────────────── */
+  .topics__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 56rem) {
+    .topics__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* ── Series teaser ──────────────────────────────────────────────────── */
+  .series-teaser__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 48rem) {
+    .series-teaser__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* ── Career timeline ────────────────────────────────────────────────── */
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .timeline__item {
+    position: relative;
+    border-top: none;
+    border-left: 1px solid var(--rule-strong);
+    padding: 0 0 var(--space-6) var(--space-5);
+  }
+  .timeline__item::before {
+    content: "";
+    position: absolute;
+    left: -5.5px;
+    top: 2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--rule-strong);
+  }
+  .timeline__item:last-child {
+    padding-bottom: 0;
+  }
+  .timeline__item:last-child::before {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-subtle);
+  }
+  .timeline__date {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--fg-subtle);
+    margin: 0 0 var(--space-2);
+  }
+  .timeline__company {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--fg);
+    margin: 0 0 var(--space-1);
+  }
+  .timeline__position {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+    margin: 0;
+  }
+  @media (min-width: 56rem) {
+    .timeline {
+      /* One column per career stop, however many there are. */
+      grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+      gap: 0 var(--space-4);
+    }
+    .timeline__item {
+      border-top: 1px solid var(--rule-strong);
+      border-left: none;
+      padding: var(--space-5) 0 0;
+    }
+    .timeline__item::before {
+      left: 0;
+      top: -5.5px;
+    }
+    .timeline__item:last-child {
+      padding-bottom: 0;
+    }
   }
 </style>

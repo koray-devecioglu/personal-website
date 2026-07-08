@@ -1,0 +1,43 @@
+/*
+ * Motion layer — entrance choreography primitives.
+ *
+ * Usage:
+ *   <section data-reveal>  — fades/rises in when it enters the viewport
+ *                            (or on load if it starts there).
+ *
+ * Stagger needs no opt-in: the ScrollReveal island assigns an
+ * incremental --reveal-delay to elements revealed in the same batch,
+ * in DOM order, so groups cascade and lone elements reveal instantly.
+ *
+ * Safety model (why the double gate):
+ *   - `html[data-js]` is set by BaseLayout's pre-paint inline script.
+ *     No JS → the attribute never appears → nothing is ever hidden.
+ *   - `prefers-reduced-motion: reduce` → the media query never matches
+ *     → nothing is ever hidden or moved.
+ *   Content is therefore only hidden for users who will definitely see
+ *   it revealed. The reveal is opacity + transform only — cheap on the
+ *   compositor, no layout thrash.
+ */
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-js] [data-reveal]:not(.is-revealed) {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  html[data-js] [data-reveal] {
+    transition:
+      opacity var(--motion-reveal) var(--ease-out),
+      transform var(--motion-reveal) var(--ease-out);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+}
+
+/* Print never scrolls, so nothing below the fold would ever reveal —
+   force everything visible on paper. */
+@media print {
+  html[data-js] [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

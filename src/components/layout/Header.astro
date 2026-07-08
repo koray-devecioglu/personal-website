@@ -68,8 +68,18 @@ function isActive(href: string): boolean {
 
 <style>
   .site-header {
+    /* Sticky glass chrome: nav stays reachable on long essays without
+       stealing attention — translucent paper over the content, hairline
+       rule below. Falls back to solid --bg where backdrop-filter is
+       unsupported (the color-mix stays near-opaque, so text never sits
+       on unblurred content illegibly). */
+    position: sticky;
+    top: 0;
+    z-index: 40;
     border-bottom: 1px solid var(--rule);
-    background: var(--bg);
+    background: color-mix(in oklab, var(--bg) 92%, transparent);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
   }
   .site-header__inner {
     max-width: var(--content-wide);
@@ -113,6 +123,7 @@ function isActive(href: string): boolean {
     gap: var(--space-6);
   }
   .site-nav__link {
+    position: relative;
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     letter-spacing: var(--tracking-wider);
@@ -120,18 +131,35 @@ function isActive(href: string): boolean {
     color: var(--fg-muted);
     text-decoration: none;
     padding-block: var(--space-1);
-    border-bottom: 1px solid transparent;
-    transition:
-      color var(--motion-micro) var(--ease-out),
-      border-color var(--motion-micro) var(--ease-out);
+    transition: color var(--motion-micro) var(--ease-out);
+  }
+  /* Underline draws in from the left on hover; stays put on the active
+     item. Replaces the old static border so the affordance has motion
+     with a job: "this is where you're headed". */
+  .site-nav__link::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: -1px;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--motion-standard) var(--ease-out);
   }
   .site-nav__link:hover,
   .site-nav__link:focus-visible {
     color: var(--fg);
   }
+  .site-nav__link:hover::after,
+  .site-nav__link:focus-visible::after {
+    transform: scaleX(1);
+  }
   .site-nav__link.is-active {
     color: var(--fg);
-    border-bottom-color: var(--accent);
+  }
+  .site-nav__link.is-active::after {
+    transform: scaleX(1);
   }
 
   /* Narrow: collapse nav to wrap under wordmark. No hamburger in M4 — the

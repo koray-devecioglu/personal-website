@@ -22,8 +22,10 @@ import { ClientRouter } from "astro:transitions";
 
 import { SITE } from "../data/links";
 import { pageSeo, type SeoInput, type SeoOutput } from "../lib/seo";
+import { jsonLdSerialize, type JsonLd } from "../lib/structured-data";
 import Header from "../components/layout/Header.astro";
 import Footer from "../components/layout/Footer.astro";
+import ScrollReveal from "../components/islands/ScrollReveal.astro";
 
 interface Props {
   /** Pre-built SEO payload. Preferred — goes straight to the head. */
@@ -35,6 +37,8 @@ interface Props {
   description?: string;
   canonical?: string;
   noindex?: boolean;
+  /** Optional schema.org payload(s) — built via lib/structured-data. */
+  jsonLd?: JsonLd | JsonLd[];
 }
 
 const props = Astro.props;
@@ -112,6 +116,16 @@ const cfAnalyticsSnippet = cfAnalyticsToken
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="color-scheme" content="light dark" />
 
+    {
+      props.jsonLd && (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={jsonLdSerialize(props.jsonLd)}
+        />
+      )
+    }
+
     {/* Feed autodiscovery — lets readers' aggregators find the stream. */}
     <link
       rel="alternate"
@@ -153,6 +167,10 @@ const cfAnalyticsSnippet = cfAnalyticsToken
     }
     <script is:inline>
       (function () {
+        // Flag JS availability before first paint. motion.css only hides
+        // [data-reveal] content behind html[data-js], so no-JS visitors
+        // (and crawlers) always see everything immediately.
+        document.documentElement.dataset.js = "";
         try {
           const stored = localStorage.getItem("theme");
           if (stored === "dark" || stored === "light") {
@@ -173,6 +191,7 @@ const cfAnalyticsSnippet = cfAnalyticsToken
       <slot />
     </main>
     <Footer />
+    <ScrollReveal />
 
     {cfAnalyticsSnippet && <Fragment set:html={cfAnalyticsSnippet} />}
 

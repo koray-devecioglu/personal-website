@@ -93,14 +93,21 @@
 
   --shadow-sm: 0 1px 2px oklch(0 0 0 / 6%);
   --shadow-md: 0 6px 18px oklch(0 0 0 / 8%);
+  --shadow-lg: 0 16px 40px oklch(0 0 0 / 10%);
 
   /* ── Motion ──────────────────────────────────────────────────────────── */
 
   --motion-micro: 120ms;
   --motion-standard: 200ms;
   --motion-page: 400ms;
+  /* Entrance choreography — scroll/load reveals. Slower than page
+     transitions on purpose: content settling in, not UI reacting. */
+  --motion-reveal: 550ms;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  /* Gentle overshoot for tactile micro-lifts (cards, buttons). Kept
+     shallow — settle, don't bounce. */
+  --ease-spring: cubic-bezier(0.32, 1.25, 0.5, 1);
 
   /* ── Color: light theme ──────────────────────────────────────────────── */
 
@@ -171,6 +178,7 @@
 
     --shadow-sm: 0 1px 2px oklch(0 0 0 / 45%);
     --shadow-md: 0 6px 18px oklch(0 0 0 / 55%);
+    --shadow-lg: 0 16px 40px oklch(0 0 0 / 60%);
 
     color-scheme: dark;
   }
@@ -202,6 +210,7 @@
 
   --shadow-sm: 0 1px 2px oklch(0 0 0 / 45%);
   --shadow-md: 0 6px 18px oklch(0 0 0 / 55%);
+  --shadow-lg: 0 16px 40px oklch(0 0 0 / 60%);
 
   color-scheme: dark;
 }
@@ -213,5 +222,6 @@
     --motion-micro: 0ms;
     --motion-standard: 0ms;
     --motion-page: 0ms;
+    --motion-reveal: 0ms;
   }
 }

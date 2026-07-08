@@ -24,6 +24,7 @@ import TableOfContents from "../components/post/TableOfContents.astro";
 import type { ReadablePost, SeriesPosition } from "../lib/posts";
 import { postPath, formatPostDate } from "../lib/posts";
 import { pageSeo } from "../lib/seo";
+import { blogPostingJsonLd } from "../lib/structured-data";
 
 interface Props {
   post: ReadablePost;
@@ -54,9 +55,19 @@ const seo = pageSeo({
 });
 
 const showToc = post.data.toc !== false && headings.some((h) => h.depth <= 3);
+
+const jsonLd = blogPostingJsonLd({
+  title,
+  description,
+  path: postPath(post),
+  published: date,
+  updated,
+  tags,
+  image: `/og/${post.id}.png`,
+});
 ---
 
-<BaseLayout seo={seo}>
+<BaseLayout seo={seo} jsonLd={jsonLd}>
   <article class="post">
     <div class="post__header-col">
       <PostHeader post={post} readingMinutes={readingMinutes} typeLabel={typeLabel} />
@@ -134,7 +145,8 @@ const showToc = post.data.toc !== false && headings.some((h) => h.depth <= 3);
     .post__toc {
       grid-column: 1;
       position: sticky;
-      top: var(--space-12);
+      /* Clears the sticky site header (~4rem) plus breathing room. */
+      top: 6rem;
       justify-self: end;
       max-width: 220px;
       margin-block-end: 0;

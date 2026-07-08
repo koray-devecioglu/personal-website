@@ -50,7 +50,7 @@ const seo = pageSeo({
     <ol class="series-page__list" start="1">
       {
         posts.map((post, i) => (
-          <li>
+          <li data-reveal>
             <span class="series-page__number" aria-hidden="true">
               {String(i + 1).padStart(2, "0")}
             </span>

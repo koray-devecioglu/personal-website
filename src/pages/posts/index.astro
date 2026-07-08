@@ -41,7 +41,7 @@ const countLabel =
       ) : (
         <ol class="posts-index__list">
           {posts.map((post, i) => (
-            <li>
+            <li data-reveal>
               <PostCard post={post} readingMinutes={readingMinutes[i]} />
             </li>
           ))}

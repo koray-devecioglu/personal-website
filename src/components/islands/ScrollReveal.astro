@@ -1,0 +1,61 @@
+---
+/**
+ * ScrollReveal — the one island behind the [data-reveal] primitive.
+ *
+ * Included once by BaseLayout. Watches every [data-reveal] element and
+ * adds .is-revealed when it enters the viewport; elements already on
+ * screen at load reveal immediately (the observer fires synchronously
+ * on observe), which doubles as the page-entrance choreography.
+ *
+ * Stagger is batch-relative: elements revealed by the same observer
+ * callback cascade in DOM order (top of page first), while an element
+ * scrolled into view on its own reveals with zero delay. This keeps
+ * the load-time cascade without making below-the-fold items feel
+ * laggy when they finally appear.
+ *
+ * The matching styles live in src/styles/motion.css and are gated on
+ * html[data-js] + prefers-reduced-motion, so this script is purely
+ * progressive enhancement — it never *needs* to run for content to be
+ * visible.
+ *
+ * Re-arms on astro:page-load, which fires both on initial load and
+ * after every ClientRouter (view-transition) swap.
+ */
+---
+
+<script>
+  const STAGGER_STEP_MS = 60;
+  const STAGGER_MAX_MS = 360;
+
+  function initReveals(): void {
+    const targets = document.querySelectorAll<HTMLElement>(
+      "[data-reveal]:not(.is-revealed)",
+    );
+    if (targets.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const batch = entries
+          .filter((entry) => entry.isIntersecting)
+          .map((entry) => entry.target)
+          .filter((el): el is HTMLElement => el instanceof HTMLElement)
+          .sort((a, b) =>
+            a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1,
+          );
+        batch.forEach((el, i) => {
+          el.style.setProperty(
+            "--reveal-delay",
+            `${Math.min(i * STAGGER_STEP_MS, STAGGER_MAX_MS)}ms`,
+          );
+          el.classList.add("is-revealed");
+          observer.unobserve(el);
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+    );
+
+    for (const target of targets) observer.observe(target);
+  }
+
+  document.addEventListener("astro:page-load", initReveals);
+</script>

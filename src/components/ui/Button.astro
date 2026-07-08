@@ -14,9 +14,10 @@
  * HTML attributes pass through via `...rest`.
  *
  * The component only owns structural styling — color, typography, spacing,
- * motion. It never animates on hover (we decided "nothing bounces for
- * fun"); the hover signal is a subtle tone shift plus an accent underline
- * where appropriate.
+ * motion. Motion policy (revised in the Phase-2 experience refresh): a
+ * 1px lift + soft shadow on primary hover and a 1px press on :active —
+ * tactile feedback with a job, still nothing that bounces for fun.
+ * Durations ride the motion tokens, so reduced-motion zeroes them.
  */
 import type { HTMLAttributes } from "astro/types";
 
@@ -116,11 +117,16 @@ if (isLink) {
     transition:
       background-color var(--motion-micro) var(--ease-out),
       color var(--motion-micro) var(--ease-out),
-      border-color var(--motion-micro) var(--ease-out);
+      border-color var(--motion-micro) var(--ease-out),
+      transform var(--motion-standard) var(--ease-spring),
+      box-shadow var(--motion-standard) var(--ease-out);
     /* Reset button defaults */
     background: transparent;
     color: inherit;
     font-size: inherit;
+  }
+  .btn:active:not(.btn--disabled):not(:disabled) {
+    transform: translateY(1px);
   }
 
   /* ── Sizes ───────────────────────────────────────────────────────────── */
@@ -148,6 +154,12 @@ if (isLink) {
   .btn--primary:hover:not(.btn--disabled) {
     background: var(--accent);
     border-color: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+  .btn--primary:active:not(.btn--disabled):not(:disabled) {
+    transform: translateY(0);
+    box-shadow: none;
   }
 
   .btn--secondary {
