@@ -32,7 +32,16 @@ const { title, description, date, tags, draft } = post.data;
       )
     }
   </p>
-  <h1 class="post-header__title">{title}</h1>
+  {
+    /* transition:name pairs with PostCard's title so list → article
+      navigation morphs the title into place on supporting browsers. */
+  }
+  <h1
+    class="post-header__title"
+    transition:name={`post-title-${post.collection}-${post.id}`}
+  >
+    {title}
+  </h1>
   <p class="post-header__dek">{description}</p>
   <PostMeta
     date={date}

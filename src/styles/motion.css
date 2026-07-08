@@ -2,12 +2,12 @@
  * Motion layer — entrance choreography primitives.
  *
  * Usage:
- *   <section data-reveal>              — fades/rises in when it enters
- *                                        the viewport (or on load if it
- *                                        starts there)
- *   <ol data-reveal-stagger>           — the ScrollReveal island assigns
- *     <li data-reveal>…                  each direct [data-reveal] child
- *                                        an incremental --reveal-delay
+ *   <section data-reveal>  — fades/rises in when it enters the viewport
+ *                            (or on load if it starts there).
+ *
+ * Stagger needs no opt-in: the ScrollReveal island assigns an
+ * incremental --reveal-delay to elements revealed in the same batch,
+ * in DOM order, so groups cascade and lone elements reveal instantly.
  *
  * Safety model (why the double gate):
  *   - `html[data-js]` is set by BaseLayout's pre-paint inline script.
@@ -30,5 +30,14 @@
       opacity var(--motion-reveal) var(--ease-out),
       transform var(--motion-reveal) var(--ease-out);
     transition-delay: var(--reveal-delay, 0ms);
+  }
+}
+
+/* Print never scrolls, so nothing below the fold would ever reveal —
+   force everything visible on paper. */
+@media print {
+  html[data-js] [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

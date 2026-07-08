@@ -7,9 +7,11 @@
  * screen at load reveal immediately (the observer fires synchronously
  * on observe), which doubles as the page-entrance choreography.
  *
- * [data-reveal-stagger] parents get their direct [data-reveal] children
- * an incremental --reveal-delay so lists cascade instead of popping in
- * as a block.
+ * Stagger is batch-relative: elements revealed by the same observer
+ * callback cascade in DOM order (top of page first), while an element
+ * scrolled into view on its own reveals with zero delay. This keeps
+ * the load-time cascade without making below-the-fold items feel
+ * laggy when they finally appear.
  *
  * The matching styles live in src/styles/motion.css and are gated on
  * html[data-js] + prefers-reduced-motion, so this script is purely
@@ -22,41 +24,37 @@
 ---
 
 <script>
-  const STAGGER_STEP_MS = 70;
-  const STAGGER_MAX_MS = 420;
+  const STAGGER_STEP_MS = 60;
+  const STAGGER_MAX_MS = 360;
 
   function initReveals(): void {
-    const targets = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    const targets = document.querySelectorAll<HTMLElement>(
+      "[data-reveal]:not(.is-revealed)",
+    );
     if (targets.length === 0) return;
-
-    for (const group of document.querySelectorAll("[data-reveal-stagger]")) {
-      let index = 0;
-      for (const child of group.querySelectorAll<HTMLElement>(
-        ":scope > [data-reveal]",
-      )) {
-        child.style.setProperty(
-          "--reveal-delay",
-          `${Math.min(index * STAGGER_STEP_MS, STAGGER_MAX_MS)}ms`,
-        );
-        index += 1;
-      }
-    }
 
     const observer = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          entry.target.classList.add("is-revealed");
-          observer.unobserve(entry.target);
-        }
+        const batch = entries
+          .filter((entry) => entry.isIntersecting)
+          .map((entry) => entry.target)
+          .filter((el): el is HTMLElement => el instanceof HTMLElement)
+          .sort((a, b) =>
+            a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1,
+          );
+        batch.forEach((el, i) => {
+          el.style.setProperty(
+            "--reveal-delay",
+            `${Math.min(i * STAGGER_STEP_MS, STAGGER_MAX_MS)}ms`,
+          );
+          el.classList.add("is-revealed");
+          observer.unobserve(el);
+        });
       },
       { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
     );
 
-    for (const target of targets) {
-      if (target.classList.contains("is-revealed")) continue;
-      observer.observe(target);
-    }
+    for (const target of targets) observer.observe(target);
   }
 
   document.addEventListener("astro:page-load", initReveals);
