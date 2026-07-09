@@ -120,6 +120,12 @@ content window of the year for this pillar. Match/tournament reactions
 should ship as `note`s while it runs; the retrospective essay lands
 the week after the final while search interest peaks.
 
+**Published:** `we-waited-24-years-for-this` (2026-07-09) — the
+Türkiye campaign retrospective (24-year return, dawn kickoffs, the
+federation autopsy, the organization-before-performance lesson). This
+opened the football door; S2 below remains the tournament-wide retro
+and is still worth writing after the final.
+
 | #   | Working title                                                         | Type              | Notes                                                                                                                |
 | --- | --------------------------------------------------------------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------- |
 | S1  | World Cup 2026 diary                                                  | `note` series     | 🟡 Timely — running notes on the knockout rounds, ordered by a new series entry. Ship fast, polish later.            |
