@@ -1,0 +1,4 @@
+# Cloudflare Pages redirects — https://developers.cloudflare.com/pages/configuration/redirects/
+# /reading retired 2026-07 (page removed; books coverage dropped from the
+# editorial scope). Send old links somewhere alive.
+/reading / 301

@@ -62,7 +62,6 @@ test.describe("command palette", () => {
     expect(ids).toContain("jump:now");
     expect(ids).toContain("jump:uses");
     expect(ids).toContain("jump:colophon");
-    expect(ids).toContain("jump:reading");
     expect(ids).toContain("jump:cv");
   });
 });

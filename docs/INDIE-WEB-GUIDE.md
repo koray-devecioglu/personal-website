@@ -1,12 +1,14 @@
 # Indie-web guide
 
-Four standalone pages — `/now`, `/uses`, `/colophon`, `/reading` —
-plus a custom 404 and a site-wide command palette (⌘K). Everything
-below lives under the M6 milestone.
+Three standalone pages — `/now`, `/uses`, `/colophon` — plus a custom
+404 and a site-wide command palette (⌘K). Everything below lives under
+the M6 milestone. (`/reading` shipped with M6 but was retired in July
+2026 when books left the editorial scope; `public/_redirects` sends
+the old URL home.)
 
 ## Standalone pages
 
-Source: `src/content/pages/{now,uses,colophon,reading}.md`
+Source: `src/content/pages/{now,uses,colophon}.md`
 Schema: `src/content/_schemas.ts` → `pageSchema`
 Route: `src/pages/{name}.astro` wraps `PageLayout` and loads the entry.
 

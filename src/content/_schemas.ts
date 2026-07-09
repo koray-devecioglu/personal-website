@@ -155,7 +155,7 @@ export function bookmarkSchema(image: ImageFactory) {
 
 /**
  * The small set of evergreen standalone pages (`/now`, `/uses`,
- * `/colophon`, `/reading`) share a minimal shape: a title, a one-line
+ * `/colophon`) share a minimal shape: a title, a one-line
  * description for SEO + social, and an `updated` date that surfaces on
  * the page itself. Markdown bodies render through the same prose
  * pipeline as posts, so authors get the same typography for free.

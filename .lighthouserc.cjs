@@ -24,7 +24,6 @@ module.exports = {
         "http://127.0.0.1:4321/now",
         "http://127.0.0.1:4321/uses",
         "http://127.0.0.1:4321/colophon",
-        "http://127.0.0.1:4321/reading",
       ],
       numberOfRuns: 3,
       settings: {

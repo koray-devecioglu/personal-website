@@ -1,6 +1,6 @@
 /**
  * E2E coverage for the M6 indie-web surfaces:
- *   - /now, /uses, /colophon, /reading all render their content pages.
+ *   - /now, /uses, /colophon all render their content pages.
  *   - /404 serves a custom noindex page with signposts.
  *   - Footer exposes the indie-web pages as navigable links.
  */
@@ -10,7 +10,6 @@ const PAGES = [
   { path: "/now", heading: /Now/i },
   { path: "/uses", heading: /Uses/i },
   { path: "/colophon", heading: /Colophon/i },
-  { path: "/reading", heading: /Reading/i },
 ] as const;
 
 test.describe("indie-web pages", () => {
@@ -30,7 +29,7 @@ test.describe("indie-web pages", () => {
     await page.goto("/");
     const nav = page.getByRole("navigation", { name: /Indie-web pages/i });
     await expect(nav).toBeVisible();
-    for (const label of ["Now", "Uses", "Reading", "Colophon"]) {
+    for (const label of ["Now", "Uses", "Colophon"]) {
       await expect(
         nav.getByRole("link", { name: new RegExp(`^${label}$`, "i") }),
       ).toBeVisible();

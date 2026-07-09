@@ -24,12 +24,6 @@ If it isn't below, it isn't currently getting my time.
 - Occasional personal essays when something outside work teaches the
   same lesson better.
 
-## Reading
-
-- Rotating between one technical book and one non-technical book.
-- Capturing a few lines after each finished book on the
-  [reading page](/reading) so recommendations do not rely on memory.
-
 ## Off screen
 
 - BBQ experiments that reward patience and punish overconfidence.

@@ -23,7 +23,6 @@ const ROUTES = [
   { name: "now", path: "/now" },
   { name: "uses", path: "/uses" },
   { name: "colophon", path: "/colophon" },
-  { name: "reading", path: "/reading" },
   { name: "404", path: NOT_FOUND_PATH },
 ] as const;
 

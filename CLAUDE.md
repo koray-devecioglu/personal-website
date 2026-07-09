@@ -47,7 +47,7 @@ author — you handle everything else.
 | M3        | Content collections + Zod schemas, `scripts/new-post.ts`, sample posts of each type                                                       | ✅     |
 | M4        | Blog surface — home, /posts, /tags, /series, post layout, RSS/JSON feeds, per-post OG, view transitions                                   | ✅     |
 | M5        | CV surface — `/cv`, `/cv/print`, `/cv.json`, Playwright PDF pipeline, Zod-validated JSON Resume                                           | ✅     |
-| M6        | Indie-web polish — `/now`, `/uses`, `/colophon`, `/reading`, custom 404, ⌘K palette, Pagefind                                             | ✅     |
+| M6        | Indie-web polish — `/now`, `/uses`, `/colophon`, custom 404, ⌘K palette, Pagefind (`/reading` shipped here, retired 2026-07)              | ✅     |
 | M7        | Quality gates (Lighthouse CI, axe-core, lychee) + flip CI to `--frozen-lockfile`                                                          | ✅     |
 | M8        | Launch (DNS, SSL, email routing, analytics, Search Console, Bing Webmaster)                                                               | ✅     |
 | **M9**    | Post-launch (comments ✅, webmentions, uptime, error monitoring, newsletter decision)                                                     | 🚧     |
@@ -79,8 +79,9 @@ Defended in full against Next.js 15 and Eleventy 3 in `docs/phase-1-architecture
 
 **"Humanist editorial with engineering detailing."** Not an engineer's
 terminal-cosplay blog. A warm, well-set personal site that covers code,
-food, BBQ, sport, travel — typography carries the voice, monospace is
-structural seasoning.
+food, BBQ, football, travel, living abroad — typography carries the
+voice, monospace is structural seasoning. The editorial scope lives in
+`docs/CONTENT-PLAN.md`.
 
 **Typography (locked):**
 
@@ -198,9 +199,10 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 │   ├── phase-2-experience-refresh.md # M10 redesign — audit, directions, motion layer
 │   ├── DESIGN-SYSTEM.md         # Tokens, primitives, layout catalog
 │   ├── CONTENT-GUIDE.md         # Post types, frontmatter, new-post CLI (reference)
+│   ├── CONTENT-PLAN.md          # Editorial backlog — topics, sections, what to write next
 │   ├── AUTHORING.md             # "Write my first post" walkthrough (workflow)
 │   ├── CV-GUIDE.md              # Editing the CV, rebuilding the PDF
-│   ├── INDIE-WEB-GUIDE.md       # /now, /uses, /colophon, /reading + palette
+│   ├── INDIE-WEB-GUIDE.md       # /now, /uses, /colophon + palette
 │   ├── QUALITY-GATES.md         # Lighthouse / axe / lychee budgets + how to run locally
 │   └── LAUNCH-RUNBOOK.md        # M8 launch steps + post-launch ops recipes
 ├── public/
@@ -222,7 +224,7 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 │   │   ├── _tags.ts      # Controlled tag vocabulary
 │   │   ├── config.ts     # Astro Content Collections wiring
 │   │   ├── essays/ tutorials/ tils/ notes/ projects/ bookmarks/ series/
-│   │   └── pages/        # /now, /uses, /colophon, /reading markdown
+│   │   └── pages/        # /now, /uses, /colophon markdown
 │   ├── data/
 │   │   ├── comments.ts   # giscus config — repo, category, theme map
 │   │   ├── links.ts      # site + social registry (real URLs)
@@ -257,7 +259,7 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 │   │   ├── cv/index.astro        # CV screen layout
 │   │   ├── cv/print.astro        # print shell (noindex, minimal chrome)
 │   │   ├── cv.json.ts            # JSON Resume endpoint
-│   │   ├── now.astro / uses.astro / colophon.astro / reading.astro
+│   │   ├── now.astro / uses.astro / colophon.astro
 │   │   └── 404.astro             # custom noindex not-found page
 │   └── styles/
 │       ├── fonts.css     # @font-face declarations
@@ -279,7 +281,7 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 │       ├── home.spec.ts
 │       ├── blog.spec.ts       # posts, tags, series, feeds, OG, active nav
 │       ├── cv.spec.ts         # /cv, /cv/print (noindex), /cv.json, active nav
-│       ├── indie-web.spec.ts  # /now, /uses, /colophon, /reading, 404
+│       ├── indie-web.spec.ts  # /now, /uses, /colophon, 404
 │       ├── palette.spec.ts    # ⌘K, focus, navigation, data blob
 │       ├── a11y.spec.ts       # axe-core gate (no serious/critical violations)
 │       └── sandbox.spec.ts
@@ -301,14 +303,16 @@ pnpm build:cv          # regenerate public/cv.pdf after CV changes
 
 - A résumé photo (optional) for `basics.image` — served from
   `/public/` or an external URL.
-- **Real indie-web copy.** `/now`, `/uses`, and `/reading` ship with
-  placeholder markdown. `/colophon` is accurate — it describes the
-  site itself. Edit the three placeholder files under
-  `src/content/pages/`. See `docs/INDIE-WEB-GUIDE.md`.
-- **First real posts.** The sample posts (`welcome`, `how-m2-landed`,
-  etc.) exist to exercise every post type and layout. Treat them as
-  scaffolding — keep, delete, or rewrite as you begin publishing.
-  See `docs/AUTHORING.md` for the sit-down-and-write workflow.
+- **Confirm indie-web copy.** `/now` and `/uses` carry copy that needs
+  Koray's confirmation that it reflects real life. `/colophon` is
+  accurate — it describes the site itself. (`/reading` was retired
+  2026-07 along with books coverage.) See `docs/INDIE-WEB-GUIDE.md`.
+- **First real posts beyond engineering.** The published essays cover
+  the engineering door; the food/BBQ, football, and travel doors have
+  no posts yet, and every idea for them needs Koray's real-life
+  specifics (cooks, matches, cities, restaurants, stadiums). The
+  backlog lives in `docs/CONTENT-PLAN.md`; the write-and-ship loop in
+  `docs/AUTHORING.md`.
 
 Confirmed handles: GitHub `koray-devecioglu`, LinkedIn `koraydevecioglu`,
 Instagram `koraydevecioglu`. All three live in `src/data/links.ts`.

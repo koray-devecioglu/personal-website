@@ -257,7 +257,7 @@ describe("cover/coverAlt contract", () => {
   });
 });
 
-// ── Standalone pages (/now, /uses, /colophon, /reading) ──────────────
+// ── Standalone pages (/now, /uses, /colophon) ────────────────────────
 
 describe("pages collection", () => {
   const pagesDir = join(CONTENT_ROOT, "pages");
@@ -265,7 +265,7 @@ describe("pages collection", () => {
     .filter((e) => e.isFile() && /\.(md|mdx)$/.test(e.name))
     .map((e) => e.name);
 
-  const REQUIRED = ["now.md", "uses.md", "colophon.md", "reading.md"];
+  const REQUIRED = ["now.md", "uses.md", "colophon.md"];
 
   it.each(REQUIRED)("ships the required indie-web page: %s", (name) => {
     expect(files, `missing ${name} under src/content/pages/`).toContain(name);
