@@ -34,9 +34,9 @@ country at a World Cup. Euros, yes. Agonizing near-misses in
 qualification, more than I care to count. The actual World Cup —
 never.
 
-So when Kerem Aktürkoğlu scored the only goal of the playoff final
-against Kosovo on the last day of March, the country lost its mind a
-little. Deservedly. Whatever came next, we were going.
+So when the playoff final against Kosovo ended 1–0 on the last day
+of March and the ticket was finally ours, the country lost its mind
+a little. Deservedly. Whatever came next, we were going.
 
 ## Three mornings, briefly
 
@@ -67,24 +67,16 @@ better or worse, is what being a fan is.
 The performances looked like a team problem. I don't believe they
 were. I think the team was the last domino.
 
-Consider what the players walked out of and into.
+Consider what was arranged around them.
 
-The tournament arrived on the heels of the worst integrity crisis
-Turkish football has ever had: a betting scandal in which the
-federation's own president announced that 371 of 571 professional
-referees held betting accounts, and 152 of them had actively placed
-bets. Dozens of arrests followed. That was the _backdrop_.
-
-The national team staff wasn't insulated from it either — one of the
-head coach's own assistants was banned over a betting violation, an
-appointment the federation president later conceded was a mistake.
-
-Then came the questions about who fills the federation's offices and
-how. The president publicly denied stuffing the place with family
-and friends — the defense included clarifying that only one nephew
-works at the federation. When "only one nephew" is the reassuring
-version of events, the org chart has already lost the benefit of the
-doubt.
+For months there had been questions about who fills the federation's
+offices and how — whether the people running the national team's
+biggest tournament in a generation were there because they were the
+best available, or because they knew the right someone. The president
+publicly denied stuffing the place with family and friends — the
+defense included clarifying that only one nephew works at the
+federation. When "only one nephew" is the reassuring version of
+events, the org chart has already lost the benefit of the doubt.
 
 And the detail that stays with me: the training camp. Reports after
 the exit claimed the squad was based at a facility in Arizona that
@@ -93,7 +85,7 @@ federation kept it largely because changing it would cost money. Our
 matches were in Vancouver and the Bay Area. Arizona in June is an
 oven.
 
-Any one of these is survivable. Together they describe an
+Each of these alone is survivable. Together they describe an
 organization that had stopped doing its one job: putting eleven
 people in a position to perform. Players don't lack energy for 180
 straight minutes by accident. They walked onto the pitch at the end
