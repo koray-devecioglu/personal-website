@@ -17,6 +17,8 @@ in the dark. For the first time in 24 years the national team was at
 a World Cup, and if the World Cup insisted on happening at dawn, we
 would be there at dawn.
 
+![The Türkiye players huddle on screen moments before kickoff, live on TRT1, while the sunrise paints the ceiling of my living room orange.](/images/posts/we-waited-24-years-for-this/dawn-kickoff.webp)
+
 I want to write down what happened next while it still stings —
 partly because the internet forgets fast, mostly because the lessons
 turned out to be bigger than football.
@@ -62,6 +64,17 @@ It didn't matter. We celebrated anyway. Waking up at five for a dead
 rubber and roaring at a last-second winner nobody needed — that, for
 better or worse, is what being a fan is.
 
+The damage, in one table:
+
+| Morning (TSİ) | Match             | Score | Kickoff |
+| ------------- | ----------------- | :---: | :-----: |
+| Sun, June 14  | Australia–Türkiye |  2–0  |  07:00  |
+| Sat, June 20  | Türkiye–Paraguay  |  0–1  |  06:00  |
+| Fri, June 26  | Türkiye–USA       |  3–2  |  05:00  |
+
+Three matches, three alarms, each one earlier than the last — as if
+the tournament itself was testing how much we wanted it.
+
 ## It didn't start in Vancouver
 
 The performances looked like a team problem. I don't believe they
@@ -81,9 +94,9 @@ events, the org chart has already lost the benefit of the doubt.
 And the detail that stays with me: the training camp. Reports after
 the exit claimed the squad was based at a facility in Arizona that
 FIFA had merely _recommended_, not mandated — and that the
-federation kept it largely because changing it would cost money. Our
-matches were in Vancouver and the Bay Area. Arizona in June is an
-oven.
+federation kept it largely because changing it would cost money.[^1]
+Our matches were in Vancouver and the Bay Area. Arizona in June is
+an oven.
 
 Each of these alone is survivable. Together they describe an
 organization that had stopped doing its one job: putting eleven
@@ -143,3 +156,9 @@ obstacles, absorb the pressure, and get out of the way.
 
 If the matches kick off at five in the morning again, we'll set the
 alarms again. That part was never in question.
+
+[^1]:
+    The camp-selection claims were reported in the Turkish press after
+    the elimination, alongside the federation's denials. Treat the
+    details as reported, not settled — the pattern, unfortunately,
+    needed no confirmation.
