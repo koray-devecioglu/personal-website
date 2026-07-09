@@ -54,7 +54,6 @@ const JUMP_ROUTES: PaletteItem[] = [
   { id: "jump:now", kind: "jump", title: "Now", href: "/now" },
   { id: "jump:uses", kind: "jump", title: "Uses", href: "/uses" },
   { id: "jump:colophon", kind: "jump", title: "Colophon", href: "/colophon" },
-  { id: "jump:reading", kind: "jump", title: "Reading", href: "/reading" },
 ];
 
 /** Actions the palette can execute client-side. */

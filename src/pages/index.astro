@@ -59,19 +59,26 @@ const TOPICS: TopicDoor[] = [
   {
     title: "Code & craft",
     blurb:
-      "Essays, tutorials, and TILs on systems, TypeScript, architecture, and building software that lasts.",
-    tags: ["typescript", "architecture", "ai", "testing"],
+      "Software engineering in the age of AI — systems, architecture, and building things that last.",
+    tags: ["ai", "architecture", "typescript", "testing"],
   },
   {
     title: "Fire & food",
     blurb:
-      "Low-and-slow BBQ, kitchen experiments, and the occasional recipe that survived contact with guests.",
-    tags: ["bbq", "food"],
+      "Low-and-slow BBQ, kitchen experiments, and restaurants worth planning a day around.",
+    tags: ["bbq", "food", "restaurants"],
   },
   {
-    title: "Away from the desk",
-    blurb: "Running, travel notes, and books worth the bag space.",
-    tags: ["running", "travel", "books"],
+    title: "The beautiful game",
+    blurb:
+      "World Cups, the stories behind the players, and stadiums I've actually sat in.",
+    tags: ["football", "stadiums", "sports"],
+  },
+  {
+    title: "Out in the world",
+    blurb:
+      "Living abroad, cities worth your time, and notes from the road and the run.",
+    tags: ["travel", "cities", "living-abroad", "running"],
   },
 ];
 
@@ -515,9 +522,10 @@ const jsonLd = [websiteJsonLd(), personJsonLd({ jobTitle: basics.label })];
     grid-template-columns: 1fr;
     gap: var(--space-4);
   }
+  /* Four doors read best as a 2×2 grid — three-across left an orphan. */
   @media (min-width: 56rem) {
     .topics__grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 

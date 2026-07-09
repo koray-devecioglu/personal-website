@@ -16,7 +16,7 @@ The site is three things in one codebase:
 2. **A living CV** — one `resume.json` (JSON Resume 1.0.0) renders to
    `/cv`, `/cv.json`, a print-optimised `/cv/print` surface, and a
    committed `public/cv.pdf`.
-3. **An indie-web presence** — `/now`, `/uses`, `/colophon`, `/reading`,
+3. **An indie-web presence** — `/now`, `/uses`, `/colophon`,
    a site-wide ⌘K command palette with Pagefind search, a custom 404,
    RSS + JSON feeds, and auto-generated OG cards.
 
@@ -102,13 +102,13 @@ src/
   content/      Markdown + MDX content collections
                  ├ _schemas.ts, _tags.ts, config.ts
                  ├ essays/ tutorials/ tils/ notes/ projects/ bookmarks/ series/
-                 └ pages/   now, uses, colophon, reading
+                 └ pages/   now, uses, colophon
   data/         links.ts (site + social), resume.json (JSON Resume 1.0.0)
   layouts/      BaseLayout · PostLayout · PageLayout
   lib/          posts · seo · feed · og · i18n · reading-time · resume ·
                 palette-index
   pages/        file-system routing — /, /posts, /tags, /series, /cv,
-                /now /uses /colophon /reading, /rss.xml /feed.json,
+                /now /uses /colophon, /rss.xml /feed.json,
                 /og/[slug].png, /404, /sandbox
   styles/       tokens · fonts · prose · cv · cv-print · global
 scripts/        new-post.ts · build-cv-pdf.ts
@@ -132,7 +132,7 @@ when onboarding:
 | [`docs/CONTENT-GUIDE.md`](docs/CONTENT-GUIDE.md)               | Post types, the full frontmatter reference, tag vocabulary, drafts + scheduling, series, the `pnpm new-post` CLI. Reference manual.   |
 | [`docs/AUTHORING.md`](docs/AUTHORING.md)                       | **Your first post, start to finish.** The workflow-oriented companion to the content guide. Read this when you're about to write.     |
 | [`docs/CV-GUIDE.md`](docs/CV-GUIDE.md)                         | Editing `resume.json`, regenerating the PDF, the three CV surfaces, the print stylesheet.                                             |
-| [`docs/INDIE-WEB-GUIDE.md`](docs/INDIE-WEB-GUIDE.md)           | The `/now`, `/uses`, `/colophon`, `/reading` pages, the custom 404, and the ⌘K command palette + Pagefind search.                     |
+| [`docs/INDIE-WEB-GUIDE.md`](docs/INDIE-WEB-GUIDE.md)           | The `/now`, `/uses`, `/colophon` pages, the custom 404, and the ⌘K command palette + Pagefind search.                                 |
 | [`docs/QUALITY-GATES.md`](docs/QUALITY-GATES.md)               | The four CI quality gates, their budgets, how to run them locally, and what to do when one turns red.                                 |
 | [`docs/LAUNCH-RUNBOOK.md`](docs/LAUNCH-RUNBOOK.md)             | Cloudflare Pages, DNS, TLS, Email Routing, Search Console, Bing Webmaster — step-by-step, with rollbacks and post-launch ops recipes. |
 
@@ -143,18 +143,18 @@ was given and what decisions were made collaboratively.
 
 ## Milestone status
 
-| Milestone                         | State   | Notes                                                               |
-| --------------------------------- | ------- | ------------------------------------------------------------------- |
-| **M0** Proposal approved          | ✅      | `docs/phase-1-architecture.md`                                      |
-| **M1** Repo scaffold              | ✅      | Astro 5, TS strict, Tailwind v4, CI skeleton                        |
-| **M2** Design tokens + primitives | ✅      | Typography, color, primitives, layout shell, sandbox                |
-| **M3** Content engine             | ✅      | Zod schemas, `pnpm new-post`, sample posts per type                 |
-| **M4** Blog surface               | ✅      | Home, posts, tags, series, feeds, per-post OG, view transitions     |
-| **M5** CV surface                 | ✅      | `/cv`, `/cv/print`, `/cv.json`, PDF pipeline                        |
-| **M6** Indie-web polish           | ✅      | `/now`, `/uses`, `/colophon`, `/reading`, ⌘K palette, Pagefind, 404 |
-| **M7** Quality gates              | ✅      | Lighthouse CI, axe-core, lychee, `--frozen-lockfile`                |
-| **M8** Launch                     | ✅      | DNS, SSL, email routing, analytics, Search Console, Bing            |
-| **M9** Post-launch                | 🚧 next | Comments (giscus), webmentions, uptime, error monitoring            |
+| Milestone                         | State   | Notes                                                           |
+| --------------------------------- | ------- | --------------------------------------------------------------- |
+| **M0** Proposal approved          | ✅      | `docs/phase-1-architecture.md`                                  |
+| **M1** Repo scaffold              | ✅      | Astro 5, TS strict, Tailwind v4, CI skeleton                    |
+| **M2** Design tokens + primitives | ✅      | Typography, color, primitives, layout shell, sandbox            |
+| **M3** Content engine             | ✅      | Zod schemas, `pnpm new-post`, sample posts per type             |
+| **M4** Blog surface               | ✅      | Home, posts, tags, series, feeds, per-post OG, view transitions |
+| **M5** CV surface                 | ✅      | `/cv`, `/cv/print`, `/cv.json`, PDF pipeline                    |
+| **M6** Indie-web polish           | ✅      | `/now`, `/uses`, `/colophon`, ⌘K palette, Pagefind, 404         |
+| **M7** Quality gates              | ✅      | Lighthouse CI, axe-core, lychee, `--frozen-lockfile`            |
+| **M8** Launch                     | ✅      | DNS, SSL, email routing, analytics, Search Console, Bing        |
+| **M9** Post-launch                | 🚧 next | Comments (giscus), webmentions, uptime, error monitoring        |
 
 ## For would-be forkers
 

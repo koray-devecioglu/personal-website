@@ -6,9 +6,9 @@
  * a new tag is a deliberate one-line PR, which is the right friction.
  *
  * Keep the list broad on purpose: the site's subject matter spans code,
- * food, BBQ, sport, travel, books, and site-meta. The design system is
- * explicitly tuned so a BBQ essay and a refactoring deep-dive sit next
- * to each other without either looking out of place.
+ * food, BBQ, football, travel, living abroad, and site-meta. The design
+ * system is explicitly tuned so a BBQ essay and a refactoring deep-dive
+ * sit next to each other without either looking out of place.
  *
  * Conventions:
  *   - kebab-case only
@@ -33,12 +33,21 @@ export const ALLOWED_TAGS = [
   "writing",
   "site-news",
 
-  // Life spread
+  // Fire & food
   "food",
   "bbq",
+  "restaurants",
+
+  // Travel + living abroad
   "travel",
+  "cities",
+  "living-abroad",
+
+  // Sport
+  "football",
+  "stadiums",
+  "sports",
   "running",
-  "books",
 ] as const;
 
 export type Tag = (typeof ALLOWED_TAGS)[number];

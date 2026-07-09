@@ -77,9 +77,9 @@ to add a tag, and it's the friction that prevents four spellings of
 "typescript" from accumulating over five years.
 
 The list is broad on purpose: engineering, writing craft, food, BBQ,
-travel, running, books, and site-meta. If you need a category that
-truly isn't listed, add it in the same PR that introduces the first
-post using it.
+restaurants, travel, cities, living abroad, football, stadiums, sport,
+running, and site-meta. If you need a category that truly isn't
+listed, add it in the same PR that introduces the first post using it.
 
 Rules:
 
