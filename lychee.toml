@@ -48,6 +48,7 @@ exclude = [
   "^https?://(www\\.)?koraydevecioglu\\.com/(posts|series|tags|travel)/",
 ]
 
-# Follow redirects; some CDN-backed hosts redirect `http` to `https`
-# or strip trailing slashes.
-include_fragments = false
+# Don't chase `#fragment` anchors inside targets; page-level 200s are
+# enough for this site. Lychee ≥0.24 takes a mode string here
+# ("none" | "anchor-only" | "text-only" | "full"), not a boolean.
+include_fragments = "none"
