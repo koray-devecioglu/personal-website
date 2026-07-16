@@ -4,14 +4,17 @@
 // cache-first with a background refresh (stale-while-revalidate). The
 // planner must keep working in alpine dead zones; slightly stale is
 // fine — content only changes when we redeploy, which bumps VERSION.
-const VERSION = 'swiss-2026-v1';
+const VERSION = 'swiss-2026-v4';
 const SCOPE_PATH = '/travel/switzerland-2026/';
 const PRECACHE = [
   `${SCOPE_PATH}manifest.webmanifest`,
   `${SCOPE_PATH}assets/hero.webp`,
   `${SCOPE_PATH}assets/heidelberg.webp`,
   `${SCOPE_PATH}assets/bern.webp`,
-  `${SCOPE_PATH}assets/alps.webp`,
+  `${SCOPE_PATH}assets/murren.webp`,
+  `${SCOPE_PATH}assets/brienz.webp`,
+  `${SCOPE_PATH}assets/maennlichen.webp`,
+  `${SCOPE_PATH}assets/zurich.webp`,
   `${SCOPE_PATH}assets/icon-192.png`,
   `${SCOPE_PATH}assets/icon-512.png`,
 ];
