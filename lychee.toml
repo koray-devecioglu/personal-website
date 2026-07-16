@@ -44,8 +44,8 @@ exclude = [
   # inside dist HTML and would 404 them pre-merge.
   #
   # We still validate internal route integrity via root-dir file checks,
-  # so this only skips premature live-host checks for dynamic content pages.
-  "^https?://(www\\.)?koraydevecioglu\\.com/(posts|series|tags)/",
+  # so this only skips premature live-host checks for generated pages.
+  "^https?://(www\\.)?koraydevecioglu\\.com/(posts|series|tags|travel)/",
 ]
 
 # Follow redirects; some CDN-backed hosts redirect `http` to `https`
