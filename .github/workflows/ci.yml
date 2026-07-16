@@ -159,6 +159,11 @@ jobs:
       - name: Run lychee
         uses: lycheeverse/lychee-action@v2
         with:
+          # Pin the lychee binary itself — the action's floating default
+          # once jumped to a version with a breaking config change
+          # (include_fragments bool → mode string) and turned CI red
+          # without any commit touching the repo. Bump deliberately.
+          lycheeVersion: v0.24.2
           # Walk every HTML page produced by Astro. `--root-dir` must be
           # absolute so root-relative links (`/posts`, `/favicon.svg`)
           # resolve to files under `dist/` instead of bailing out.

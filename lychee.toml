@@ -39,6 +39,9 @@ exclude = [
   "^https?://([a-z0-9-]+\\.)?linkedin\\.com/",
   # Instagram often returns 500 for unauthenticated profile HEAD checks.
   "^https?://(www\\.)?instagram\\.com/",
+  # SBB (Swiss railways) returns 403 to headless checkers; the travel
+  # planner links its journey planner and pass pages, all canonical.
+  "^https?://(www\\.)?sbb\\.ch/",
   # During PR builds, newly generated content routes don't exist on the
   # production hostname yet. Lychee still sees absolute canonical/OG URLs
   # inside dist HTML and would 404 them pre-merge.
@@ -48,6 +51,7 @@ exclude = [
   "^https?://(www\\.)?koraydevecioglu\\.com/(posts|series|tags|travel)/",
 ]
 
-# Follow redirects; some CDN-backed hosts redirect `http` to `https`
-# or strip trailing slashes.
-include_fragments = false
+# Don't chase `#fragment` anchors inside targets; page-level 200s are
+# enough for this site. Lychee ≥0.24 takes a mode string here
+# ("none" | "anchor-only" | "text-only" | "full"), not a boolean.
+include_fragments = "none"

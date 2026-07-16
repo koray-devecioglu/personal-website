@@ -1,0 +1,14 @@
+{
+  "name": "Switzerland 2026 — Koray & Anıl",
+  "short_name": "Swiss Trip",
+  "description": "Six-day road-trip planner: itinerary, stations, fares and passes.",
+  "start_url": "/travel/switzerland-2026/",
+  "scope": "/travel/switzerland-2026/",
+  "display": "standalone",
+  "background_color": "#f5f5f7",
+  "theme_color": "#f5f5f7",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

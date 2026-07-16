@@ -64,6 +64,13 @@ Fails on any 4xx/5xx; 429 (rate limit) is accepted. A few domains
 reject headless user agents (LinkedIn, Instagram) and are listed
 explicitly in the exclude list — document any addition in the config.
 
+The lychee binary version is pinned in `ci.yml` (`lycheeVersion`) —
+the action's floating default once broke the config format under us
+(`include_fragments` bool → mode string in 0.24). Bump the pin
+deliberately, together with any config syntax the new version needs;
+keep your local `lychee` on the same major/minor when running
+`pnpm lint:links`.
+
 ## Running the gates locally
 
 ```sh
